@@ -3,6 +3,12 @@ title: "R more"
 output: html_document
 ---
 
+# Presentations
+
+[Introduction](slides/introduction.html)
+
+# Topics
+
 # Authors
 
 This course is developed by the Monash Bioinformatics Platform:
