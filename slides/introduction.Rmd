@@ -12,7 +12,7 @@ This day is a very fast tour of R as currently used.
 
 The point is to get a taste of what exists in the R world.
 
-R continues to evolve as better ways to work with data are found.
+R continues to evolve as better ways to work with data are found. In particular, packages by [Hadley Wickham](http://hadley.nz/) have recently revolutionized R: devtools, dplyr, tidyr, ggplot2
 
 R is not the most consistent or friendly environment in which to work with data, but it is by far the most comprehensive.
 
