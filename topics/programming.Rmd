@@ -1,0 +1,26 @@
+---
+title: "Programming"
+output: html_document
+---
+
+# Functions
+
+# Sourcing .R files
+
+Having developed some useful functions, we might want to re-use them in a future project or share them with a friend. Save your functions in a file called "myfunctions.R". They can now be loaded with:
+
+```
+source("myfunctions.R")
+```
+
+
+# Running external software
+
+
+
+# Putting it all together
+
+
+
+
+

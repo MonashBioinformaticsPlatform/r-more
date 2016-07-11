@@ -18,12 +18,14 @@
       <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="98.0" width="140.0" x="213.5" y="-53.5"/>
+          <y:Geometry height="125.0" width="140.0" x="213.5" y="-80.5"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="74.6640625" modelName="custom" textColor="#000000" visible="true" width="93.98828125" x="23.005859375" y="11.66796875">Loading
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="102.9296875" modelName="custom" textColor="#000000" visible="true" width="93.98828125" x="23.005859375" y="11.03515625">Loading
 
 Tidying
+
+Normalization
 
 Transformation<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>

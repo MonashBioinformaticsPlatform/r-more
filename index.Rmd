@@ -3,13 +3,19 @@ title: "R more"
 output: html_document
 ---
 
-# Presentations
+## Presentations
 
-[Introduction](slides/introduction.html)
+* [Introduction](slides/introduction.html)
 
-# Topics
+## Topics
 
-# Authors
+* Rmarkdown
+* [Programming](topics/programming.html)
+* The tidyverse: tidyr, dplyr, ggplot2
+* [Sequences and genomic features](topics/sequences_and_features.html)
+* Shiny
+
+## Authors
 
 This course is developed by the Monash Bioinformatics Platform:
 

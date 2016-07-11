@@ -1,0 +1,15 @@
+---
+title: "Working with sequences and genomic features"
+output: html_document
+---
+
+This section looks at working with sequences, primarily DNA sequences, and genomic features.
+
+We will be using Bioconductor packages for this. Recall that most R packages are available on the CRAN package repository, and installed using `install.packages()`. Bioconductor is another specialized repository devoted to bioinformatics R packages.
+
+Bioconductor represents a different strand of current development in R, separate from the Hadley Wickham tidyverse. Where Hadley emphasizes the data frame above all else, Bioconductor uses a great variety of data types. It's the very opposite of tidy!
+
+Nevertheless, Bioconductor is overwhelmingly *comprehensive*, and represents the most *complete* environment available for working with bioinformatic data currently existing.
+
+
+

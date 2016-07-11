@@ -34,6 +34,8 @@ Your data can potentially be viewed in the context of a vast array of other data
 
 ## Analysis cycle
 
+See also: [Hadley Wickham talking on this topic at useR! 2016](https://channel9.msdn.com/Events/useR-international-R-User-conference/useR2016/Towards-a-grammar-of-interactive-graphics)
+
 <img src="../figures/data-cycle.svg" height="500">
 
 
@@ -44,7 +46,7 @@ Your data can potentially be viewed in the context of a vast array of other data
 ### Tidy and correctly transformed data
 
 * Tidy data makes visualization and modelling fast and easy.
-* Correctly transformed data brings out the signal in visualizations, and is necessary for correct modelling.
+* Correctly normalized and transformed data brings out the signal in visualizations, and is necessary for correct modelling.
 
 Key packages: readr tidyr dplyr
 
@@ -62,7 +64,7 @@ Specialized packages: rtracklayer
 
 ### Visualization, exploration
 
-* Suggests the need for transformation if necessary.
+* Suggests the need for normalization or transformation.
 * Shows if any of the data is poor quality.
 * Shows unexpected things in the data.
 * Informs what relationships are important in the data for any modelling and statistical testing.
@@ -78,9 +80,8 @@ Key packages: ggplot2
 ### Summarization, modelling, statistical testing
 
 * Shrinks large data sets for more manageable visualization.
-* Removal of confounding factors for visualization.
 * Confirm what can be seen in visualization, tells us what *isn't* real in a visualization.
-* Failures should prompt a rethink of tranformation, and further visualization to understand the data.
+* Failures should prompt a rethink of normalization and tranformation, and further visualization to understand the data.
 
 Key packages: dplyr
 
