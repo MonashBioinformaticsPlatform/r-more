@@ -122,7 +122,41 @@ $(document).ready(function () {
 <p>This section looks at working with sequences, primarily DNA sequences, and genomic features.</p>
 <p>We will be using Bioconductor packages for this. Recall that most R packages are available on the CRAN package repository, and installed using <code>install.packages()</code>. Bioconductor is another specialized repository devoted to bioinformatics R packages.</p>
 <p>Bioconductor represents a different strand of current development in R, separate from the Hadley Wickham tidyverse. Where Hadley emphasizes the data frame above all else, Bioconductor uses a great variety of data types. It’s the very opposite of tidy!</p>
-<p>Nevertheless, Bioconductor is overwhelmingly <em>comprehensive</em>, and represents the most <em>complete</em> environment available for working with bioinformatic data currently existing.</p>
+<p>Nevertheless, Bioconductor is overwhelmingly <em>comprehensive</em>, and represents the most complete environment available for working with bioinformatic data currently existing.</p>
+<pre class="r"><code>library(BSgenome)
+seqs &lt;- readDNAStringSet(&quot;../r-more-files/Escherichia_coli_k_12.GCA_000800765.1.29.dna.genome.fa&quot;)
+seqs</code></pre>
+<pre><code>##   A DNAStringSet instance of length 1
+##       width seq                                        names               
+## [1] 4558660 AGCTTTTCATTCTGACTGCA...GCCTTAGTAAGTATTTTTC Chromosome dna:ch...</code></pre>
+<pre class="r"><code># seqs more or less behaves like a list, but it has its own special type
+class(seqs)</code></pre>
+<pre><code>## [1] &quot;DNAStringSet&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;Biostrings&quot;</code></pre>
+<pre class="r"><code># Remove everything from the names after the first space
+names(seqs) &lt;- sub(&quot; .*&quot;,&quot;&quot;,names(seqs))
+seqs</code></pre>
+<pre><code>##   A DNAStringSet instance of length 1
+##       width seq                                        names               
+## [1] 4558660 AGCTTTTCATTCTGACTGCA...GCCTTAGTAAGTATTTTTC Chromosome</code></pre>
+<pre class="r"><code>seqs$Chromosome</code></pre>
+<pre><code>##   4558660-letter &quot;DNAString&quot; instance
+## seq: AGCTTTTCATTCTGACTGCAACGGGCAATATGTC...ACCAAATAAAAAACGCCTTAGTAAGTATTTTTC</code></pre>
+<pre class="r"><code>seqs[[&quot;Chromosome&quot;]]</code></pre>
+<pre><code>##   4558660-letter &quot;DNAString&quot; instance
+## seq: AGCTTTTCATTCTGACTGCAACGGGCAATATGTC...ACCAAATAAAAAACGCCTTAGTAAGTATTTTTC</code></pre>
+<pre class="r"><code>seqs[[1]]</code></pre>
+<pre><code>##   4558660-letter &quot;DNAString&quot; instance
+## seq: AGCTTTTCATTCTGACTGCAACGGGCAATATGTC...ACCAAATAAAAAACGCCTTAGTAAGTATTTTTC</code></pre>
+<pre class="r"><code>library(rtracklayer)
+features &lt;- import(&quot;../r-more-files/Escherichia_coli_k_12.GCA_000800765.1.29.gtf&quot;)
+
+feat &lt;- features[4,]
+translate(getSeq(seqs, feat))</code></pre>
+<pre><code>##   A AAStringSet instance of length 1
+##     width seq
+## [1]    21 MKRISTTITTTITITTGNGAG</code></pre>
 
 
 

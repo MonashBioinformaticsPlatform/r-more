@@ -9,7 +9,36 @@ We will be using Bioconductor packages for this. Recall that most R packages are
 
 Bioconductor represents a different strand of current development in R, separate from the Hadley Wickham tidyverse. Where Hadley emphasizes the data frame above all else, Bioconductor uses a great variety of data types. It's the very opposite of tidy!
 
-Nevertheless, Bioconductor is overwhelmingly *comprehensive*, and represents the most *complete* environment available for working with bioinformatic data currently existing.
+Nevertheless, Bioconductor is overwhelmingly *comprehensive*, and represents the most complete environment available for working with bioinformatic data currently existing.
+
+```{r warning=FALSE, message=FALSE}
+library(BSgenome)
+seqs <- readDNAStringSet("../r-more-files/Escherichia_coli_k_12.GCA_000800765.1.29.dna.genome.fa")
+seqs
+
+# seqs more or less behaves like a list, but it has its own special type
+class(seqs)
+
+# Remove everything from the names after the first space
+names(seqs) <- sub(" .*","",names(seqs))
+seqs
+
+seqs$Chromosome
+seqs[["Chromosome"]]
+seqs[[1]]
+```
+
+```{r warning=FALSE, message=FALSE}
+library(rtracklayer)
+features <- import("../r-more-files/Escherichia_coli_k_12.GCA_000800765.1.29.gtf")
+
+feat <- features[4,]
+translate(getSeq(seqs, feat))
+
+```
+
+
+
 
 
 

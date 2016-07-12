@@ -1,6 +1,10 @@
 r-more.Rproj
 
 
+# Mac OS likes creating this
+.DS_Store
+
+
 # History files
 .Rhistory
 .Rapp.history
