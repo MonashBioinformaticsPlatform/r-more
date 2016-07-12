@@ -5,21 +5,51 @@ output: html_document
 
 This section looks at working with sequences, primarily DNA sequences, and genomic features.
 
-We will be using Bioconductor packages for this. Recall that most R packages are available on the CRAN package repository, and installed using `install.packages()`. Bioconductor is another specialized repository devoted to bioinformatics R packages.
+We will be using Bioconductor packages for this. Recall that most R packages are available on the CRAN package repository, and installed using `install.packages()`. Bioconductor is another specialized repository devoted to bioinformatics R packages. Here is how to install packages from Bioconductor:
+
+```
+# This loads the Bioconductor installer
+source("https://bioconductor.org/biocLite.R")
+
+# Install a basic set of packages
+biocLite()
+
+# Install further packages used in this tutorial
+biocLite(c(
+    "BSgenome", 
+    "rtracklayer",
+    "motifRG"
+))
+
+# If you want to install further packages in future, you can use
+#   library(BiocInstaller)
+#   biocLite( ... )
+```
+
 
 Bioconductor represents a different strand of current development in R, separate from the Hadley Wickham tidyverse. Where Hadley emphasizes the data frame above all else, Bioconductor uses a great variety of data types. It's the very opposite of tidy!
 
-Nevertheless, Bioconductor is overwhelmingly *comprehensive*, and represents the most complete environment available for working with bioinformatic data currently existing.
+Nevertheless, Bioconductor is overwhelmingly *comprehensive*, and represents the most complete environment available for working with bioinformatic data currently available.
+
+
+## Loading files
 
 ```{r warning=FALSE, message=FALSE}
-library(BSgenome)
-seqs <- readDNAStringSet("../r-more-files/Escherichia_coli_k_12.GCA_000800765.1.29.dna.genome.fa")
+library(Biostrings) # Working with DNA, RNA, Protein sequences
+library(BSgenome)   # Provides getSeq()
+
+seqs <- readDNAStringSet("r-more-files/Escherichia_coli_k_12.GCA_000800765.1.29.dna.genome.fa")
 seqs
 
-# seqs more or less behaves like a list, but it has its own special type
+# A DNAStringSet more or less behaves like a list, but it has its own special type
 class(seqs)
 
-# Remove everything from the names after the first space
+# You can see a complete set of functions that work with DNAStringSet with
+#   methods(class="DNAStringSet")
+
+names(seqs)
+# Our chromosome names are too verbose.
+# Remove everything from the names after the first space.
 names(seqs) <- sub(" .*","",names(seqs))
 seqs
 
@@ -28,14 +58,68 @@ seqs[["Chromosome"]]
 seqs[[1]]
 ```
 
+
+
 ```{r warning=FALSE, message=FALSE}
-library(rtracklayer)
-features <- import("../r-more-files/Escherichia_coli_k_12.GCA_000800765.1.29.gtf")
+library(GenomicRanges)
+library(rtracklayer)    # provides import() and export()
+
+features <- import("r-more-files/Escherichia_coli_k_12.GCA_000800765.1.29.gtf")
+
+class(features)
+# A GRanges is similar to a data frame
 
 feat <- features[4,]
 translate(getSeq(seqs, feat))
 
 ```
+
+
+## De novo motif finding
+
+Let's try to find the Ribosomal Binding Site.
+
+```{r cache=TRUE}
+cds <- features[features$type == "CDS",]
+
+# Note: bacteria do not have introns
+# In a eukaryote, you would need to merge CDS by transcript
+
+size <- 50
+
+initiation_regions <- flank(cds, size, start=TRUE)
+initiation_seqs <- getSeq(seqs, initiation_regions)
+
+library(seqLogo)
+seqLogo(consensusMatrix(initiation_seqs, as.prob=T, baseOnly=TRUE))
+
+n <- 4000
+background_regions <- GRanges("Chromosome", 
+    IRanges(
+        start=floor(runif(n, 1, length(seqs[[1]]) - size)), 
+        width=size
+    ),
+    strand=sample(c("+","-"), n, replace=TRUE)
+)
+background_seqs <- getSeq(seqs, background_regions)
+```
+
+```{r cache=TRUE, warning=FALSE, message=FALSE}
+library(motifRG)
+
+results <- findMotifFgBg(initiation_seqs, background_seqs, both.strand=FALSE, enriched.only=TRUE)
+
+motifHtmlTable(results)
+
+refined <- refinePWMMotifExtend(results$motifs[[1]]@match$pattern, initiation_seqs)
+seqLogo(refined$model$prob)
+```
+
+
+
+
+
+
 
 
 

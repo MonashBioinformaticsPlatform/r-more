@@ -1,5 +1,10 @@
 r-more.Rproj
 
+# motifRG output
+html/
+
+# knit cache directories
+*_cache/
 
 # Mac OS likes creating this
 .DS_Store
