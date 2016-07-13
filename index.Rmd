@@ -9,7 +9,7 @@ output: html_document
 
 ## Topics
 
-* [Rmarkdown](topics/Rmarkdown.html) ([.Rmd](toplics/Rmarkdown.Rmd))
+* [Rmarkdown](topics/Rmarkdown.html) ([.Rmd](topics/Rmarkdown.Rmd))
 * [Programming](topics/programming.html) ([.Rmd](topics/programming.Rmd))
 * The tidyverse: tidyr, dplyr, ggplot2
 * [Sequences and genomic features](topics/sequences_and_features.html) ([.Rmd](topics/sequences_and_features.Rmd))
