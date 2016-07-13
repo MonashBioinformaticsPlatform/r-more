@@ -1,0 +1,162 @@
+---
+author: "serine"
+date: "12 July 2016"
+output: html_document
+#output: ioslides_presentation
+---
+>  Aims:
+>
+> - To learn write R markdown documents and compile into differnet documents type
+>
+> - To learn how to embedd R code into R markdown documents
+
+# Introduction to markdown
+
+Markdown is powerfull "language" for writing different kind of documents, such as **PDF** or **HTML** in efficient way. The underlying idea for Markdown is that it is easy-to-write and easy-to-read and that markdown documents can be published as is.
+
+You can use any [text editor](https://en.wikipedia.org/wiki/Text_editor) to write markdown. RStudio already comes with text editor and we are going to use it, because RStudio also has few additional things that makes markdown writing much easier. 
+
+## R markdown
+
+We are going to learn an R flavour or markdown - [Rmarkdown](http://rmarkdown.rstudio.com/), which builds on top of standard markdown, but is slightly augmented version of markdown. The big advantage of Rmarkdown is ability to embedd code into markdown document that is executable, thereby making dynamic documents. Rmarkdown is great way to document your analysis and share with others.
+
+Let's get right into it. Open **R Markdown file** using these dropdown menu steps: **File** -> **New File** -> **R Markdown**. You can put any `title` and any `author` name. For now select **Document** and Document type **HTML**. Once you have opended your `.Rmd` file, click on `Knit HTML` button at the top of your pane. 
+
+`Knitr` is an R package that dose all the magic of converting and running your Rmarkdown and R code repsectively. 
+
+These are three main parts to an Rmarkdown document
+
+#### YAML header secession. I will talk about it at the very end
+
+```
+---
+title: "Hello world"
+author: "Kirill"
+date: "13 July 2016"
+output: html_document
+---
+```
+
+#### The R code blocks. Most interest to us and we will talk about it shortly
+
+```
+
+ ```{ r pressure, echo=FALSE}
+ plot(pressure)
+ ```
+ 
+```
+
+#### Everything else is plain old markdown
+
+```
+## R markdown
+```
+
+## Markdown basics
+
+Now its just the matter of learning more of Rmarkdown syntax. Let's delete all current text from the document and type `Hello world, I'm learning R markdown !` and pressing `Knit HTML` button.
+
+```
+Hello world, I'm learning R markdown !
+```
+<div style="border-style: solid; border-width: 1px; border-color: #e6e6e6; border-radius: 3px; background:  #f2f2f2; padding: 10px">
+Hello world, I'm learning R markdown !
+</div>
+
+Now add `#` symbol at the start of the line and press `Knit HTML` button again. We'll be pressing this button alot ! For those who likes keyboard short cuts use `ctrl+shift+k` instead.
+
+```
+# Hello world, I'm learning R markdown !
+```
+<div style="border-style: solid; border-width: 1px; border-color: #e6e6e6; border-radius: 3px; background:  #f2f2f2; padding: 10px">
+# Hello world, I'm learning R markdown !
+</div>
+
+Now make three new lines with the same text but different nubmer of `#` symbols, one, two and three respectively and keep pressing `Knit HTML` button
+
+```
+# Hello world, I'm learning R markdown !
+## Hello world, I'm learning R markdown !
+### Hello world, I'm learning R markdown !
+```
+<div style="border-style: solid; border-width: 1px; border-color: #e6e6e6; border-radius: 3px; background:  #f2f2f2; padding: 10px">
+# Hello world, I'm learning R markdown !
+## Hello world, I'm learning R markdown !
+### Hello world, I'm learning R markdown !
+</div>
+
+This is how you can specify different headers type using markdown. The core of [markdown](https://daringfireball.net/projects/markdown/syntax) is comprised entirely of punctuation characters. 
+
+Here is a couple of more examples of markdown syntax. To make an emphasis e.g italics, you mark your word(s) with asterisks or underscores.
+
+```
+Hello world, I'm *learning* R markdown !
+Hello world, I'm _learning_ R markdown !
+```
+<div style="border-style: solid; border-width: 1px; border-color: #e6e6e6; border-radius: 3px; background:  #f2f2f2; padding: 10px">
+Hello world, I'm *learning* R markdown !
+ <br>
+Hello world, I'm _learning_ R markdown !
+</div>
+
+To make strong emphasis e.g bold, you mark your word(s) with double asterisks or underscores.
+
+```
+Hello world, I'm **learning** R markdown !
+Hello world, __I'm learning__ R markdown !
+```
+<div style="border-style: solid; border-width: 1px; border-color: #e6e6e6; border-radius: 3px; background:  #f2f2f2; padding: 10px">
+Hello world, I'm **learning** R markdown !
+ <br>
+Hello world, __I'm learning__ R markdown !
+</div>
+
+And you can combine both if you like
+
+```
+Hello world, **I'm _learning_** markdown !
+```
+<div style="border-style: solid; border-width: 1px; border-color: #e6e6e6; border-radius: 3px; background:  #f2f2f2; padding: 10px">
+Hello world, **I'm _learning_** R markdown !
+</div>
+
+## R code inside R markdown
+
+In order for us to embed code we need to use ` ```{r } ..``` ` syntax. Lets type that example we saw before
+
+```{r}
+summary(cars)
+```
+
+`cars` is inbuilt dataset that we are using for this example. Let's look at this data a bit close in the _console_. You should see your code block is highlighted differently and you should see green arrow at the right hand site of that block. Press that green arrow to the output in the _console_. You can also use `ctrl+enter` to do the same with the keyboard short cut.
+
+We can do some data invesigationg and manipulation in the _console_ and then copy our analysis into the document. In the console check data type using `class()` function, then get first few rows of the table with `head()`. It looks like a `data.frame` with two columns, why not plot them.
+
+```{r}
+summary(cars)
+plot(cars$speed, cars$dist)
+```
+
+Let's add a title `main="Travelling speed vs Breaking distance"` and asix labels `xlab="Travelling speed (mhp)"` and `ylab="Stopping distance (ft)"`
+
+```{r}
+plot(cars$speed, cars$dist, main="Travelling speed vs Breaking distance", xlab = "Travelling speed (mhp)", ylab="Stopping distance (ft)")
+```
+
+Having actual code for a figure is some what unnecessary, we can turn that off with `echo=FALSE` options e.g `  ```{r echo=FALSE} .. ``` `
+
+```{r echo=FALSE}
+plot(cars$speed, cars$dist, main="Travelling speed vs Breaking distance", xlab = "Travelling speed (mhp)", ylab="Stopping distance (ft)")
+```
+
+Sometimes we might want to show actual code and not the output, for that use `eval=FALSE` e.g ` ```{r eval=FALSE} ..``` `
+
+```{r eval=FALSE}
+plot(cars$speed, cars$dist, main="Travelling speed vs Breaking distance", xlab = "Travelling speed (mhp)", ylab="Stopping distance (ft)")
+```
+
+Lets switch to a different code
+```{r eval=FALSE}
+print("Hey")
+```
