@@ -26,53 +26,177 @@ biocLite(c(
 #   biocLite( ... )
 ```
 
-
 Bioconductor represents a different strand of current development in R, separate from the Hadley Wickham tidyverse. Where Hadley emphasizes the data frame above all else, Bioconductor uses a great variety of data types. It's the very opposite of tidy!
 
 Nevertheless, Bioconductor is overwhelmingly *comprehensive*, and represents the most complete environment available for working with bioinformatic data currently available.
 
+Bioconductor packages usually have useful documentation in the form of "vignettes". These are readable on the Bioconductor website, or within R:
+
+```
+vignette()
+vignette(package="Biostrings")
+vignette("BiostringsQuickOverview", package="Biostrings")
+```
+
+
+## DNA sequences and genomic ranges
+
+```{r warning=FALSE, message=FALSE}
+library(Biostrings)     # Provides DNAString, DNAStringSet, etc
+library(BSgenome)       # Provides getSeq()
+library(GenomicRanges)  # Provides GRanges, etc
+library(rtracklayer)    # Provides import() and export()
+
+myseq <- DNAString("ACCATTGATTAT")
+myseq
+class(myseq)
+reverseComplement(myseq)
+translate(myseq)
+subseq(myseq, 3,5)
+
+# You can see a complete set of functions that work with DNAString with
+methods(class="DNAString")
+```
+
+```{r}
+myset <- DNAStringSet(list(chrI=myseq, chrII=DNAString("ACGTACGT")))
+
+# A DNAStringSet is list-like
+myset$chrII
+# or myset[["chrII"]]
+# or myset[[2]]
+
+myquery1 <- GRanges("chrI", IRanges(start=3,end=5), strand="+")
+getSeq(myset, myquery1)
+
+myquery2 <- GRanges("chrI", IRanges(start=3,end=5), strand="-")
+getSeq(myset, myquery2)
+
+# GRanges are sometimes like vectors
+c(myquery1, myquery2)
+
+# Accessing GRanges data
+seqnames(myquery1)
+start(myquery1)
+end(myquery1)
+strand(myquery1)
+
+# GRanges can have metadata columns, so they are also like data frames
+mcols(myquery1)$wibble <- 10
+myquery1
+mcols(myquery1)$wibble
+myquery1$wibble
+
+# Another way to create a GRanges
+as("chrI:3-5:-", "GRanges")
+```
+
 
 ## Loading files
 
-```{r warning=FALSE, message=FALSE}
-library(Biostrings) # Working with DNA, RNA, Protein sequences
-library(BSgenome)   # Provides getSeq()
+DNA sequences are generally stored in FASTA format, a simple text format. 
 
+```
+>nameofseq1
+ACGTACGTAGCTAGCGTAGCA
+AGCGATA
+>nameofseq2
+GTACGATCGAC
+```
+
+These can be loaded with `readDNAStringSet` from `Biostrings`:
+
+```{r}
 seqs <- readDNAStringSet("r-more-files/Escherichia_coli_k_12.GCA_000800765.1.29.dna.genome.fa")
 seqs
-
-# A DNAStringSet more or less behaves like a list, but it has its own special type
-class(seqs)
-
-# You can see a complete set of functions that work with DNAStringSet with
-#   methods(class="DNAStringSet")
 
 names(seqs)
 # Our chromosome names are too verbose.
 # Remove everything from the names after the first space.
 names(seqs) <- sub(" .*","",names(seqs))
-seqs
-
-seqs$Chromosome
-seqs[["Chromosome"]]
-seqs[[1]]
+names(seqs)
 ```
 
+Conversely, a DNAStringSet can also be written to a file with `writeXStringSet`.
 
+Genome annotations are available in a variety of text formats such as GFF3 and GTF. They can be loaded with the `import` function from `rtracklayer`:
 
 ```{r warning=FALSE, message=FALSE}
-library(GenomicRanges)
-library(rtracklayer)    # provides import() and export()
-
 features <- import("r-more-files/Escherichia_coli_k_12.GCA_000800765.1.29.gtf")
+features
+```
 
-class(features)
-# A GRanges is similar to a data frame
+Conversely, a GRanges can be written to a file with `export`.
 
+We can use these annotations to grab sequences from the genome.
+
+```{r}
 feat <- features[4,]
-translate(getSeq(seqs, feat))
+feat
+seq <- getSeq(seqs, feat)
+seq
+translate(seq)
+```
+
+The metadata columns let us query the GRanges, for example for a particular gene.
+
+```{r}
+features[features$gene_name == "lacA" & !is.na(features$gene_name),]
+```
+
+## Further operations on GRanges
+
+### Intra-range
+
+Various useful manipulations of individual ranges are defined. 
 
 ```
+?"intra-range-methods"
+```
+
+Note: How these make use of the strand is a little haphazard. For example flank() and resize() respect strand but shift() does not.
+
+Earlier we translated a coding sequence. Coding sequences are terminated by a stop codon. Let's extend the CDS feature to include this.
+
+```{r}
+feat_stop <- resize(feat, width(feat)+3)
+seq_stop <- getSeq(seqs, feat_stop)
+translate(seq_stop)
+```
+
+
+### Inter-range
+
+```
+?"inter-range-methods"
+```
+
+One compelling feature of GenomicRanges is that it is able to find overlapping ranges very quickly.
+
+```{r}
+query <- as("Chromosome:9500-10000:+", "GRanges")
+hits <- findOverlaps(query, features, ignore.strand=TRUE)
+hits
+subjectHits(hits)
+features[subjectHits(hits),]
+
+findOverlaps(query, features, ignore.strand=FALSE)
+```
+
+
+## Finding a known motif
+
+```{r}
+vmatchPattern("AAGGAA", seqs)
+```
+
+`vmatchPattern` is strand specific. If we want matches on the reverse strand we need to also:
+
+```{r}
+vmatchPattern(reverseComplement(DNAString("AAGGAA")), seqs)
+```
+
+There is also a similar function for searching for a Position Weight Matrix pattern, `matchPWM`.
 
 
 ## De novo motif finding
@@ -115,14 +239,50 @@ refined <- refinePWMMotifExtend(results$motifs[[1]]@match$pattern, initiation_se
 seqLogo(refined$model$prob)
 ```
 
+There are many other motif finding programs available, outside of R. An alternative approach would be to construct the foreground and background sequences as above, then write them to FASTA files for use with an external program.
 
 
+## Next steps
 
+We've seen just the smallest part of what Bioconductor has to offer in this space.
 
+Bioconductor also includes packages with data for model organisms, for example. Sources of data are generally from one of these central repositories:
 
+* NCBI's Entrez Gene and Refseq reference sequences
+* The EBI's Ensembl genome browser
+* The UCSC genome browser
 
+These organizations will generally obtain model genome assemblies from the same source. For example, all of the above use the Genome Reference Consortium's GRCh38 DNA sequence for homo sapiens. UCSC likes to call this "hg38" but, it's the same DNA sequence. This sequence serves as a common frame of reference for genome gene annotation. However the three organizations above will differ on their exact set of gene and transcript annotations, and all use a different gene and transcript id system. These annotations are also revised more often than the underlying DNA sequences.
 
+This mess is partly due to American/European rivalry, and partly due to slightly differing goals. The UCSC genome browser has always been about practicality and showing many lines of evidence. The others are more concerned with correctness and formalization.
 
+Some example packages:
+
+### BSgenome.Hsapiens.UCSC.hg38 
+
+Genome, Homo sapiens, from UCSC browser, version hg38
+
+DNA for chromosomes, usable in the same way as the DNAStringSet used above.
+
+### TxDb.Hsapiens.UCSC.hg38.knownGene
+
+Transcript database, Homo sapiens, from UCSC browser, genome verison hg38
+
+GRanges information for genes and transcripts, much as we loaded from a GTF file above.
+
+### org.Hs.eg.db
+
+Organsism Homo sapiens, primary key is Entrez Gene, database
+
+Translation of gene ids from various databases, assignment to GO terms, KEGG pathways, etc. Entrez Gene ids are used as the primary key.
+
+### biomaRt 
+
+Access to BioMart data, on the internet -- translation of gene ids, gene sets, gene information, etc etc.
+
+### AnnotationHub
+
+Access to experimental data which maps to locations on a genome, on the internet. Programmatic access to the sorts of tracks you would load up in the UCSC browser.
 
 
 
