@@ -1,6 +1,9 @@
 ---
 title: "R more"
-output: html_document
+output: 
+    html_document:
+        theme: cerulean
+        css: style.css
 ---
 
 # Presentations
@@ -14,6 +17,18 @@ output: html_document
 * The tidyverse: tidyr, dplyr, ggplot2
 * [Sequences and genomic features](topics/sequences_and_features.html) ([.Rmd](topics/sequences_and_features.Rmd))
 * Shiny
+
+# See also
+
+Also in this series:
+
+* [R Introduction](https://monashbioinformaticsplatform.github.io/r-intro/)
+* [RNAseq using R](http://monashbioinformaticsplatform.github.io/RNAseq-DE-analysis-with-R/)
+
+Other resources:
+
+* [Next steps](https://monashbioinformaticsplatform.github.io/r-intro/next.html)
+
 
 # Authors
 
