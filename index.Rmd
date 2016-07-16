@@ -3,11 +3,11 @@ title: "R more"
 output: html_document
 ---
 
-## Presentations
+# Presentations
 
 * [Introduction](slides/introduction.html) ([.Rmd](slides/introduction.Rmd))
 
-## Topics
+# Topics
 
 * [Rmarkdown](topics/Rmarkdown.html) ([.Rmd](topics/Rmarkdown.Rmd))
 * [Programming](topics/programming.html) ([.Rmd](topics/programming.Rmd))
@@ -15,7 +15,7 @@ output: html_document
 * [Sequences and genomic features](topics/sequences_and_features.html) ([.Rmd](topics/sequences_and_features.Rmd))
 * Shiny
 
-## Authors
+# Authors
 
 This course is developed by the Monash Bioinformatics Platform:
 
@@ -25,6 +25,12 @@ This course is developed by the Monash Bioinformatics Platform:
 
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 
+Some of this material is derived from work by [Software Carpentry](http://software-carpentry.org/). Any errors and failures of pedagogy are our own.
+
+# Source code
+
 * [GitHub repository](https://github.com/MonashBioinformaticsPlatform/r-more)
+
+
 
 

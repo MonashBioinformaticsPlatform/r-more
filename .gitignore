@@ -1,7 +1,9 @@
 r-more.Rproj
 
-# motifRG output
+# Various files created during tutorials
 html/
+motif-matches.gff
+*_fastqc*
 
 # knit cache directories
 *_cache/

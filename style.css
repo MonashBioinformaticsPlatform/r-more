@@ -1,0 +1,38 @@
+
+body {
+    margin-bottom: 4em;
+}
+
+h1, h2, h3 {
+    margin-top: 2em;
+}
+
+pre {
+    margin-left: 4em;
+    margin-right: 4em;
+}
+
+.challenge {
+    margin: 4em;
+    padding: 2em;
+    border: 1px solid black;
+    border-radius: 5px;
+    background: #ddf;
+}
+
+.challenge > :first-child {
+    margin-top: 0;
+}
+
+
+.objectives {
+    margin: 4em;
+    padding: 2em;
+    border: 1px solid black;
+    border-radius: 5px;
+    background: #fed;
+}
+
+.objectives > :first-child {
+    margin-top: 0;
+}
