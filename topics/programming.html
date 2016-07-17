@@ -65,7 +65,7 @@ h6 {
 }
 </style>
 
-<link href="data:text/css;charset=utf-8,%0Abody%20%7B%0Amargin%2Dbottom%3A%204em%3B%0A%7D%0Ah1%2C%20h2%2C%20h3%20%7B%0Amargin%2Dtop%3A%202em%3B%0A%7D%0Apre%20%7B%0Amargin%2Dleft%3A%204em%3B%0Amargin%2Dright%3A%204em%3B%0A%7D%0A%2Echallenge%20%7B%0Amargin%3A%204em%3B%0Apadding%3A%202em%3B%0Aborder%3A%201px%20solid%20black%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%3A%20%23ddf%3B%0A%7D%0A%2Echallenge%20%3E%20%3Afirst%2Dchild%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0A%2Eobjectives%20%7B%0Amargin%3A%204em%3B%0Apadding%3A%202em%3B%0Aborder%3A%201px%20solid%20black%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%3A%20%23fed%3B%0A%7D%0A%2Eobjectives%20%3E%20%3Afirst%2Dchild%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0A" rel="stylesheet" type="text/css" />
+<link href="data:text/css;charset=utf-8,%0Abody%20%7B%0Amargin%2Dbottom%3A%204em%3B%0A%7D%0Ah1%20%7B%0Afont%2Dsize%3A%2050px%3B%0A%7D%0Ah1%2Etitle%20%7B%0Afont%2Dsize%3A%2070px%3B%0A%7D%0Ah2%20%7B%0Afont%2Dsize%3A%2030px%3B%0A%7D%0Ah3%20%7B%0Afont%2Dsize%3A%2024px%3B%0A%7D%0Ah4%20%7B%0Afont%2Dsize%3A%2018px%3B%0A%7D%0Ah5%20%7B%0Afont%2Dsize%3A%2016px%3B%0A%7D%0Ah6%20%7B%0Afont%2Dsize%3A%2012px%3B%0A%7D%0Ah1%2Ch2%2Ch3%2Ch4%2Ch5%2Ch6%20%7B%0Amargin%2Dtop%3A%202em%3B%0Amargin%2Dbottom%3A%200%2E5em%3B%0A%7D%0Apre%20%7B%0Amargin%2Dleft%3A%204em%3B%0Amargin%2Dright%3A%204em%3B%0A%7D%0A%2Echallenge%20%7B%0Amargin%3A%204em%3B%0Apadding%3A%202em%3B%0Aborder%3A%201px%20solid%20black%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%3A%20%23ddf%3B%0A%7D%0A%2Echallenge%20%3E%20%3Afirst%2Dchild%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0A%2Eobjectives%20%7B%0Amargin%3A%204em%3B%0Apadding%3A%202em%3B%0Aborder%3A%201px%20solid%20black%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%3A%20%23fed%3B%0A%7D%0A%2Eobjectives%20%3E%20%3Afirst%2Dchild%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0A" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -122,19 +122,20 @@ $(document).ready(function () {
 <div id="TOC">
 <ul>
 <li><a href="#functions">Functions</a></li>
-<li><a href="#a-practical-example">A practical example</a></li>
+<li><a href="#a-practical-programming-exercise">A practical programming exercise</a></li>
 <li><a href="#if-statements">If statements</a></li>
 <li><a href="#sourcing-.r-files">Sourcing .R files</a></li>
 </ul>
 </div>
 
+<p>In the introductory R day, we mostly used R interactively, but one of the final topics introduced our first programming concept, <a href="https://monashbioinformaticsplatform.github.io/r-intro/for_loops.html">for-loops</a>. Today we will expand our knowledge of programming by writing functions and if-statements, and apply this knowledge to automate a typical task from bioinformatics.</p>
 <div id="functions" class="section level1">
 <h1>Functions</h1>
 <p>In the introductory R day, we used a lot of functions that other people had written. We’re now going to see how to create our own functions.</p>
 <pre class="r"><code>fahr_to_kelvin &lt;- function(temp) {
-    ((temp - 32) * (5 / 9)) + 273.15
+    (temp-32) * (5/9) + 273.15
 }</code></pre>
-<p>We define <code>fahr_to_kelvin</code> by assigning it to the output of <code>function</code>. The list of argument names are containted within parentheses. Next, the body of the function–the statements that are executed when it runs–is contained within curly braces (<code>{}</code>). The statements in the body have been indented by four spaces, which makes the code easier to read but does not affect how the code operates.</p>
+<p>We define <code>fahr_to_kelvin</code> by assigning it a <code>function</code>. The list of argument names are containted within parentheses. Next, the body of the function–the statements that are executed when it runs–is contained within curly braces (<code>{}</code>). The statements in the body have been indented by four spaces, which makes the code easier to read but does not affect how the code operates.</p>
 <p>When we call the function, the values we pass to it are assigned to those variables so that we can use them inside the function. The expression inside the function is evaluate and the result is “returned” back to whoever asked for it.</p>
 <p>Let’s try running our function. Calling our own function is no different from calling any other function:</p>
 <pre class="r"><code># freezing point of water
@@ -146,47 +147,46 @@ fahr_to_kelvin(212)</code></pre>
 <div id="variations" class="section level2">
 <h2>Variations</h2>
 <p>Here are some other equivalent ways to write this function.</p>
-<p>The body of the function within the <code>{}</code> can contain multiple lines of code. Only the last line is returned.</p>
+<p>The body of the function within the <code>{}</code> can contain multiple lines of code, “statements”. Only the last line is returned.</p>
 <pre class="r"><code>fahr_to_kelvin &lt;- function(temp) {
-  kelvin &lt;- ((temp - 32) * (5 / 9)) + 273.15
-  kelvin
+    kelvin &lt;- (temp-32) * (5/9) + 273.15
+    kelvin
 }</code></pre>
 <p>The braces are not actually needed if the function only contains one statement.</p>
-<pre class="r"><code>fahr_to_kelvin &lt;- function(temp) ((temp - 32) * (5 / 9)) + 273.15</code></pre>
+<pre class="r"><code>fahr_to_kelvin &lt;- function(temp) (temp-32) * (5/9) + 273.15</code></pre>
 <p><code>return</code> can be used to return from a function immediately. Further code will not be run.</p>
 <pre class="r"><code>fahr_to_kelvin &lt;- function(temp) {
-  kelvin &lt;- ((temp - 32) * (5 / 9)) + 273.15
-  return(kelvin)
-  plot(1:10)
+    kelvin &lt;- (temp-32) * (5/9) + 273.15
+    return(kelvin)
+    plot(1:10)
 }</code></pre>
 <p>Statements in the function may be split over several lines, so long as it is clear that the statement is incomplete due to an unclosed bracket or an operator in need of a right hand argument:</p>
 <pre class="r"><code>fahr_to_kelvin &lt;- function(temp) {
-  kelvin &lt;- (
-          (temp - 32) * (5 / 9)
-      ) + 
-      273.15
-  return(kelvin)
+    kelvin &lt;- 
+        (temp-32) * (5/9) + 
+        273.15
+    return(kelvin)
 }</code></pre>
-<p>Spacing is largely for our own sanity.</p>
-<pre class="r"><code> fahr_to_kelvin &lt;- 
+<p>Spacing and layout is largely for our own sanity.</p>
+<pre class="r"><code>   fahr_to_kelvin&lt;- 
 function(
-                   temp)(
-    (temp 
+                   temp){(temp 
   -32  )*(    5 
-            /9 )
- )+ 273.15</code></pre>
+            /9 )+ 
+
+273.15}</code></pre>
 <p>Beware! however of accidentally finishing a statement early.</p>
 <pre class="r"><code>fahr_to_kelvin_broken &lt;- function(temp) {
-    ((temp - 32) * (5 / 9)) 
+    (temp-32) * (5/9) 
         + 273.15
 }
 
 fahr_to_kelvin_broken(212)</code></pre>
 <pre><code>## [1] 273.15</code></pre>
-<p>The first line in the body of the function is computed then discarded. The second line, <code>+ 273.15</code>, is valid R, so we don’t even get an error.</p>
+<p>The first line in the body of the function is computed then discarded. The second line, <code>+ 273.15</code>, is valid R so we don’t even get an error.</p>
 <p>Finally, the computer doesn’t understand or care what names we give to functions, arguments, or variables.</p>
 <pre class="r"><code>charmander &lt;- function(bulbasaur) {
-    mew &lt;- ((bulbasaur - 32) * (5 / 9)) + 273.15
+    mew &lt;- (bulbasaur-32) * (5/9) + 273.15
     mew
 }</code></pre>
 </div>
@@ -194,7 +194,7 @@ fahr_to_kelvin_broken(212)</code></pre>
 <h2>Composing Functions</h2>
 <p>Now that we’ve seen how to turn Fahrenheit into Kelvin, it’s easy to turn Kelvin into Celsius:</p>
 <pre class="r"><code>kelvin_to_celsius &lt;- function(temp) {
-  temp - 273.15
+    temp - 273.15
 }
 
 #absolute zero in Celsius
@@ -202,28 +202,45 @@ kelvin_to_celsius(0)</code></pre>
 <pre><code>## [1] -273.15</code></pre>
 <p>What about converting Fahrenheit to Celsius? We could write out the formula, but we don’t need to. Instead, we can compose the two functions we have already created:</p>
 <pre class="r"><code>fahr_to_celsius &lt;- function(temp) {
-  temp_k &lt;- fahr_to_kelvin(temp)
-  kelvin_to_celsius(temp_k)
+    temp_k &lt;- fahr_to_kelvin(temp)
+    temp_c &lt;- kelvin_to_celsius(temp_k)
+    temp_c
 }
 
 # freezing point of water in Celsius
 fahr_to_celsius(32.0)</code></pre>
 <pre><code>## [1] 0</code></pre>
 <p>This is our first taste of how larger programs are built: we define basic operations, then combine them in ever-larger chunks to get the effect we want. Real-life functions will usually be larger than the ones shown here–typically half a dozen to a few dozen lines–but they shouldn’t ever be much longer than that, or the next person who reads it won’t be able to understand what’s going on.</p>
-<p>This example showed the output of <code>fahr_to_kelvin</code> assigned to <code>temp_k</code>, which is then passed to <code>kelvin_to_celsius</code> to get the final result. It is also possible to perform this calculation in one line of code, by “chaining” functions together, like so:</p>
-<pre class="r"><code># freezing point of water in Celsius
-kelvin_to_celsius(fahr_to_kelvin(32.0))</code></pre>
-<pre><code>## [1] 0</code></pre>
+<p>You might have noticed that all of these functions have an argument called <code>temp</code>. Why hasn’t this caused confusion and chaos? The answer is that arguments to a function and variables defined in the body of a function are <em>local</em> to a call to that function. Within the body of a function, R code can see variables from its own local environment, and variables from the global environment, but <em>not</em> variables local to other function calls. While running code R maintains a <em>stack</em> of local environments. When a call to a function returns, all of its local arguments and variables disappear.</p>
+<p><b>Tip:</b> There are several ways to see this in action.</p>
+<ul>
+<li><p>Scatter <code>cat</code>s through your functions showing the values of arguments and variables at various points.</p></li>
+<li><p>Insert a call to <code>browser()</code> in one of your functions. This will pause execution and let you interact with the local environment in a function. Once in the browser, type “help” for a list of commands. Besides examining variables, you can step through the code from the point it paused with “s” or “n”. When you are done type “f”.</p></li>
+<li><p>You can debug an existing function using <code>debugonce</code>. This is like temporarily adding a call to <code>browser()</code> at the top of the function.</p></li>
+</ul>
+<pre class="r"><code>debugonce(fahr_to_celsius)
+fahr_to_celsius(212)</code></pre>
+</div>
+<div id="challenge" class="section level2 challenge">
+<h2>Challenge</h2>
+<p>Write a function to calculate the length of the hypotenuse of a right angled triangle using Pythagorus’s rule, given the lengths of the other sides.</p>
+<p>Hint: <code>sqrt</code> calculates the square root of a number.</p>
+<p>Testing your code is important. Invent a test case for your code consisting of:</p>
+<ul>
+<li>The input arguments to your function.</li>
+<li>The return value you expect.</li>
+</ul>
+<p>Confirm that your function works as expected.</p>
 </div>
 </div>
-<div id="a-practical-example" class="section level1">
-<h1>A practical example</h1>
-<p>Let’s say we want to examine the quality of some FASTQ files, which contain reads from a sequencing machine. An experiment has been run over several days, and we want to run a program called “fastqc” on each of the FASTQ files.</p>
+<div id="a-practical-programming-exercise" class="section level1">
+<h1>A practical programming exercise</h1>
+<p>Let’s say we want to examine the quality of some FASTQ files, which contain reads from a DNA sequencing machine. An experiment has been run over several days, and we want to run a program called “fastqc” on each of the FASTQ files.</p>
 <p>FASTQ is a simple text format containg a series of DNA sequences and associated quality information. Examine “day0.fastq” in the “r-more-files” folder.</p>
 <div id="running-external-software" class="section level2">
 <h2>Running external software</h2>
 <p>Software outside of R is normally run from a “terminal” window, which is rather like the console in RStudio. You type in a command and the operating system runs it for you. The commands you type in are interpreted by something called a “shell”, because it acts like a shell around the operating system. For more information, see the <a href="http://software-carpentry.org/lessons/">Software Carpentry</a> course on the Unix shell.</p>
-<p>R can pretend to type in a command in a terminal window using the <code>system</code> function. For example the “uptime” command tells you how long the computer has been running for.</p>
+<p>R can give a command to the shell using the <code>system</code> function. For example the “uptime” command tells you how long the computer has been running for.</p>
 <pre class="r"><code>system(&quot;uptime&quot;)</code></pre>
 <p>Let’s say we want to examine the quality of some FASTQ files, which contain reads from a sequencing machine. An experiment has been run over several days, and we want to run a program called “fastqc” on each of the FASTQ files. Here is how we want to run fastqc for day 0:</p>
 <pre class="r"><code>system(&quot;fastqc --extract --outdir . r-more-files/Day0.fastq&quot;)</code></pre>
@@ -231,7 +248,7 @@ kelvin_to_celsius(fahr_to_kelvin(32.0))</code></pre>
 </div>
 <div id="for-loops-revisited" class="section level2">
 <h2>For-loops revisited</h2>
-<p>Recall in the introduction-to-R day we used for-loops to perform repetitive tasks.</p>
+<p>Recall in the introductory R day we used for-loops to perform repetitive tasks.</p>
 <pre class="r"><code>for(i in c(1,2,3,4,5)) {     #    1
     cat(&quot;i is&quot;,i,&quot;\n&quot;)       #      2   4   6   8   10
     cat(&quot;potato\n&quot;)          #        3   5   7   9    11
@@ -272,7 +289,7 @@ for(day in days) {
 </div>
 <div id="loading-the-summary.txt-files" class="section level2">
 <h2>Loading the summary.txt files</h2>
-<p>The summary.txt files are in “tab separated value” format. This is similar to comma separated value format we’ve seen in the introductory R dat, but instead of using a comma it uses a special character called a tab to delimit columns. Tabs show up as spaces in a text editor. In R, they can be written <code>&quot;\t&quot;</code>.</p>
+<p>The summary.txt files are in “tab separated value” format. This is similar to comma separated value format we’ve seen in the introductory R day, but instead of using a comma it uses a special character called a tab to delimit columns. Tabs show up as variable amounts of space in a text editor. In R, they can be written <code>&quot;\t&quot;</code>.</p>
 <p>In base R we could use the function <code>read.delim</code> to read this file. It’s quite similar to <code>read.csv</code>.</p>
 <p>However, let’s use one of Hadley Wickham’s packages, <code>readr</code>, to load the file. If this package isn’t installed, you can install it with:</p>
 <pre class="r"><code>install.packages(&quot;readr&quot;)</code></pre>
@@ -353,7 +370,7 @@ load_fastqc(&quot;Day0_fastqc/summary.txt&quot;)</code></pre>
 <div id="applying-the-function" class="section level2">
 <h2>Applying the function</h2>
 <p>We now want to load each of the <code>summary.txt</code> files we created earlier. One perfectly valid way would be to use a for loop. An example of this was given in the introductory R day. However here we’re going to use an apply-style function.</p>
-<p>In the introductory R day we saw a couple of flavours of <code>apply</code>. <code>apply</code> itself was for use with matrices. <code>tapply</code> was used with data frames and could produce either a vector or matrix. Another flavour is apply is <code>lapply</code> which produces lists.</p>
+<p>In the introductory R day we saw a couple of flavours of <code>apply</code>. <code>apply</code> itself was for use with matrices. <code>tapply</code> was used with data frames and could produce a vector or a matrix or even a higher dimensional array. Another flavour is apply is <code>lapply</code> which produces lists. As lists can hold anything <code>lapply</code> can be used with any function, no matter what type of thing the function returns.</p>
 <p>First let’s work out the names of the files we want to load.</p>
 <pre class="r"><code>days &lt;- c(0,4,7,10,15,20)
 filenames &lt;- paste0(&quot;Day&quot;, days, &quot;_fastqc/summary.txt&quot;)
@@ -363,14 +380,15 @@ filenames</code></pre>
 ## [5] &quot;Day15_fastqc/summary.txt&quot; &quot;Day20_fastqc/summary.txt&quot;</code></pre>
 <p>Now we can use <code>lapply</code> to apply our function to each of the filenames.</p>
 <pre class="r"><code>sumtabs &lt;- lapply(filenames, load_fastqc)</code></pre>
-<p>Tip: If you wanted to process multiple vectors in parallel you could use the <code>Map</code> function or Hadley Wickham’s <code>purrr</code> package.</p>
-<p>We now have a list of data frames. We want to bind the data frames together into one big data frame. One way would be to use <code>rbind</code> and do it step by step in a for loop. Here are another couple of other ways:</p>
+<p><b>Tip:</b> If you wanted to process multiple vectors in parallel you could use the <code>Map</code> function or Hadley Wickham’s <code>purrr</code> package.</p>
+<p>We now have a list of data frames. We want to bind the data frames together into one big data frame. One way would be to use <code>rbind</code> and do it step by step in a for loop. Here are two other ways:</p>
 <pre class="r"><code># Base R way
 bigtab &lt;- do.call(rbind, sumtabs)
 
 # The dplyr way
 library(dplyr)
 bigtab &lt;- bind_rows(sumtabs)
+
 bigtab</code></pre>
 <pre><code>## # A tibble: 72 x 3
 ##     grade                         test       file
@@ -386,14 +404,29 @@ bigtab</code></pre>
 ## 9    PASS  Sequence Duplication Levels Day0.fastq
 ## 10   WARN    Overrepresented sequences Day0.fastq
 ## # ... with 62 more rows</code></pre>
+<pre class="r"><code>table(bigtab$test, bigtab$grade)</code></pre>
+<pre><code>##                               
+##                                FAIL WARN PASS
+##   Adapter Content                 0    0    6
+##   Basic Statistics                0    0    6
+##   Kmer Content                    0    0    6
+##   Overrepresented sequences       0    4    2
+##   Per base N content              0    0    6
+##   Per base sequence content       6    0    0
+##   Per base sequence quality       0    0    6
+##   Per sequence GC content         2    4    0
+##   Per sequence quality scores     0    0    6
+##   Per tile sequence quality       0    0    6
+##   Sequence Duplication Levels     0    0    6
+##   Sequence Length Distribution    0    0    6</code></pre>
 <p>(If <code>dplyr</code> isn’t installed, you would need to install it with <code>install.packages</code>.)</p>
-<p>*Take home <a href="message:*" class="uri">message:*</a> All of the apply-style functions are enormously more powerful now that we can supply them with functions we write ourselves.</p>
+<p><b>Take home message:</b> All of the apply-style functions are enormously more powerful now that we can supply them with functions we write ourselves.</p>
 </div>
 </div>
 <div id="if-statements" class="section level1">
 <h1>If statements</h1>
-<p>One final programming concept you need to know about is the “if”-statement. An if-statement lets us do something only if some logical value is TRUE, or do one thing if it is TRUE and another if it is FALSE.</p>
-<p>In the introductory R day, we used logical vectors to query a data frame. Everything we learned about making and manipulating logical vectors is applicable here, but one restriction with if-statements is that we need a single logical value, i.e. a logical vector of length 1.</p>
+<p>One final programming concept you need to know about is the “if”-statement. An if-statement lets us do something only if some logical value is <code>TRUE</code>, or do one thing if it is <code>TRUE</code> and another if it is <code>FALSE</code>.</p>
+<p>In the introductory R day, we used logical vectors to query a data frame. Everything we learned about making and manipulating logical vectors is applicable here, but with the restriction that we need a single logical value, i.e. a logical vector of length 1.</p>
 <pre class="r"><code>num &lt;- 37                   # 1
 if (num &gt; 100) {            #   2
   cat(&quot;greater\n&quot;)          #
@@ -404,7 +437,7 @@ cat(&quot;done\n&quot;)               #       4
                             # --time--&gt;</code></pre>
 <pre><code>## not greater
 ## done</code></pre>
-<p>The second line of this code uses an <code>if</code> statement to tell R that we want to make a choice. If the following test is true, the body of the <code>if</code> (i.e., the lines in the curly braces underneath it) are executed. If the test is false, the body of the <code>else</code> is executed instead. Only one or the other is ever executed.</p>
+<p>The second line of this code uses an if-statement to tell R that we want to make a choice. If the following test is <code>TRUE</code>, the body of the <code>if</code> (i.e., the lines in the curly braces underneath it) are executed. If the test is <code>FALSE</code>, the body of the <code>else</code> is executed instead. Only one or the other is ever executed.</p>
 <p>In the example above, the test <code>num &gt; 100</code> returns the value <code>FALSE</code>, which is why the code inside the <code>if</code> block was skipped and the code inside the <code>else</code> statment was run instead.</p>
 <p>If-statements don’t have to include an <code>else</code>. If there isn’t one, R simply does nothing if the test is FALSE:</p>
 <pre class="r"><code>num &lt;- 53                            # 1
@@ -414,15 +447,15 @@ if (num &gt; 100) {                     #   2
 cat(&quot;done\n&quot;)                        #     3
                                      # --time--&gt;</code></pre>
 <pre><code>## done</code></pre>
-<p>We can also chain several tests together when there are more than two options. This makes it simple to write a function that returns the sign of a number:</p>
+<p>We can also chain several tests together when there are more than two options. As an example, here is a function that returns the sign of a number:</p>
 <pre class="r"><code>sign &lt;- function(num) {
-    if (num &gt; 0) {
-        return(1)
-    } else if (num == 0) {
-        return(0)
-    } else {
-        return(-1)
-    }
+    if (num &gt; 0) {            # line 1
+        return(1)             # line 2
+    } else if (num == 0) {    # line 3
+        return(0)             # line 4
+    } else {                  
+        return(-1)            # line 5
+    }                         
 }
 
 sign(-3)</code></pre>
@@ -431,9 +464,16 @@ sign(-3)</code></pre>
 <pre><code>## [1] 0</code></pre>
 <pre class="r"><code>sign(2/3)</code></pre>
 <pre><code>## [1] 1</code></pre>
+<div id="quiz" class="section level2 challenge">
+<h2>Quiz</h2>
+<p>Which lines of the function <code>sign</code> executed when it was called above, and in what order?</p>
+</div>
 <div id="improving-load_fastqc" class="section level2">
 <h2>Improving load_fastqc</h2>
-<p>Our <code>load_fastqc</code> file will currently fail with an error if the file it is passed does not exist. Depending on how we intend to use it, we might instead want it to issue a warning and return NULL.</p>
+<p>Our <code>load_fastqc</code> function will currently fail with an error if the file it is passed does not exist.</p>
+<pre class="r"><code>load_fastqc(&quot;nosuchfile.txt&quot;)</code></pre>
+<pre><code>## Error: 'nosuchfile.txt' does not exist in current working directory ('/Users/pfh/git/r-more/topics').</code></pre>
+<p>Depending on how we intend to use it, we might instead want the function to issue a warning and return NULL.</p>
 <pre class="r"><code>load_fastqc &lt;- function(filename) {
     if (!file.exists(filename)) {
         warning(&quot;No such file: &quot;, filename)
@@ -446,28 +486,15 @@ sign(-3)</code></pre>
     sumtab
 }
 
-load_fastqc(&quot;Day0_fastqc/summary.txt&quot;)</code></pre>
-<pre><code>## # A tibble: 12 x 3
-##     grade                         test       file
-##    &lt;fctr&gt;                        &lt;chr&gt;      &lt;chr&gt;
-## 1    PASS             Basic Statistics Day0.fastq
-## 2    PASS    Per base sequence quality Day0.fastq
-## 3    PASS    Per tile sequence quality Day0.fastq
-## 4    PASS  Per sequence quality scores Day0.fastq
-## 5    FAIL    Per base sequence content Day0.fastq
-## 6    WARN      Per sequence GC content Day0.fastq
-## 7    PASS           Per base N content Day0.fastq
-## 8    PASS Sequence Length Distribution Day0.fastq
-## 9    PASS  Sequence Duplication Levels Day0.fastq
-## 10   WARN    Overrepresented sequences Day0.fastq
-## 11   PASS              Adapter Content Day0.fastq
-## 12   PASS                 Kmer Content Day0.fastq</code></pre>
+load_fastqc(&quot;nosuchfile.txt&quot;)</code></pre>
+<pre><code>## Warning in load_fastqc(&quot;nosuchfile.txt&quot;): No such file: nosuchfile.txt</code></pre>
+<pre><code>## NULL</code></pre>
 <p>Checking input arguments before proceeding is a common pattern when writing R functions.</p>
 </div>
 </div>
 <div id="sourcing-.r-files" class="section level1">
 <h1>Sourcing .R files</h1>
-<p>Having developed some useful functions, we might want to re-use them in a future project or share them with a friend. We can store R code in a file, usually with extension “.R”, and load it with teh <code>source</code> function.</p>
+<p>Having developed some useful functions, we might want to re-use them in a future project or share them with a friend. We can store R code in a file, usually with extension “.R”, and load it with the <code>source</code> function.</p>
 <p>Put your <code>load_fastqc</code> function in a file called “fastqc.R”. It uses the <code>readr</code> library, so be sure to load the library in the file as well.</p>
 <p>fastqc.R should contain:</p>
 <pre><code>library(readr)
@@ -480,6 +507,7 @@ load_fastqc &lt;- function(filename) {
 }</code></pre>
 <p>You can now load it with:</p>
 <pre class="r"><code>source(&quot;fastqc.R&quot;)</code></pre>
+<p>Everything in the file runs as though it were typed on the console.</p>
 <p>Similarly, if you are going to be doing several different things with a data set, you could write a .R file to load the data into a tidy form, and several other .R scripts to do various different things with it.</p>
 <div id="discussion" class="section level2 challenge">
 <h2>Discussion</h2>

@@ -3,6 +3,7 @@ title: "Programming"
 output: html_document
 ---
 
+In the introductory R day, we mostly used R interactively, but one of the final topics introduced our first programming concept, [for-loops](https://monashbioinformaticsplatform.github.io/r-intro/for_loops.html). Today we will expand our knowledge of programming by writing functions and if-statements, and apply this knowledge to automate a typical task from bioinformatics.
 
 # Functions
 
@@ -10,11 +11,11 @@ In the introductory R day, we used a lot of functions that other people had writ
 
 ```{r}
 fahr_to_kelvin <- function(temp) {
-    ((temp - 32) * (5 / 9)) + 273.15
+    (temp-32) * (5/9) + 273.15
 }
 ```
 
-We define `fahr_to_kelvin` by assigning it to the output of `function`. The list of argument names are containted within parentheses. Next, the body of the function--the statements that are executed when it runs--is contained within curly braces (`{}`). The statements in the body have been indented by four spaces, which makes the code easier to read but does not affect how the code operates.
+We define `fahr_to_kelvin` by assigning it a `function`. The list of argument names are containted within parentheses. Next, the body of the function--the statements that are executed when it runs--is contained within curly braces (`{}`). The statements in the body have been indented by four spaces, which makes the code easier to read but does not affect how the code operates.
 
 When we call the function, the values we pass to it are assigned to those variables so that we can use them inside the function.
 The expression inside the function is evaluate and the result is "returned" back to whoever asked for it.
@@ -33,28 +34,28 @@ fahr_to_kelvin(212)
 
 Here are some other equivalent ways to write this function. 
 
-The body of the function within the `{}` can contain multiple lines of code. Only the last line is returned.
+The body of the function within the `{}` can contain multiple lines of code, "statements". Only the last line is returned.
 
 ```{r}
 fahr_to_kelvin <- function(temp) {
-  kelvin <- ((temp - 32) * (5 / 9)) + 273.15
-  kelvin
+    kelvin <- (temp-32) * (5/9) + 273.15
+    kelvin
 }
 ```
 
 The braces are not actually needed if the function only contains one statement.
 
 ```{r}
-fahr_to_kelvin <- function(temp) ((temp - 32) * (5 / 9)) + 273.15
+fahr_to_kelvin <- function(temp) (temp-32) * (5/9) + 273.15
 ```
 
 `return` can be used to return from a function immediately. Further code will not be run.
 
 ```{r}
 fahr_to_kelvin <- function(temp) {
-  kelvin <- ((temp - 32) * (5 / 9)) + 273.15
-  return(kelvin)
-  plot(1:10)
+    kelvin <- (temp-32) * (5/9) + 273.15
+    return(kelvin)
+    plot(1:10)
 }
 ```
 
@@ -62,44 +63,43 @@ Statements in the function may be split over several lines, so long as it is cle
 
 ```{r}
 fahr_to_kelvin <- function(temp) {
-  kelvin <- (
-          (temp - 32) * (5 / 9)
-      ) + 
-      273.15
-  return(kelvin)
+    kelvin <- 
+        (temp-32) * (5/9) + 
+        273.15
+    return(kelvin)
 }
 ```
 
-Spacing is largely for our own sanity.
+Spacing and layout is largely for our own sanity.
 
 ```{r}
- fahr_to_kelvin <- 
+   fahr_to_kelvin<- 
 function(
-                   temp)(
-    (temp 
+                   temp){(temp 
   -32  )*(    5 
-            /9 )
- )+ 273.15
+            /9 )+ 
+
+273.15}
 ```
 
 Beware! however of accidentally finishing a statement early.
 
 ```{r}
 fahr_to_kelvin_broken <- function(temp) {
-    ((temp - 32) * (5 / 9)) 
+    (temp-32) * (5/9) 
         + 273.15
 }
 
 fahr_to_kelvin_broken(212)
 ```
 
-The first line in the body of the function is computed then discarded. The second line, `+ 273.15`, is valid R, so we don't even get an error.
+The first line in the body of the function is computed then discarded. The second line, `+ 273.15`, is valid R so we don't even get an error.
 
 Finally, the computer doesn't understand or care what names we give to functions, arguments, or variables.
 
 ```{r}
 charmander <- function(bulbasaur) {
-    mew <- ((bulbasaur - 32) * (5 / 9)) + 273.15
+    mew <- (bulbasaur-32) * (5/9) + 273.15
     mew
 }
 ```
@@ -111,7 +111,7 @@ Now that we've seen how to turn Fahrenheit into Kelvin, it's easy to turn Kelvin
 
 ```{r}
 kelvin_to_celsius <- function(temp) {
-  temp - 273.15
+    temp - 273.15
 }
 
 #absolute zero in Celsius
@@ -122,8 +122,9 @@ What about converting Fahrenheit to Celsius? We could write out the formula, but
 
 ```{r}
 fahr_to_celsius <- function(temp) {
-  temp_k <- fahr_to_kelvin(temp)
-  kelvin_to_celsius(temp_k)
+    temp_k <- fahr_to_kelvin(temp)
+    temp_c <- kelvin_to_celsius(temp_k)
+    temp_c
 }
 
 # freezing point of water in Celsius
@@ -132,17 +133,39 @@ fahr_to_celsius(32.0)
 
 This is our first taste of how larger programs are built: we define basic operations, then combine them in ever-larger chunks to get the effect we want. Real-life functions will usually be larger than the ones shown here--typically half a dozen to a few dozen lines--but they shouldn't ever be much longer than that, or the next person who reads it won't be able to understand what's going on.
 
-This example showed the output of `fahr_to_kelvin` assigned to `temp_k`, which is then passed to `kelvin_to_celsius` to get the final result. It is also possible to perform this calculation in one line of code, by "chaining" functions together, like so:
+You might have noticed that all of these functions have an argument called `temp`. Why hasn't this caused confusion and chaos? The answer is that arguments to a function and variables defined in the body of a function are *local* to a call to that function. Within the body of a function, R code can see variables from its own local environment, and variables from the global environment, but *not* variables local to other function calls. While running code R maintains a *stack* of local environments. When a call to a function returns, all of its local arguments and variables disappear.
 
-```{r chained-example}
-# freezing point of water in Celsius
-kelvin_to_celsius(fahr_to_kelvin(32.0))
+<b>Tip:</b> There are several ways to see this in action.
+
+* Scatter `cat`s through your functions showing the values of arguments and variables at various points. 
+
+* Insert a call to `browser()` in one of your functions. This will pause execution and let you interact with the local environment in a function. Once in the browser, type "help" for a list of commands. Besides examining variables, you can step through the code from the point it paused with "s" or "n". When you are done type "f".
+
+* You can debug an existing function using `debugonce`. This is like temporarily adding a call to `browser()` at the top of the function.
+
+```{r, eval=FALSE}
+debugonce(fahr_to_celsius)
+fahr_to_celsius(212)
 ```
 
 
-# A practical example
+## Challenge {.challenge}
 
-Let's say we want to examine the quality of some FASTQ files, which contain reads from a sequencing machine. An experiment has been run over several days, and we want to run a program called "fastqc" on each of the FASTQ files.
+Write a function to calculate the length of the hypotenuse of a right angled triangle using Pythagorus's rule, given the lengths of the other sides.
+
+Hint: `sqrt` calculates the square root of a number.
+
+Testing your code is important. Invent a test case for your code consisting of:
+
+* The input arguments to your function.
+* The return value you expect.
+
+Confirm that your function works as expected.
+
+
+# A practical programming exercise
+
+Let's say we want to examine the quality of some FASTQ files, which contain reads from a DNA sequencing machine. An experiment has been run over several days, and we want to run a program called "fastqc" on each of the FASTQ files.
 
 FASTQ is a simple text format containg a series of DNA sequences and associated quality information. Examine "day0.fastq" in the "r-more-files" folder.
 
@@ -151,7 +174,7 @@ FASTQ is a simple text format containg a series of DNA sequences and associated 
 
 Software outside of R is normally run from a "terminal" window, which is rather like the console in RStudio. You type in a command and the operating system runs it for you. The commands you type in are interpreted by something called a "shell", because it acts like a shell around the operating system. For more information, see the [Software Carpentry](http://software-carpentry.org/lessons/) course on the Unix shell.
 
-R can pretend to type in a command in a terminal window using the `system` function. For example the "uptime" command tells you how long the computer has been running for.
+R can give a command to the shell using the `system` function. For example the "uptime" command tells you how long the computer has been running for.
 
 ```{r}
 system("uptime")
@@ -168,7 +191,7 @@ In the "Files" tab of the bottom right pane in RStudio, you should see that some
 
 ## For-loops revisited
 
-Recall in the introduction-to-R day we used for-loops to perform repetitive tasks.
+Recall in the introductory R day we used for-loops to perform repetitive tasks.
 
 ```{r results="hold"}
 for(i in c(1,2,3,4,5)) {     #    1
@@ -203,7 +226,7 @@ for(day in days) {
 
 ## Loading the summary.txt files
 
-The summary.txt files are in "tab separated value" format. This is similar to comma separated value format we've seen in the introductory R dat, but instead of using a comma it uses a special character called a tab to delimit columns. Tabs show up as spaces in a text editor. In R, they can be written `"\t"`.
+The summary.txt files are in "tab separated value" format. This is similar to comma separated value format we've seen in the introductory R day, but instead of using a comma it uses a special character called a tab to delimit columns. Tabs show up as variable amounts of space in a text editor. In R, they can be written `"\t"`.
 
 In base R we could use the function `read.delim` to read this file. It's quite similar to `read.csv`. 
 
@@ -261,7 +284,7 @@ load_fastqc("Day0_fastqc/summary.txt")
 
 We now want to load each of the `summary.txt` files we created earlier. One perfectly valid way would be to use a for loop. An example of this was given in the introductory R day. However here we're going to use an apply-style function.
 
-In the introductory R day we saw a couple of flavours of `apply`. `apply` itself was for use with matrices. `tapply` was used with data frames and could produce either a vector or matrix. Another flavour is apply is `lapply` which produces lists.
+In the introductory R day we saw a couple of flavours of `apply`. `apply` itself was for use with matrices. `tapply` was used with data frames and could produce a vector or a matrix or even a higher dimensional array. Another flavour is apply is `lapply` which produces lists. As lists can hold anything `lapply` can be used with any function, no matter what type of thing the function returns.
 
 First let's work out the names of the files we want to load.
 
@@ -277,9 +300,9 @@ Now we can use `lapply` to apply our function to each of the filenames.
 sumtabs <- lapply(filenames, load_fastqc)
 ```
 
-Tip: If you wanted to process multiple vectors in parallel you could use the `Map` function or Hadley Wickham's `purrr` package.
+<b>Tip:</b> If you wanted to process multiple vectors in parallel you could use the `Map` function or Hadley Wickham's `purrr` package.
 
-We now have a list of data frames. We want to bind the data frames together into one big data frame. One way would be to use `rbind` and do it step by step in a for loop. Here are another couple of other ways:
+We now have a list of data frames. We want to bind the data frames together into one big data frame. One way would be to use `rbind` and do it step by step in a for loop. Here are two other ways:
 
 ```{r message=F, warning=F}
 # Base R way
@@ -288,20 +311,22 @@ bigtab <- do.call(rbind, sumtabs)
 # The dplyr way
 library(dplyr)
 bigtab <- bind_rows(sumtabs)
+
 bigtab
+table(bigtab$test, bigtab$grade)
 ```
 
 (If `dplyr` isn't installed, you would need to install it with `install.packages`.)
 
-*Take home message:* All of the apply-style functions are enormously more powerful now that we can supply them with functions we write ourselves.
+<b>Take home message:</b> All of the apply-style functions are enormously more powerful now that we can supply them with functions we write ourselves.
 
 
 
 # If statements
 
-One final programming concept you need to know about is the "if"-statement. An if-statement lets us do something only if some logical value is TRUE, or do one thing if it is TRUE and another if it is FALSE.
+One final programming concept you need to know about is the "if"-statement. An if-statement lets us do something only if some logical value is `TRUE`, or do one thing if it is `TRUE` and another if it is `FALSE`.
 
-In the introductory R day, we used logical vectors to query a data frame. Everything we learned about making and manipulating logical vectors is applicable here, but one restriction with if-statements is that we need a single logical value, i.e. a logical vector of length 1.
+In the introductory R day, we used logical vectors to query a data frame. Everything we learned about making and manipulating logical vectors is applicable here, but with the restriction that we need a single logical value, i.e. a logical vector of length 1.
 
 ```{r, results="hold"}
 num <- 37                   # 1
@@ -314,7 +339,7 @@ cat("done\n")               #       4
                             # --time-->
 ```
 
-The second line of this code uses an `if` statement to tell R that we want to make a choice. If the following test is true, the body of the `if` (i.e., the lines in the curly braces underneath it) are executed. If the test is false, the body of the `else` is executed instead.
+The second line of this code uses an if-statement to tell R that we want to make a choice. If the following test is `TRUE`, the body of the `if` (i.e., the lines in the curly braces underneath it) are executed. If the test is `FALSE`, the body of the `else` is executed instead.
 Only one or the other is ever executed.
 
 In the example above, the test `num > 100` returns the value `FALSE`, which is why the code inside the `if` block was skipped and the code inside the `else` statment was run instead.
@@ -331,18 +356,17 @@ cat("done\n")                        #     3
 ```
 
 
-We can also chain several tests together when there are more than two options.
-This makes it simple to write a function that returns the sign of a number:
+We can also chain several tests together when there are more than two options. As an example, here is a function that returns the sign of a number:
 
 ```{r}
 sign <- function(num) {
-    if (num > 0) {
-        return(1)
-    } else if (num == 0) {
-        return(0)
-    } else {
-        return(-1)
-    }
+    if (num > 0) {            # line 1
+        return(1)             # line 2
+    } else if (num == 0) {    # line 3
+        return(0)             # line 4
+    } else {                  
+        return(-1)            # line 5
+    }                         
 }
 
 sign(-3)
@@ -350,10 +374,20 @@ sign(0)
 sign(2/3)
 ```
 
+## Quiz {.challenge}
+
+Which lines of the function `sign` executed when it was called above, and in what order?
+
 
 ## Improving load_fastqc
 
-Our `load_fastqc` file will currently fail with an error if the file it is passed does not exist. Depending on how we intend to use it, we might instead want it to issue a warning and return NULL.
+Our `load_fastqc` function will currently fail with an error if the file it is passed does not exist.
+
+```{r error=TRUE}
+load_fastqc("nosuchfile.txt")
+```
+
+Depending on how we intend to use it, we might instead want the function to issue a warning and return NULL.
 
 ```{r}
 load_fastqc <- function(filename) {
@@ -368,7 +402,7 @@ load_fastqc <- function(filename) {
     sumtab
 }
 
-load_fastqc("Day0_fastqc/summary.txt")
+load_fastqc("nosuchfile.txt")
 ```
 
 Checking input arguments before proceeding is a common pattern when writing R functions.
@@ -376,7 +410,7 @@ Checking input arguments before proceeding is a common pattern when writing R fu
 
 # Sourcing .R files
 
-Having developed some useful functions, we might want to re-use them in a future project or share them with a friend. We can store R code in a file, usually with extension ".R", and load it with teh `source` function.
+Having developed some useful functions, we might want to re-use them in a future project or share them with a friend. We can store R code in a file, usually with extension ".R", and load it with the `source` function.
 
 Put your `load_fastqc` function in a file called "fastqc.R". It uses the `readr` library, so be sure to load the library in the file as well.
 
@@ -397,6 +431,8 @@ You can now load it with:
 ```{r eval=FALSE}
 source("fastqc.R")
 ```
+
+Everything in the file runs as though it were typed on the console.
 
 Similarly, if you are going to be doing several different things with a data set, you could write a .R file to load the data into a tidy form, and several other .R scripts to do various different things with it.
 

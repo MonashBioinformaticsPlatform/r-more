@@ -6,11 +6,15 @@ output:
         css: style.css
 ---
 
-# Presentations
+## Files
+
+* [r-more-files.zip](r-more-files.zip) - files used in this course
+
+## Slides
 
 * [Introduction](slides/introduction.html) ([.Rmd](slides/introduction.Rmd))
 
-# Topics
+## Topics
 
 * [Rmarkdown](topics/Rmarkdown.html) ([.Rmd](topics/Rmarkdown.Rmd))
 * [Programming](topics/programming.html) ([.Rmd](topics/programming.Rmd))
@@ -18,7 +22,9 @@ output:
 * [Sequences and genomic features](topics/sequences_and_features.html) ([.Rmd](topics/sequences_and_features.Rmd))
 * Shiny
 
-# See also
+---
+
+## See also
 
 Also in this series:
 
@@ -30,7 +36,7 @@ Other resources:
 * [Next steps](https://monashbioinformaticsplatform.github.io/r-intro/next.html)
 
 
-# Authors
+## Authors
 
 This course is developed by the Monash Bioinformatics Platform:
 
@@ -42,7 +48,7 @@ This course is developed by the Monash Bioinformatics Platform:
 
 Some of this material is derived from work by [Software Carpentry](http://software-carpentry.org/). Any errors and failures of pedagogy are our own.
 
-# Source code
+## Source code
 
 * [GitHub repository](https://github.com/MonashBioinformaticsPlatform/r-more)
 
