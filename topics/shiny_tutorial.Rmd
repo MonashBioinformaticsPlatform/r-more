@@ -1,0 +1,127 @@
+---
+title: "Shiny tutorial"
+author: "Adele B"
+date: "7/18/2016"
+output: html_document
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##
+
+```{r, echo = FALSE}
+
+
+titlePanel("My first app")
+  
+sidebarLayout(
+  sidebarPanel("App input control panel",
+               selectInput("x_select", label = h3("Select x-axis"), 
+                           choices = list("Sample 1" = "sample1", 
+                                          "Sample 2" = "sample2", 
+                                          "Sample 3" = "sample3",
+                                          "Sample 4" = "sample4",
+                                          "Sample 5" = "sample5",
+                                          "Sample 6" = "sample6"), 
+                           selected = "sample1"),
+               selectInput("y_select", label = h3("Select x-axis"), 
+                           choices = list("Sample 1" = "sample1", 
+                                          "Sample 2" = "sample2", 
+                                          "Sample 3" = "sample3",
+                                          "Sample 4" = "sample4",
+                                          "Sample 5" = "sample5",
+                                          "Sample 6" = "sample6"), 
+                           selected = "sample2")
+  ),
+  mainPanel("App output panel",
+            plotOutput("my_plot", width = 600, height = 600)
+  )
+)
+
+output$my_plot <- renderPlot({
+    dat <- read.csv("./r-more-files/shiny_sample_data.csv", row.names = 1)
+    x_ax <- dat[,input$x_select]
+    y_ax <- dat[,input$y_select]
+    
+    plot(x = x_ax, y = y_ax, xlab = input$x_select, ylab = input$y_select)
+  })
+
+```
+
+This is the Shiny app we will be building today. It is quite simple, it takes a csv file containing data for 6 samples and the raw counts for 1000 genes. One sample will be plotted on the x-axis and another sample on the y-axis. 
+
+## Setting up a shiny app
+
+In RStudio, create two blank R files. Save one with the name `ui.R` and the other `server.R`.
+
+From the console, install and load Shiny.
+
+```{r, eval=FALSE}
+install.packages("shiny")
+```
+
+```{r, eval=FALSE}
+library(shiny)
+```
+
+To start off, we're going to create a blank Shiny app, to show what is the bare minimum to create a Shiny app. In ui.R, type:
+
+```{r, eval = FALSE}
+shinyUI(fluidPage(
+
+))
+```
+
+And in server.R, type:
+```{r, eval = FALSE}
+shinyServer(function(input, output) {
+  
+})
+```
+
+This will always be the starting point of a Shiny app, generally everything that will go into the app will end up between the innermost brackets and curly braces.
+
+In RStudio, click the `Run App` button or type `runApp()` on the console. A blank window should open up.
+
+## Building the UI
+
+The ui script controls the appeance of the app. There are a number of layouts and widgets that an app can have, for this tutorial, we will use a title panel with a sidebar layout underneath. The sidebar layout will give the app two panels, a sidebar and a main panel. To look up more layouts, check the [Shiny gallery.](http://shiny.rstudio.com/gallery/)
+
+In ui.R, update it to:
+```{r, eval = FALSE}
+shinyUI(fluidPage(
+  titlePanel("My first app"),
+  
+  sidebarLayout(
+    sidebarPanel("This is a sidebar panel"),
+    mainPanel("And this is the main panel")
+  )
+))
+
+```
+Then run app.
+
+You should be able to make out the layout of the app now. The top of the window is where the title panel is located and beneath it are two panels, laid out with the sidebar to the left and the larger main panel to the right. The sidebar can be moved to the right by adding the position arguement to `sidebarLayout`:
+
+```{r, eval=FALSE}
+sidebarLayout(position = "right",
+              sidebarPanel( "sidebar panel"),
+              mainPanel("main panel")
+)
+```
+
+We are going to add two widgets to the ui. These will control which samples gets plotted to the x and y axis of the 
+
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
