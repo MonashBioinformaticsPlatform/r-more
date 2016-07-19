@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ##
 
-```{r, echo = FALSE}
+```{r sample_app, echo=FALSE}
 
 
 titlePanel("My first app")
@@ -42,7 +42,7 @@ sidebarLayout(
 )
 
 output$my_plot <- renderPlot({
-    dat <- read.csv("./r-more-files/shiny_sample_data.csv", row.names = 1)
+    dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
     x_ax <- dat[,input$x_select]
     y_ax <- dat[,input$y_select]
     
@@ -86,9 +86,9 @@ This will always be the starting point of a Shiny app, generally everything that
 
 In RStudio, click the `Run App` button or type `runApp()` on the console. A blank window should open up.
 
-## Building the UI
+## Building the UI layout
 
-The ui script controls the appeance of the app. There are a number of layouts and widgets that an app can have, for this tutorial, we will use a title panel with a sidebar layout underneath. The sidebar layout will give the app two panels, a sidebar and a main panel. To look up more layouts, check the [Shiny gallery.](http://shiny.rstudio.com/gallery/)
+The ui script controls the appeance of the app. There are a number of layouts and widgets that an app can have. For this tutorial, we will use a title panel with a sidebar layout underneath. This is a common layout for Shiny apps. The sidebar layout will give the app two panels, a sidebar and a main panel. To look up more layouts, check the [Shiny gallery.](http://shiny.rstudio.com/gallery/)
 
 In ui.R, update it to:
 ```{r, eval = FALSE}
@@ -104,7 +104,9 @@ shinyUI(fluidPage(
 ```
 Then run app.
 
-You should be able to make out the layout of the app now. The top of the window is where the title panel is located and beneath it are two panels, laid out with the sidebar to the left and the larger main panel to the right. The sidebar can be moved to the right by adding the position arguement to `sidebarLayout`:
+You should be able to make out the layout of the app now. The top of the window is where the title panel is located and beneath it are two panels, laid out with the sidebar to the left and the larger main panel to the right. 
+
+The sidebar can be moved to the right by adding the position argument to `sidebarLayout`:
 
 ```{r, eval=FALSE}
 sidebarLayout(position = "right",
@@ -113,15 +115,322 @@ sidebarLayout(position = "right",
 )
 ```
 
-We are going to add two widgets to the ui. These will control which samples gets plotted to the x and y axis of the 
 
+#### Using widgets
 
-## Including Plots
+We are going to one two widgets to the ui. These will control which samples gets plotted to the x and y axis of the plot and will be located in the sidebar panel. We will use `selectInput` to create these widgets but these could easily be swapped out for other widgets such radiobuttons. To see what widgets are available, look at the [Shiny widget gallery.](http://shiny.rstudio.com/gallery/widget-gallery.html)
 
-You can also embed plots, for example:
+To start off with, let's add just one widget to the sidebar. 
+```{r, eval = FALSE}
+shinyUI(fluidPage(
+  titlePanel("My first app"),
+  
+  sidebarLayout(
+    sidebarPanel("This is a sidebar panel",
+                 selectInput(inputId = "x_select", label = "Select x-axis", 
+                             choices = list("sample1", 
+                                            "sample2", 
+                                            "sample3",
+                                            "sample4",
+                                            "sample5",
+                                            "sample6"), 
+                             selected = "sample1")
+    ),
+    mainPanel("And this is the main panel")
+  )
+))
 
-```{r pressure, echo=FALSE}
-plot(pressure)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+This is where shiny starts to get a little tricky, a lot of ui code will be end up being nested in more code. So far, we have the `selectInput` widget nested inside `sidebarPanel` nested inside `siderbarLayout` which is nested inside `fluidPage` **which is nested in** `shinyUI`. Phew, that's a lot to keep track of! Many common problems that'll prevent a shiny app from running simply stem from just putting a comma or a bracket in the wrong place. 
+
+Let's break down the `selectInput` function. `inputId` is the name of widget, in this case `x_select` is the name that'll be used in the server.r file to access the current value of the widget. The `labels` argument takes a string that will be used to label above the widget. 
+
+`choices` takes a list of values and can be a bit confusing to understand. For simplicity's sake, we have given an unnamed list, which will directly display the values themselves. `"sample1"` happens to be a column name for the csv that contains the data the app will be using, so this widget can be used to select which column gets plotted. However, if the names of the choices needs to be different from the values, a named list can be used. 
+
+For example:
+```{r, eval = F}
+choices = list("Sample 1" = "sample1", 
+               "Sample 2" = "sample2", 
+               "Sample 3" = "sample3",
+               "Sample 4" = "sample4",
+               "Sample 5" = "sample5",
+               "Sample 6" = "sample6"), 
+)
+```
+In `"Sample 1" = "sample1"` the string `"Sample 1"` is the text that will appear in the widget, whereas `"sample1"` is the value that will be returned from the widget. Using this would make a much neater looking widget.
+
+Finally, `selected` chooses which value the widget will start on when the app is run.
+
+Now to add the second widget.
+
+```{r, eval = FALSE}
+shinyUI(fluidPage(
+  titlePanel("My first app"),
+  
+  sidebarLayout(
+    sidebarPanel("This is a sidebar panel",
+                 selectInput(inputId = "x_select", label = "Select x-axis", 
+                             choices = list("sample1", 
+                                            "sample2", 
+                                            "sample3",
+                                            "sample4",
+                                            "sample5",
+                                            "sample6"), 
+                             selected = "sample1"),
+                 selectInput(inputId = "y_select", label = "Select x-axis", 
+                             choices = list("sample1", 
+                                            "sample2", 
+                                            "sample3",
+                                            "sample4",
+                                            "sample5",
+                                            "sample6"), 
+                             selected = "sample2")
+    ),
+    mainPanel("And this is the main panel")
+  )
+))
+```
+This widget is nearly identical to the first, all that has changed is the name of the widget and which sample2 has been pre-selected. This widget has been called `y_select` and it will start on `sample2` so that the columns selected for the x and y axis will be different. 
+
+#### Adding an output
+
+There's one last thing to do before moving onto the server.R file. The app has inputs now, but it doesn't have any outputs! For this app, we will use one output, `plotOutput`, as we want to generate a plot and it will be located in the main panel.
+
+```{r, eval = F}
+shinyUI(fluidPage(
+  titlePanel("My first app"),
+  
+  sidebarLayout(
+    sidebarPanel("This is a sidebar panel",
+                 selectInput(inputId = "x_select", label = "Select x-axis", 
+                             choices = list("sample1", 
+                                            "sample2", 
+                                            "sample3",
+                                            "sample4",
+                                            "sample5",
+                                            "sample6"), 
+                             selected = "sample1"),
+                 selectInput(inputId = "y_select", label = "Select x-axis", 
+                             choices = list("sample1", 
+                                            "sample2", 
+                                            "sample3",
+                                            "sample4",
+                                            "sample5",
+                                            "sample6"), 
+                             selected = "sample1")
+    ),
+    mainPanel("And this is the main panel",
+              plotOutput(outputId = "my_plot")
+    )
+  )
+))
+```
+
+`my_plot` is the name of the output and it tells the server.r file where to direct data. Now, onto the server side.
+
+## Data processing on the server side
+
+The app now has a full UI but nothing is happening on the backend. To make the app interactive, that's where the server.r comes into play. Think of it as the script that contains an R analysis. The structure of this script can vary immensely depending on the complexity of the app itself.
+
+This app will be rather simple. It will take one function, `renderPlot` and send it back to the `my_plot` output in the UI. To get going, let's create an empty `renderPlot`.
+
+```{r, eval = F}
+
+shinyServer(function(input, output) {
+  
+  output$my_plot <- renderPlot({
+    
+  })
+})
+
+```
+
+There are a number of `render` functions in Shiny, `renderTable`, `renderText`, `renderPrint`, etc, depending on what type of data needs to be output. Whenever a `render` function is called, it needs to be directed to an output that exists in the ui.r script. In this case, we have pointed the `renderPlot` to `my_plot`, which was the name of a `plotOutput` in the UI. 
+
+Now let's give `renderPlot` some data to display, the first two columns from the csv `shiny_sample_data.csv`.
+
+```{r, eval = F}
+shinyServer(function(input, output) {
+  
+  output$my_plot <- renderPlot({
+    
+    #Read in the sample csv
+    dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
+    
+    #Pull out the first and second columns in dat
+    x_axis <- dat[, "sample1"]
+    y_axis <- dat[, "sample2"]
+    
+    #Create a basic dot plot
+    plot(x = x_axis, y_axis)
+  })
+})
+```
+
+```{r, echo=FALSE}
+
+titlePanel("My first app")
+
+#Changed up the input and output IDs so that they don't conflict with the earlier app.  
+sidebarLayout(
+  sidebarPanel("App input control panel",
+               selectInput("x_select1", label = h3("Select x-axis"), 
+                           choices = list("sample1", 
+                                          "sample2", 
+                                          "sample3",
+                                          "sample4",
+                                          "sample5",
+                                          "sample6"), 
+                           selected = "sample1"),
+               selectInput("y_select1", label = h3("Select x-axis"), 
+                           choices = list("sample1", 
+                                          "sample2", 
+                                          "sample3",
+                                          "sample4",
+                                          "sample5",
+                                          "sample6"),
+                           selected = "sample2")
+  ),
+  mainPanel("App output panel",
+            plotOutput("plot1", width = 600, height = 600)
+  )
+)
+
+output$plot1 <- renderPlot({
+    dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
+    x_axis <- dat[, "sample1"]
+    y_axis <- dat[, "sample2"]
+    
+    plot(x = x_axis, y = y_axis)
+  })
+
+```
+
+
+The app has a plot now...but it isn't interactive, if we change the widget values, it has no effect on what is plotted on the figure. That's because the first two columns were selected directly in the `renderPlot` function. However, we could change to call the widget values instead using `input`.
+
+```{r, eval = F}
+shinyServer(function(input, output) {
+  
+  output$my_plot <- renderPlot({
+    
+    #Read in the sample csv
+    dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
+    
+    #Pull out a column for the x and y axis each
+    x_axis <- dat[, input$x_select]
+    y_axis <- dat[, input$y_select]
+    
+    #Create a basic dot plot
+    plot(x = x_axis, y_axis)
+  })
+})
+```
+
+```{r, echo=FALSE}
+
+titlePanel("My first app")
+
+#Changed up the input and output IDs so that they don't conflict with the earlier app.  
+sidebarLayout(
+  sidebarPanel("App input control panel",
+               selectInput("x_select2", label = h3("Select x-axis"), 
+                           choices = list("sample1", 
+                                          "sample2", 
+                                          "sample3",
+                                          "sample4",
+                                          "sample5",
+                                          "sample6"), 
+                           selected = "sample1"),
+               selectInput("y_select2", label = h3("Select x-axis"), 
+                           choices = list("sample1", 
+                                          "sample2", 
+                                          "sample3",
+                                          "sample4",
+                                          "sample5",
+                                          "sample6"),
+                           selected = "sample2")
+  ),
+  mainPanel("App output panel",
+            plotOutput("plot2", width = 600, height = 600)
+  )
+)
+
+output$plot2 <- renderPlot({
+  dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
+  x_axis <- dat[, input$x_select2]
+  y_axis <- dat[, input$y_select2]
+  
+  plot(x = x_axis, y = y_axis)
+})
+
+```
+
+Congratulations! You've made your first app! To get it exactly like the example at the start of the lesson, can you figure out how to change the axis titles to the name of the selected sample. The `selectInput` widgets also need to be changed to a named list. Other than that, you're good to go.
+
+Now imagine you had an experiment where you had many conditions and you needed to plot each one against each other. 
+
+## Challenge app
+
+```{r, echo = FALSE}
+library(ggplot2)
+
+titlePanel("My slightly more complicated app")
+
+#Changed up the input and output IDs so that they don't conflict with the earlier app.  
+sidebarLayout(
+  sidebarPanel("App input control panel",
+               selectInput("x_select3", label = h3("Select x-axis"), 
+                           choices = list("sample1", 
+                                          "sample2", 
+                                          "sample3",
+                                          "sample4",
+                                          "sample5",
+                                          "sample6"), 
+                           selected = "sample1"),
+               selectInput("y_select3", label = h3("Select x-axis"), 
+                           choices = list("sample1", 
+                                          "sample2", 
+                                          "sample3",
+                                          "sample4",
+                                          "sample5",
+                                          "sample6"),
+                           selected = "sample2"),
+               sliderInput("n_rows", label = "Select number of rows", min = 1, max = 15, value = 1),
+               downloadButton('downloadData', 'Download')
+  ),
+  mainPanel("App output panel",
+            plotOutput("plot3", width = 600, height = 600),
+            tableOutput("table1")
+  )
+)
+
+plot_m <- reactive({
+  dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
+  x_axis <- dat[, input$x_select3]
+  y_axis <- dat[, input$y_select3]
+  
+  m <- plot(x = x_axis, y = y_axis)
+  return(m)
+})
+
+output$plot3 <- renderPlot({
+  plot_m()
+})
+
+output$downloadData <- downloadHandler(
+  filename = function() {
+    paste0("plot_", Sys.Date(), '.png', sep='')
+  },
+  content = function(file) {
+    ggsave(file)
+  }
+)
+
+
+output$table1 <- renderTable({
+  dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
+  head(dat[, c(input$x_select3, input$y_select3)], input$n_rows)
+})
+```
