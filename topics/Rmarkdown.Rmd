@@ -1,9 +1,19 @@
 ---
-author: "serine"
-date: "12 July 2016"
+title: "R markdown"
 output: html_document
-#output: ioslides_presentation
 ---
+<style>
+.basic_md {
+border-style: solid;
+border-width: 1px;
+border-color: #e6e6e6;
+border-radius: 3px;
+background: #f2f2f2;
+padding: 10px;
+width: 89%;
+margin: auto
+}
+</style>
 >  Aims:
 >
 > - To learn write R markdown documents and compile into differnet documents type
@@ -12,7 +22,7 @@ output: html_document
 
 # Introduction to markdown
 
-Markdown is powerfull "language" for writing different kind of documents, such as **PDF** or **HTML** in efficient way. The underlying idea for Markdown is that it is easy-to-write and easy-to-read and that markdown documents can be published as is.
+Markdown is powerful "language" for writing different kind of documents, such as **PDF** or **HTML** in efficient way. The underlying idea for Markdown is that it is easy-to-write and easy-to-read and that markdown documents can be published as is.
 
 You can use any [text editor](https://en.wikipedia.org/wiki/Text_editor) to write markdown. RStudio already comes with text editor and we are going to use it, because RStudio also has few additional things that makes markdown writing much easier. 
 
@@ -20,9 +30,9 @@ You can use any [text editor](https://en.wikipedia.org/wiki/Text_editor) to writ
 
 We are going to learn an R flavour or markdown - [Rmarkdown](http://rmarkdown.rstudio.com/), which builds on top of standard markdown, but is slightly augmented version of markdown. The big advantage of Rmarkdown is ability to embedd code into markdown document that is executable, thereby making dynamic documents. Rmarkdown is great way to document your analysis and share with others.
 
-Let's get right into it. Open **R Markdown file** using these dropdown menu steps: **File** -> **New File** -> **R Markdown**. You can put any `title` and any `author` name. For now select **Document** and Document type **HTML**. Once you have opended your `.Rmd` file, click on `Knit HTML` button at the top of your pane. 
+Let's get right into it. Open **R Markdown file** using these drop down menu steps: **File** -> **New File** -> **R Markdown**. You can put any `title` and any `author` name. For now select **Document** and Document type **HTML**. Once you have opened your `.Rmd` file, click on `Knit HTML` button at the top of your pane. 
 
-`Knitr` is an R package that dose all the magic of converting and running your Rmarkdown and R code repsectively. 
+`Knitr` is an R package that dose all the magic of converting and running your Rmarkdown and R code respectively. 
 
 These are three main parts to an Rmarkdown document
 
@@ -60,7 +70,7 @@ Now its just the matter of learning more of Rmarkdown syntax. Let's delete all c
 ```
 Hello world, I'm learning R markdown !
 ```
-<div style="border-style: solid; border-width: 1px; border-color: #e6e6e6; border-radius: 3px; background:  #f2f2f2; padding: 10px">
+<div class="basic_md">
 Hello world, I'm learning R markdown !
 </div>
 
@@ -69,7 +79,7 @@ Now add `#` symbol at the start of the line and press `Knit HTML` button again. 
 ```
 # Hello world, I'm learning R markdown !
 ```
-<div style="border-style: solid; border-width: 1px; border-color: #e6e6e6; border-radius: 3px; background:  #f2f2f2; padding: 10px">
+<div class="basic_md">
 # Hello world, I'm learning R markdown !
 </div>
 
@@ -80,7 +90,7 @@ Now make three new lines with the same text but different nubmer of `#` symbols,
 ## Hello world, I'm learning R markdown !
 ### Hello world, I'm learning R markdown !
 ```
-<div style="border-style: solid; border-width: 1px; border-color: #e6e6e6; border-radius: 3px; background:  #f2f2f2; padding: 10px">
+<div class="basic_md">
 # Hello world, I'm learning R markdown !
 ## Hello world, I'm learning R markdown !
 ### Hello world, I'm learning R markdown !
@@ -94,7 +104,7 @@ Here is a couple of more examples of markdown syntax. To make an emphasis e.g it
 Hello world, I'm *learning* R markdown !
 Hello world, I'm _learning_ R markdown !
 ```
-<div style="border-style: solid; border-width: 1px; border-color: #e6e6e6; border-radius: 3px; background:  #f2f2f2; padding: 10px">
+<div class="basic_md">
 Hello world, I'm *learning* R markdown !
  <br>
 Hello world, I'm _learning_ R markdown !
@@ -106,7 +116,8 @@ To make strong emphasis e.g bold, you mark your word(s) with double asterisks or
 Hello world, I'm **learning** R markdown !
 Hello world, __I'm learning__ R markdown !
 ```
-<div style="border-style: solid; border-width: 1px; border-color: #e6e6e6; border-radius: 3px; background:  #f2f2f2; padding: 10px">
+<div class="basic_md">
+Hello world, I'm *learning* R markdown !
 Hello world, I'm **learning** R markdown !
  <br>
 Hello world, __I'm learning__ R markdown !
@@ -117,8 +128,60 @@ And you can combine both if you like
 ```
 Hello world, **I'm _learning_** markdown !
 ```
-<div style="border-style: solid; border-width: 1px; border-color: #e6e6e6; border-radius: 3px; background:  #f2f2f2; padding: 10px">
+<div class="basic_md">
 Hello world, **I'm _learning_** R markdown !
+</div>
+
+This is how you can make different types of lists. Use either `*`, `-` or `+` symbols to mark your bullet point or simply use a number `1.` to make numbered list.
+
+```
+- a bullet point
+* also a bullet point
++ bullet point too
+
+1. First item on the list
+2. Second item on the list
+```
+
+<div class="basic_md">
+- a bullet point
+* also a bullet point
++ bullet point too
+
+1. First item on the list
+2. Second item on the list
+</div>
+
+And if you like to make sub-points simply indent those in, by two or four spaces
+
+```
+1. First item on the list
+
+    - a
+    - b
+    - c
+  
+2. Second item on the list
+
+    1. A
+    2. B
+    3. C
+```
+
+<div class="basic_md">
+
+1. First item on the list
+
+    - a
+    - b
+    - c
+  
+2. Second item on the list
+
+    1. A
+    2. B
+    3. C
+    
 </div>
 
 ## R code inside R markdown
@@ -131,20 +194,20 @@ summary(cars)
 
 `cars` is inbuilt dataset that we are using for this example. Let's look at this data a bit close in the _console_. You should see your code block is highlighted differently and you should see green arrow at the right hand site of that block. Press that green arrow to the output in the _console_. You can also use `ctrl+enter` to do the same with the keyboard short cut.
 
-We can do some data invesigationg and manipulation in the _console_ and then copy our analysis into the document. In the console check data type using `class()` function, then get first few rows of the table with `head()`. It looks like a `data.frame` with two columns, why not plot them.
+We can do some data investigation and manipulation in the _console_ and then copy our analysis into the document. In the console check data type using `class()` function, then get first few rows of the table with `head()`. It looks like a `data.frame` with two columns, why not plot them.
 
 ```{r}
 summary(cars)
 plot(cars$speed, cars$dist)
 ```
 
-Let's add a title `main="Travelling speed vs Breaking distance"` and asix labels `xlab="Travelling speed (mhp)"` and `ylab="Stopping distance (ft)"`
+Let's add a title `main="Travelling speed vs Breaking distance"` and axis labels `xlab="Travelling speed (mhp)"` and `ylab="Stopping distance (ft)"`
 
 ```{r}
 plot(cars$speed, cars$dist, main="Travelling speed vs Breaking distance", xlab = "Travelling speed (mhp)", ylab="Stopping distance (ft)")
 ```
 
-Having actual code for a figure is some what unnecessary, we can turn that off with `echo=FALSE` options e.g `  ```{r echo=FALSE} .. ``` `
+Having actual code for a figures is sometimes unnecessary, we can turn that off with `echo=FALSE` options e.g `  ```{r echo=FALSE} .. ``` `
 
 ```{r echo=FALSE}
 plot(cars$speed, cars$dist, main="Travelling speed vs Breaking distance", xlab = "Travelling speed (mhp)", ylab="Stopping distance (ft)")
@@ -155,6 +218,32 @@ Sometimes we might want to show actual code and not the output, for that use `ev
 ```{r eval=FALSE}
 plot(cars$speed, cars$dist, main="Travelling speed vs Breaking distance", xlab = "Travelling speed (mhp)", ylab="Stopping distance (ft)")
 ```
+
+Let's have a look at some of the options that can manipulate figure item. 
+
+Figure alignment can be done with `fig.align` options e.g ```{r fig.align=default} ..``` It's a little strange but "default" is an options. Other options include, "left", "center" and "right". Lets try a couple of those out.
+
+```{r echo=FALSE, fig.align='right'}
+plot(cars$speed, cars$dist, main="Travelling speed vs Breaking distance", xlab = "Travelling speed (mhp)", ylab="Stopping distance (ft)")
+```
+
+**Remeber** that you can you can always execute code in the _console_ by pressing "green arrow" or using keyborad short cut `ctrl+enter`
+
+We know now how to align figure to what we want, how about changing the size of it ? We can do that with `fig.height` and `fig.width`, the units are inches. Let's make 4 X 4 inches figure e.g ```{r fig.height=4, fig.widht=4} ..```
+
+```{r echo=FALSE, fig.height=4, fig.width=4, fig.align='center'}
+plot(cars$speed, cars$dist, main="Travelling speed vs Breaking distance", xlab = "Travelling speed (mhp)", ylab="Stopping distance (ft)")
+```
+
+Lets also align it at the "center"
+
+One last thing I'd like to share with you is how to add figure legend or caption - with `fig.cap` of course e.g ``{r `fig.cap="This is my legend"} ..``` Go ahead and add figure description.
+
+```{r, echo=FALSE, fig.cap="**Figure: 1** This figure illustrates breaking distance as a function of travelling speed"}
+plot(cars$speed, cars$dist, main="Travelling speed vs Breaking distance", xlab = "Travelling speed (mhp)", ylab="Stopping distance (ft)")
+```
+
+**Note** that figure legend follows the same alignment as your figure. 
 
 Lets switch to a different code
 ```{r eval=FALSE}
