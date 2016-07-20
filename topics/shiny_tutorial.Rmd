@@ -369,7 +369,7 @@ output$plot2 <- renderPlot({
 
 Congratulations! You've made your first app! To get it exactly like the example at the start of the lesson, can you figure out how to change the axis titles to the name of the selected sample. The `selectInput` widgets also need to be changed to a named list. Other than that, you're good to go.
 
-Now imagine you had an experiment where you had many conditions and you needed to plot each one against each other. 
+Now imagine you had an experiment where you had many conditions and you needed to plot each one against each other. Instead of plotting each one individually, with a Shiny app, you could easily visualise the different conditions without having to write code for each one of them and then download them. 
 
 ## Challenge app
 
@@ -397,8 +397,7 @@ sidebarLayout(
                                           "sample5",
                                           "sample6"),
                            selected = "sample2"),
-               sliderInput("n_rows", label = "Select number of rows", min = 1, max = 15, value = 1),
-               downloadButton('downloadData', 'Download')
+               sliderInput("n_rows", label = "Select number of rows", min = 1, max = 15, value = 1)
   ),
   mainPanel("App output panel",
             plotOutput("plot3", width = 600, height = 600),
@@ -406,27 +405,13 @@ sidebarLayout(
   )
 )
 
-plot_m <- reactive({
+output$plot3 <- renderPlot({
   dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
   x_axis <- dat[, input$x_select3]
   y_axis <- dat[, input$y_select3]
   
-  m <- plot(x = x_axis, y = y_axis)
-  return(m)
+  plot(x = x_axis, y = y_axis)
 })
-
-output$plot3 <- renderPlot({
-  plot_m()
-})
-
-output$downloadData <- downloadHandler(
-  filename = function() {
-    paste0("plot_", Sys.Date(), '.png', sep='')
-  },
-  content = function(file) {
-    ggsave(file)
-  }
-)
 
 
 output$table1 <- renderTable({
