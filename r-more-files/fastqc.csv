@@ -1,0 +1,73 @@
+grade,test,file
+PASS,Basic Statistics,Day0.fastq
+PASS,Per base sequence quality,Day0.fastq
+PASS,Per tile sequence quality,Day0.fastq
+PASS,Per sequence quality scores,Day0.fastq
+FAIL,Per base sequence content,Day0.fastq
+WARN,Per sequence GC content,Day0.fastq
+PASS,Per base N content,Day0.fastq
+PASS,Sequence Length Distribution,Day0.fastq
+PASS,Sequence Duplication Levels,Day0.fastq
+WARN,Overrepresented sequences,Day0.fastq
+PASS,Adapter Content,Day0.fastq
+PASS,Kmer Content,Day0.fastq
+PASS,Basic Statistics,Day4.fastq
+PASS,Per base sequence quality,Day4.fastq
+PASS,Per tile sequence quality,Day4.fastq
+PASS,Per sequence quality scores,Day4.fastq
+FAIL,Per base sequence content,Day4.fastq
+WARN,Per sequence GC content,Day4.fastq
+PASS,Per base N content,Day4.fastq
+PASS,Sequence Length Distribution,Day4.fastq
+PASS,Sequence Duplication Levels,Day4.fastq
+PASS,Overrepresented sequences,Day4.fastq
+PASS,Adapter Content,Day4.fastq
+PASS,Kmer Content,Day4.fastq
+PASS,Basic Statistics,Day7.fastq
+PASS,Per base sequence quality,Day7.fastq
+PASS,Per tile sequence quality,Day7.fastq
+PASS,Per sequence quality scores,Day7.fastq
+FAIL,Per base sequence content,Day7.fastq
+FAIL,Per sequence GC content,Day7.fastq
+PASS,Per base N content,Day7.fastq
+PASS,Sequence Length Distribution,Day7.fastq
+PASS,Sequence Duplication Levels,Day7.fastq
+PASS,Overrepresented sequences,Day7.fastq
+PASS,Adapter Content,Day7.fastq
+PASS,Kmer Content,Day7.fastq
+PASS,Basic Statistics,Day10.fastq
+PASS,Per base sequence quality,Day10.fastq
+PASS,Per tile sequence quality,Day10.fastq
+PASS,Per sequence quality scores,Day10.fastq
+FAIL,Per base sequence content,Day10.fastq
+WARN,Per sequence GC content,Day10.fastq
+PASS,Per base N content,Day10.fastq
+PASS,Sequence Length Distribution,Day10.fastq
+PASS,Sequence Duplication Levels,Day10.fastq
+WARN,Overrepresented sequences,Day10.fastq
+PASS,Adapter Content,Day10.fastq
+PASS,Kmer Content,Day10.fastq
+PASS,Basic Statistics,Day15.fastq
+PASS,Per base sequence quality,Day15.fastq
+PASS,Per tile sequence quality,Day15.fastq
+PASS,Per sequence quality scores,Day15.fastq
+FAIL,Per base sequence content,Day15.fastq
+WARN,Per sequence GC content,Day15.fastq
+PASS,Per base N content,Day15.fastq
+PASS,Sequence Length Distribution,Day15.fastq
+PASS,Sequence Duplication Levels,Day15.fastq
+WARN,Overrepresented sequences,Day15.fastq
+PASS,Adapter Content,Day15.fastq
+PASS,Kmer Content,Day15.fastq
+PASS,Basic Statistics,Day20.fastq
+PASS,Per base sequence quality,Day20.fastq
+PASS,Per tile sequence quality,Day20.fastq
+PASS,Per sequence quality scores,Day20.fastq
+FAIL,Per base sequence content,Day20.fastq
+FAIL,Per sequence GC content,Day20.fastq
+PASS,Per base N content,Day20.fastq
+PASS,Sequence Length Distribution,Day20.fastq
+PASS,Sequence Duplication Levels,Day20.fastq
+WARN,Overrepresented sequences,Day20.fastq
+PASS,Adapter Content,Day20.fastq
+PASS,Kmer Content,Day20.fastq

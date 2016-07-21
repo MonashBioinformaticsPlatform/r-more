@@ -18,7 +18,7 @@ output:
 
 * [Rmarkdown](topics/Rmarkdown.html) ([.Rmd](topics/Rmarkdown.Rmd))
 * [Programming](topics/programming.html) ([.Rmd](topics/programming.Rmd))
-* The tidyverse: tidyr, dplyr, ggplot2
+* [The tidyverse: dplyr, ggplot2, and friends](topics/tidyverse.html) ([.Rmd](topics/tidyverse.Rmd))
 * [Sequences and genomic features](topics/sequences_and_features.html) ([.Rmd](topics/sequences_and_features.Rmd))
 * Shiny
 
@@ -26,9 +26,9 @@ output:
 
 ## See also
 
-Also in this series:
+In this series:
 
-* [R Introduction](https://monashbioinformaticsplatform.github.io/r-intro/)
+* [R introduction](https://monashbioinformaticsplatform.github.io/r-intro/)
 * [RNAseq using R](http://monashbioinformaticsplatform.github.io/RNAseq-DE-analysis-with-R/)
 
 Other resources:

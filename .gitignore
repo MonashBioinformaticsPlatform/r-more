@@ -4,6 +4,9 @@ r-more.Rproj
 html/
 motif-matches.gff
 *_fastqc*
+bg.fa
+fg.fa
+meme_out/
 
 # knit cache directories
 *_cache/
