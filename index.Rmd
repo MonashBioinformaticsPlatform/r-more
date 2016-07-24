@@ -13,6 +13,7 @@ output:
 ## Slides
 
 * [Introduction](slides/introduction.html) ([.Rmd](slides/introduction.Rmd))
+* Shiny [.Rmd](slides/shiny_course_notes.Rmd) -- run from within RStudio
 
 ## Topics
 
@@ -20,7 +21,7 @@ output:
 * [Programming](topics/programming.html) ([.Rmd](topics/programming.Rmd))
 * [The tidyverse: dplyr, ggplot2, and friends](topics/tidyverse.html) ([.Rmd](topics/tidyverse.Rmd))
 * [Sequences and genomic features](topics/sequences_and_features.html) ([.Rmd](topics/sequences_and_features.Rmd))
-* [Shiny](topics/shiny_tutorial.html) ([.Rmd](topics/shiny_tutorial.Rmd))
+* Shiny [.Rmd](topics/shiny_tutorial.Rmd) -- run from within RStudio
 
 ---
 
