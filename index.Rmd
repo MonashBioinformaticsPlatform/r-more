@@ -20,7 +20,7 @@ output:
 * [Programming](topics/programming.html) ([.Rmd](topics/programming.Rmd))
 * [The tidyverse: dplyr, ggplot2, and friends](topics/tidyverse.html) ([.Rmd](topics/tidyverse.Rmd))
 * [Sequences and genomic features](topics/sequences_and_features.html) ([.Rmd](topics/sequences_and_features.Rmd))
-* Shiny
+* [Shiny](topics/shiny_tutorial.html) ([.Rmd](topics/shiny_tutorial.Rmd))
 
 ---
 

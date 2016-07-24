@@ -1,5 +1,5 @@
 
-RMDS=$(wildcard *.Rmd */*.Rmd)
+RMDS=$(wildcard *.Rmd topics/*.Rmd slides/introduction.Rmd)
 HTMLS=$(patsubst %.Rmd,%.html,$(RMDS))
 
 all : $(HTMLS) r-more-files.zip

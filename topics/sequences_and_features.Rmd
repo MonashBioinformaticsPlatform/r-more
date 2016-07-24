@@ -195,6 +195,9 @@ seq_stop <- getSeq(seqs, feat_stop)
 translate(seq_stop)
 ```
 
+`resize` can fix either the `fix="start"` or `fix="end"` of the sequence.
+
+`flank` can be either flank the start (`start=TRUE`) or end (`start=FALSE`).
 
 ## Inter-range
 
@@ -213,6 +216,8 @@ features[subjectHits(hits),]
 
 findOverlaps(query, features, ignore.strand=FALSE)
 ```
+
+With `findOverlaps`, we can use genomic location as the key when *joining* disparate types of data, so this is an important tool for *integrative* analysis.
 
 
 ## Challenge {.challenge}

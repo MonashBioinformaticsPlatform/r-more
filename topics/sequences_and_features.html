@@ -513,6 +513,8 @@ translate(seq_stop)</code></pre>
 <pre><code>##   A AAStringSet instance of length 1
 ##     width seq
 ## [1]    22 MKRISTTITTTITITTGNGAG*</code></pre>
+<p><code>resize</code> can fix either the <code>fix=&quot;start&quot;</code> or <code>fix=&quot;end&quot;</code> of the sequence.</p>
+<p><code>flank</code> can be either flank the start (<code>start=TRUE</code>) or end (<code>start=FALSE</code>).</p>
 </div>
 <div id="inter-range" class="section level2">
 <h2>Inter-range</h2>
@@ -613,6 +615,7 @@ hits</code></pre>
 ##   [5]         1          54
 ##   -------
 ##   queryLength: 1 / subjectLength: 24926</code></pre>
+<p>With <code>findOverlaps</code>, we can use genomic location as the key when <em>joining</em> disparate types of data, so this is an important tool for <em>integrative</em> analysis.</p>
 </div>
 <div id="challenge-1" class="section level2 challenge">
 <h2>Challenge</h2>
@@ -845,17 +848,14 @@ writeXStringSet(background_seqs, &quot;bg.fa&quot;)</code></pre>
 ## [1] en_AU.UTF-8/en_AU.UTF-8/en_AU.UTF-8/C/en_AU.UTF-8/en_AU.UTF-8
 ## 
 ## attached base packages:
-##  [1] grid      stats4    parallel  methods   stats     graphics  grDevices
-##  [8] utils     datasets  base     
+## [1] stats4    parallel  methods   stats     graphics  grDevices utils    
+## [8] datasets  base     
 ## 
 ## other attached packages:
-##  [1] motifRG_1.16.0                    BSgenome.Hsapiens.UCSC.hg19_1.4.0
-##  [3] seqLogo_1.38.0                    dplyr_0.5.0                      
-##  [5] BSgenome_1.40.1                   rtracklayer_1.32.1               
-##  [7] GenomicRanges_1.24.2              GenomeInfoDb_1.8.1               
-##  [9] Biostrings_2.40.2                 XVector_0.12.0                   
-## [11] IRanges_2.6.1                     S4Vectors_0.10.2                 
-## [13] BiocGenerics_0.18.0              
+##  [1] dplyr_0.5.0          BSgenome_1.40.1      rtracklayer_1.32.1  
+##  [4] GenomicRanges_1.24.2 GenomeInfoDb_1.8.1   Biostrings_2.40.2   
+##  [7] XVector_0.12.0       IRanges_2.6.1        S4Vectors_0.10.2    
+## [10] BiocGenerics_0.18.0 
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] Rcpp_0.12.5                knitr_1.13                
@@ -867,10 +867,10 @@ writeXStringSet(background_seqs, &quot;bg.fa&quot;)</code></pre>
 ## [13] htmltools_0.3.5            assertthat_0.1            
 ## [15] yaml_2.1.13                digest_0.6.9              
 ## [17] tibble_1.1                 formatR_1.4               
-## [19] codetools_0.2-14           bitops_1.0-6              
-## [21] RCurl_1.95-4.8             evaluate_0.9              
-## [23] rmarkdown_1.0              stringi_1.1.1             
-## [25] Rsamtools_1.24.0           XML_3.98-1.4</code></pre>
+## [19] bitops_1.0-6               RCurl_1.95-4.8            
+## [21] evaluate_0.9               rmarkdown_1.0             
+## [23] stringi_1.1.1              Rsamtools_1.24.0          
+## [25] XML_3.98-1.4</code></pre>
 </div>
 </div>
 

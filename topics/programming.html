@@ -125,6 +125,7 @@ $(document).ready(function () {
 <li><a href="#a-practical-programming-exercise">A practical programming exercise</a></li>
 <li><a href="#if-statements">If statements</a></li>
 <li><a href="#sourcing-.r-files">Sourcing .R files</a></li>
+<li><a href="#packages">Packages</a></li>
 </ul>
 </div>
 
@@ -515,6 +516,32 @@ load_fastqc &lt;- function(filename) {
 <h2>Discussion</h2>
 <p>What other R code from this lesson could we put in a .R file?</p>
 <p>How should we break up a large project into files?</p>
+<p>How do we ensure the code for a project can be run by others, ensuring it is reproducible?</p>
+<p>How should we share a project with others?</p>
+</div>
+</div>
+<div id="packages" class="section level1">
+<h1>Packages</h1>
+<p>Packages are the next step up from sourcing .R files. They let you write code that other people can install and load with <code>library</code>. Packages generally contain documentation for all functions, and one or more vignettes describing how to use the package.</p>
+<p>Hadley Wickham has a great package called <code>devtools</code> that takes a lot of the pain out of package writing.</p>
+<pre class="r"><code># Create an empty package template
+devtools::create(&quot;mylibrary&quot;)
+
+# ... Edit mylibrary/DESCRIPTION file
+# ... Write .R files in mylibrary/R folder
+
+# Load package. Use this during development.
+devtools::load_all(&quot;mylibrary&quot;)
+
+# Build package, including converting inline documentation to .Rds files using roxygen2.
+# Check for common problems and missing documentation.
+# A CRAN package must pass all checks.
+devtools::check(&quot;mylibrary&quot;)</code></pre>
+<ul>
+<li><a href="http://r-pkgs.had.co.nz/">R packages book</a></li>
+</ul>
+<p>Packages are most easily distributed by placing them on GitHub. They can then be installed by others using the <code>devtools</code> function <code>install_github</code>. Once a package is mature and well documented, it can be submitted to CRAN or Bioconductor.</p>
+<pre class="r"><code>devtools::install_github(&quot;github_username/repository_name&quot;)</code></pre>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R version 3.3.0 (2016-05-03)
 ## Platform: x86_64-apple-darwin13.4.0 (64-bit)
@@ -535,7 +562,6 @@ load_fastqc &lt;- function(filename) {
 ##  [9] stringi_1.1.1   rmarkdown_1.0   tools_3.3.0     stringr_1.0.0  
 ## [13] yaml_2.1.13     htmltools_0.3.5 knitr_1.13      methods_3.3.0  
 ## [17] tibble_1.1</code></pre>
-</div>
 </div>
 
 

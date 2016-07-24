@@ -105,26 +105,20 @@ select(bigtab, -file)
 Say we want to convert PASS/WARN/FAIL into a numeric score, so we can produce some numerical summaries. The scoring scheme will be:
 
 ```{r}
-scoring <- tibble(
-    grade=c("FAIL","WARN","PASS"),
-    score=c(0,0.5,1))
+fwp <- c("FAIL","WARN","PASS")
+scoring <- tibble(grade=factor(fwp,levels=fwp), score=c(0,0.5,1))
 
-# tibble is the Hadley Wickham data frame.
-# It's better in various ways, eg it prints itself nicely.
-
-# Could instead use: 
-# scoring <- data.frame(
-#    grade=c("FAIL","WARN","PASS"),
-#    score=c(0,0.5,1))
+# Or: 
+# scoring <- data.frame(grade=factor(fwp,levels=fwp), score=c(0,0.5,1))
 
 scoring
 ```
 
-In the introduction to R day, we saw the `merge` function. dplyr has its own version of this in the form of several functions: `left_join`, `right_join`, `inner_join`, `outer_join`.
+In the introduction to R day, we saw the `merge` function. dplyr has its own version of this in the form of several functions: `left_join`, `right_join`, `inner_join`, `full_join`.
 
-The difference between these functions is what happens when there is a row in one data frame without a corresponding row in the other data frame. `inner_join` discards such rows. `outer_join` always keeps them, filling in missing data with NA. `left_join` always keeps rows from the first data frame. `right_join` always keeps rows from the second data frame.
+The difference between these functions is what happens when there is a row in one data frame without a corresponding row in the other data frame. `inner_join` discards such rows. `full_join` always keeps them, filling in missing data with NA. `left_join` always keeps rows from the first data frame. `right_join` always keeps rows from the second data frame.
 
-Often we are use a join to augment a data frame with some extra information. `left_join` is a good default choice for this as it will never delete rows from the data frame that is being augmented.
+Often we use a join to augment a data frame with some extra information. `left_join` is a good default choice for this as it will never delete rows from the data frame that is being augmented.
 
 ```{r}
 scoretab <- left_join(bigtab, scoring, by="grade")
@@ -134,6 +128,8 @@ scoretab
 "grade" is here acting as the *key*, allowing corresponding rows in the data frames to be joined together.
 
 One important thing that all the join functions do: if multiple rows have the same key in either data frame, all ways of combining the two sets of rows will be included in the result. So, here, rows from the scoring data frame have been copied many times in the output. 
+
+Joins are the key tool for *integrating* different types of data, based on some common key such as gene id.
 
 ## mutate
 
@@ -145,10 +141,9 @@ mutate(scoretab, doublescore = score*2)
 
 This is equivalent to
 
-```{r}
+```{r eval=FALSE}
 scoretab2 <- scoretab
 scoretab2$doublescore <- scoretab2$score * 2
-scoretab2
 ```
 
 
@@ -171,7 +166,7 @@ summarize(group_by(scoretab, file), total=sum(score))
 The special function `n()` can be used within `summarize` to get the number of rows. (This also works in `mutate`, but is most useful in `summarize`.)
 
 ```{r}
-summarize(group_by(scoretab, grade), count=n())
+summarize(group_by(bigtab, grade), count=n())
 ```
 
 So `summarize` lets us do the things we did with `table` and `tapply`, but staying tidy by using data frames.
@@ -181,10 +176,10 @@ So `summarize` lets us do the things we did with `table` and `tapply`, but stayi
 
 # The pipe %>%
 
-We often want to string together a series of `dplyr` functions. This is achieved using `dplyr`'s new pipe operator, `%>%`. This takes the value on the left, and passes it as the first argument to the function call on the right.
+We often want to string together a series of `dplyr` functions. This is achieved using `dplyr`'s new pipe operator, `%>%`. This takes the value on the left, and passes it as the first argument to the function call on the right. So the previous summarization could be written:
 
-```{r}
-scoretab %>% group_by(grade) %>% summarize(count=n())
+```{r eval=FALSE}
+bigtab %>% group_by(grade) %>% summarize(count=n())
 ```
 
 `%>%` isn't limited to `dplyr` functions. It's an alternative way of writing any R code.
@@ -195,10 +190,29 @@ rep("hello", 5)
 ```
 
 
-# ggplot2
+# ggplot2 revisited
+
+This section builds on [what we saw of ggplot2](https://monashbioinformaticsplatform.github.io/r-intro/ggplot.html) in the introductory R day. Recall that we could assign columns of a data from to aesthetics--x and y position, color, etc--and then add "geom"s to draw the data.
+
+The idea of adding geoms is rather like the dplyr pipe. `ggplot2` predates `dplyr`, and Hadley Wickham has had a progression of ideas. It will probably be possible to use `%>%` instead of `+` in the not too distant future.
+
+
+With `ggplot2` we don't need to summarize `bigtab`, we can just view the whole data set.
+
+```{r}
+ggplot(bigtab,aes(x=file,y=test,color=grade)) + geom_point()
+```
+
+With categorical data on the x and y axes, an even better geom to use is `geom_tile`.
+
+```{r}
+ggplot(bigtab,aes(x=file,y=test,fill=grade)) + geom_tile()
+```
 
 
 ## Publication quality images
+
+`ggplot2` offers a very wide array of ways to adjust a plot.
 
 ```{r}
 plot <- ggplot(bigtab,aes(x=file,y=test,fill=grade)) + 
@@ -225,7 +239,7 @@ It may be necessary to edit a plot further in a program such as Inkscape or Adob
 
 
 
-# A small RNA-Seq example
+# A simple RNA-Seq example
 
 We will now look at a small gene expression data set. To simplify somewhat: The data was generated from a multiplex PCR targetting 44 genes. The PCR product is quantified by counting reads from high throughput sequencing. The experiment is of yeast released synchronously into cell cycling, so that we can see which genes are active at different points in the cycle. Several strains of yeast have been used, a wildtype and several gene knock-downs. Each has nine time points, covering two cell cycles (two hours). 
 
@@ -294,8 +308,8 @@ moderation <- 0.5/mean(normalizer$norm)
 counts_norm <- counts %>%
     left_join(normalizer, by="sample") %>%
     mutate(
-        norm_count = count / norm, 
-        log_norm_count=log2(norm_count+moderation)
+        norm_count = count/norm, 
+        log_norm_count = log2(norm_count+moderation)
     )
 
 ggplot(counts_norm, aes(x=sample, y=log_norm_count)) + geom_boxplot() + coord_flip()
@@ -304,68 +318,104 @@ ggplot(counts_norm, aes(x=sample, y=log_norm_count)) + geom_boxplot() + coord_fl
 
 ## Visualization
 
-```{r}
-ggplot(counts_norm,aes(x=time,y=gene,fill=log_norm_count)) + geom_tile() + facet_grid(~ strain) + scale_fill_viridis() + theme_minimal()
+```{r fig.width=8, fig.height=8}
+ggplot(counts_norm, aes(x=time, y=gene, fill=log_norm_count)) + 
+    geom_tile() + facet_grid(~ strain) + 
+    scale_fill_viridis() + theme_minimal()
 ```
 
-```{r}
-ggplot(counts_norm,aes(x=time,y=strain,fill=log_norm_count)) + geom_tile() + facet_wrap(~ gene) + scale_fill_viridis() + theme_minimal()
+```{r fig.width=10, fig.height=8}
+ggplot(counts_norm, aes(x=time, y=strain, fill=log_norm_count)) + 
+    geom_tile() + facet_wrap(~ gene) + 
+    scale_fill_viridis() + theme_minimal()
 ```
 
-```{r fig.width=10, fig.height=10}
-ggplot(counts_norm,aes(x=time,y=log_norm_count,color=strain,group=strain)) + geom_line() + facet_wrap(~ gene, scale="free")
+```{r fig.width=10, fig.height=8}
+ggplot(counts_norm, aes(x=time, y=log_norm_count, color=strain, group=strain)) + 
+    geom_line() + facet_wrap(~ gene, scale="free")
 ```
+
 
 ## Challenge {.challenge}
 
 1. Make a line plot as above but just showing the gene HHF1.
 
-2. Our normalizing gene, SRP68, isn't conveying any useful information. Remove it from the data, and redo one of the plots above.
+Hint: `intToUtf8(utf8ToInt("vtf!gjmufs")-1)`
 
-3. (Hard) Different genes have different average expression levels, but what we are interested in is how they change over time. Further normalize the data by subtracting the average for each gene from `log_norm_count`.
+2. Which are the three most variable genes?
+
+Hint: `intToUtf8(utf8ToInt("xvh#jurxsbe|/#vxppdul}h/#vg/#dqg#duudqjh")-3)`
+
+3. Different genes have different average expression levels, but what we are interested in is how they change over time. Further normalize the data by subtracting the average for each gene from `log_norm_count`.
 
 
 # Linear modelling
 
-*You are not expected to understand this section.* The idea is to give a taste of what is possible, so that you know to ask an expert for help if this is the sort of analysis you need. It will also provide a little context for advanced forms of RNA-Seq differential expression analysis.
+The idea of this section is to give a taste of what is possible, so that you know what topics to read up on or ask an expert for help with if this is the sort of analysis you need. It will also provide a little context for advanced forms of RNA-Seq differential expression analysis.
 
 ```{r}
 sut476 <- counts_norm %>% filter(gene=="SUT476") 
+sut476_wt <- sut476 %>% filter(strain=="WT")
 
-model <- lm(log_norm_count ~ strain * time, data=sut476)
-model
-
-# Note: The p-values listed in this summary aren't all meaningful.
-# It makes no sense to remove a main effect term if an interaction is still present.
-# Significance testing can better be done with anova() and the glht package.
-summary(model)
-
-# Columns are the actual terms in the linear model
-model.matrix(log_norm_count ~ strain * time, data=sut476)
-
-# augment() from the broom package gives various diagnostic statistics
-#  .fitted   = model prediction
-#  .residual = actual value minus .fitted
-#  .hat      = The leverage -- how important the observation is in the design of the experiment.
-#              This can be considered before performing the experiment!
-#  .cooksd   = How much actual influence the observation had on the model.
-#              Combines information from .residual and .hat.
-augment(model, sut476) %>% head
-
-# augment() can also be used to produce predictions for new inputs
-augment(model, newdata=sut476[1:5,])
-
-# Let's look at the model fit, and how influential each observation was
-augment(model, sut476) %>%
-ggplot(aes(x=time,y=log_norm_count,color=strain,group=strain)) + 
-    geom_point(aes(y=log_norm_count, size=.cooksd), alpha=0.5) +
-    geom_line(aes(y=.fitted)) +
-    scale_size(range=c(1,10))
+ggplot(sut476_wt,aes(x=time,y=log_norm_count)) +
+    geom_point() +
+    geom_smooth(method="lm")
 ```
 
-We see the initial timepoint in the wildtype strain is wildly off a linear trend, if it exists. The large Cook's Distance indicates this is strongly affecting the model. Possibly early time points need to be removed, or (more likely!) a linear trend is not a good model of this data.
+`ggplot2` includes a handy geom for fitting a curve or line to data, but what exactly is it doing? What if we want to work with that fitted curve ourselves? `ggplot2` can use various curve fitting methods, the simplest of which is a linear model with "lm".
 
-See also the `anova` function for comparing nested linear models, and the `glht` package for statistical testing using contrasts.
+```{r}
+model <- lm(log_norm_count ~ time, data=sut476_wt)
+model
+# Note: The p-values listed by summary aren't always meaningful.
+# It makes no sense to remove the intercept term but retain the time term.
+# Significance testing can better be done with anova() and the glht package.
+summary(model)
+model.matrix(log_norm_count ~ time, data=sut476_wt)
+```
+
+A model can be tested against a simpler null model using `anova`. Is the fit sufficiently better to justify the extra complexity?
+
+```{r}
+null_model <- lm(log_norm_count ~ 1, data=sut476_wt)
+anova(null_model, model)
+```
+
+A linear trend is not supported, in comparison to the null hypothesis that expression is constant, by this data. Also useful for hypothesis testing, the `multcomp` package can be used to test comparisons of interest such as a set of pairwise comparisons. This is similar to testing of contrasts in packages for differential expression analysis such as `limma`, `edgeR`, or `DESeq2`.
+
+`augment` from the `broom` package gives various diagnostic statistics.
+
+* .fitted = Model prediction.
+* .residual = Actual value minus .fitted.
+* .hat = The leverage -- how important the observation is in the design of the experiment. This can be considered before performing the experiment!
+*  .cooksd = How much actual influence the observation had on the model. Combines information from .residual and .hat.
+
+```{r}
+augment(model, sut476_wt) %>% head
+
+# augment() can also be used to produce predictions for new inputs
+augment(model, newdata=sut476_wt[1:5,])
+
+# Let's look at the model fit, and how influential each observation was
+augment(model, sut476_wt) %>%
+ggplot(aes(x=time, y=log_norm_count)) + 
+    geom_point(aes(size=.cooksd), alpha=0.5) +
+    geom_line(aes(y=.fitted))
+```
+
+We see the initial timepoint in the wildtype strain is wildly off the linear trend. The large Cook's Distance indicates this is strongly affecting the model. Possibly early time points need to be removed, or (more likely!) a linear trend is not a good model of this data.
+
+Linear models can be much more complicated than this. They can include multiple explanatory variables, including categorical variables, and interactions between them, and even polynomials.
+
+```{r}
+model2 <- lm(log_norm_count ~ strain*poly(time,3), data=sut476)
+model2
+
+augment(model2, sut476) %>%
+ggplot(aes(x=time, y=log_norm_count, color=strain, group=strain)) + 
+    geom_point(aes(size=.cooksd), alpha=0.5) +
+    geom_line(aes(y=.fitted))
+```
 
 
 ```{r}

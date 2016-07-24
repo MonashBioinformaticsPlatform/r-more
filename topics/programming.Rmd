@@ -446,6 +446,41 @@ What other R code from this lesson could we put in a .R file?
 
 How should we break up a large project into files?
 
+How do we ensure the code for a project can be run by others, ensuring it is reproducible?
+
+How should we share a project with others?
+
+
+# Packages
+
+Packages are the next step up from sourcing .R files. They let you write code that other people can install and load with `library`. Packages generally contain documentation for all functions, and one or more vignettes describing how to use the package.
+
+Hadley Wickham has a great package called `devtools` that takes a lot of the pain out of package writing.
+
+```{r, eval=FALSE}
+# Create an empty package template
+devtools::create("mylibrary")
+
+# ... Edit mylibrary/DESCRIPTION file
+# ... Write .R files in mylibrary/R folder
+
+# Load package. Use this during development.
+devtools::load_all("mylibrary")
+
+# Build package, including converting inline documentation to .Rds files using roxygen2.
+# Check for common problems and missing documentation.
+# A CRAN package must pass all checks.
+devtools::check("mylibrary")
+```
+
+* [R packages book](http://r-pkgs.had.co.nz/)
+
+Packages are most easily distributed by placing them on GitHub. They can then be installed by others using the `devtools` function `install_github`. Once a package is mature and well documented, it can be submitted to CRAN or Bioconductor.
+
+```{r eval=FALSE}
+devtools::install_github("github_username/repository_name")
+```
+
 
 ```{r}
 sessionInfo()
