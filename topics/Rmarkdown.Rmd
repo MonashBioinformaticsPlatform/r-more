@@ -16,25 +16,25 @@ margin: auto
 </style>
 >  Aims:
 >
-> - To learn write R markdown documents and compile into differnet documents type
+> - To learn write R markdown documents and compile into differnet documents types
 >
-> - To learn how to embedd R code into R markdown documents
+> - To learn how to embed R code into markdown documents
 
 # Introduction to markdown
 
-Markdown is powerful "language" for writing different kind of documents, such as **PDF** or **HTML** in efficient way. The underlying idea for Markdown is that it is easy-to-write and easy-to-read and that markdown documents can be published as is.
+Markdown is powerful "language" for writing different kind of documents, such as **PDF** or **HTML** in efficient way, but markdown documents can also be published as is. The underlying idea for markdown is that it is easy-to-write and easy-to-read.
 
-You can use any [text editor](https://en.wikipedia.org/wiki/Text_editor) to write markdown. RStudio already comes with text editor and we are going to use it, because RStudio also has few additional things that makes markdown writing much easier. 
+You can use any [text editor](https://en.wikipedia.org/wiki/Text_editor) to write markdown. RStudio already comes with text editor and because it also has few additional things that makes markdown writing much easier we are going to use it's text editor.
 
-## R markdown
+# R markdown
 
-We are going to learn an R flavour or markdown - [Rmarkdown](http://rmarkdown.rstudio.com/), which builds on top of standard markdown, but is slightly augmented version of markdown. The big advantage of Rmarkdown is ability to embedd code into markdown document that is executable, thereby making dynamic documents. Rmarkdown is great way to document your analysis and share with others.
+We are going to learn an R flavour of markdown - [R markdown](http://rmarkdown.rstudio.com/), which builds on top of standard markdown, but is slightly augmented version of it. The big advantage of [R markdown](http://rmarkdown.rstudio.com/) is ability to embed and execute code in markdown document, thereby making dynamic documents. [R markdown](http://rmarkdown.rstudio.com/) is a great way to document your analysis and share with others.
 
 Let's get right into it. Open **R Markdown file** using these drop down menu steps: **File** -> **New File** -> **R Markdown**. You can put any `title` and any `author` name. For now select **Document** and Document type **HTML**. Once you have opened your `.Rmd` file, click on `Knit HTML` button at the top of your pane. 
 
-`Knitr` is an R package that dose all the magic of converting and running your Rmarkdown and R code respectively. 
+`Knitr` is an R package that dose all the magic of converting and running your R markdown and R code respectively. 
 
-These are three main parts to an Rmarkdown document
+These are three main parts to any R markdown documents
 
 #### YAML header secession. I will talk about it at the very end
 
@@ -60,12 +60,12 @@ output: html_document
 #### Everything else is plain old markdown
 
 ```
-## R markdown
+# Have I been Marked Down ?
 ```
 
-## Markdown basics
+# Markdown basics
 
-Now its just the matter of learning more of Rmarkdown syntax. Let's delete all current text from the document and type `Hello world, I'm learning R markdown !` and pressing `Knit HTML` button.
+Now it's just the matter of learning some of the markdown syntax. Let's delete all current text from the opened document and type this new text in `Hello world, I'm learning R markdown !` and pressing `Knit HTML` button.
 
 ```
 Hello world, I'm learning R markdown !
@@ -73,6 +73,8 @@ Hello world, I'm learning R markdown !
 <div class="basic_md">
 Hello world, I'm learning R markdown !
 </div>
+
+Not much had happened. This is because we didn't mark our text in any way. You can put as much text as you want and it will appear as is, unless "specially" marked to look differentlly.
 
 Now add `#` symbol at the start of the line and press `Knit HTML` button again. We'll be pressing this button alot ! For those who likes keyboard short cuts use `ctrl+shift+k` instead.
 
@@ -82,6 +84,8 @@ Now add `#` symbol at the start of the line and press `Knit HTML` button again. 
 <div class="basic_md">
 # Hello world, I'm learning R markdown !
 </div>
+
+How about now? Single hash symbol made it whole lot bigger didn't it? We've marked this whole line to be the heade line.
 
 Now make three new lines with the same text but different nubmer of `#` symbols, one, two and three respectively and keep pressing `Knit HTML` button
 
@@ -96,7 +100,9 @@ Now make three new lines with the same text but different nubmer of `#` symbols,
 ### Hello world, I'm learning R markdown !
 </div>
 
-This is how you can specify different headers type using markdown. The core of [markdown](https://daringfireball.net/projects/markdown/syntax) is comprised entirely of punctuation characters. 
+This is how you can specify different headers type using markdown. 
+
+**Remember** that [basic markdown](https://daringfireball.net/projects/markdown/syntax) is comprised entirely of punctuation characters. 
 
 Here is a couple of more examples of markdown syntax. To make an emphasis e.g italics, you mark your word(s) with asterisks or underscores.
 
@@ -117,7 +123,6 @@ Hello world, I'm **learning** R markdown !
 Hello world, __I'm learning__ R markdown !
 ```
 <div class="basic_md">
-Hello world, I'm *learning* R markdown !
 Hello world, I'm **learning** R markdown !
  <br>
 Hello world, __I'm learning__ R markdown !
@@ -132,7 +137,11 @@ Hello world, **I'm _learning_** markdown !
 Hello world, **I'm _learning_** R markdown !
 </div>
 
-This is how you can make different types of lists. Use either `*`, `-` or `+` symbols to mark your bullet point or simply use a number `1.` to make numbered list.
+Wouldn't you agree that this is much faster then pressing bold **B** button every time you need an emphasis?
+
+Let me show you how you can make different types of lists and then we move on to additional R markdown bits.
+
+To make unordered list you can use either `*`, `-` or `+` symbols to mark your bullet points or simply use a number with the dot e.g `1.` to make ordered list.
 
 ```
 - a bullet point
@@ -152,7 +161,7 @@ This is how you can make different types of lists. Use either `*`, `-` or `+` sy
 2. Second item on the list
 </div>
 
-And if you like to make sub-points simply indent those in, by two or four spaces
+And if you like to make sub-lists simply indent those in, by two or four spaces
 
 ```
 1. First item on the list
@@ -184,44 +193,72 @@ And if you like to make sub-points simply indent those in, by two or four spaces
     
 </div>
 
-## R code inside R markdown
+# R code in R markdown
 
-In order for us to embed code we need to use ` ```{r } ..``` ` syntax. Lets type that example we saw before
+From now onwards we are going to focus on R specific markdown. The most powerful part is ability to embed R code in markdown. In order to do that we need to use ` ```{r } ..``` ` syntax.
+
+Let's start with simple `print()` statement and print `Hello world, I'm learning R markdown !`
+
+```{r}
+print("Hello world, I'm learning R markdown !")
+```
+
+This is how embeded code works in the document. One box shows what you've typed in a.k.a your code and box below it shows your output just like you'd exepct it in the _console_.
+
+We can tweak many things about your output using different options that we can include inside curly brackets e.g ```{r options} ..```. Formaly those options refered to as **chunks**.
+
+The two most common options are `echo=TRUE` and `eval=TRUE` both by default are set to true and this is why I didn't have to pass them in. 
+
+  - `echo` means show what've been typed in i.e show the code
+  - `eval` means evaluate or execute that code
+    
+Sometimes we might want to show the code, but not execute it and other times we might just want to execute it and get the results without actually bore audience with the code. 
+
+Lets try both of those options one at a time. We start with passing `echo=FALSE` options first
+
+```{r echo=F}
+print("Hello world, I'm learning R markdown !")
+```
+
+Okay, we don't see our original `print()` statement. And now lets pass `eval=FALSE` options instead
+
+```{r eval=F}
+print("Hello world, I'm learning R markdown !")
+```
+
+And now we only see `print()` statement and no output.
+
+[Here is nice cheatsheet](http://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf) that has comprehensive cover of all the options you can pass in.
+
+The nice feature of RStudio is that you can grab any code variable in your R markdown that you can grab in your _console_.
+
+Lets type that example we saw before.
 
 ```{r}
 summary(cars)
 ```
 
-`cars` is inbuilt dataset that we are using for this example. Let's look at this data a bit close in the _console_. You should see your code block is highlighted differently and you should see green arrow at the right hand site of that block. Press that green arrow to the output in the _console_. You can also use `ctrl+enter` to do the same with the keyboard short cut.
+`cars` is inbuilt dataset that we are using for this example. Just as we are able to access that variable - `cars` in the _console_ we can do the same here.
 
-We can do some data investigation and manipulation in the _console_ and then copy our analysis into the document. In the console check data type using `class()` function, then get first few rows of the table with `head()`. It looks like a `data.frame` with two columns, why not plot them.
+**Remembber** You can go between R markdown and _concole_, to check your code, at any time. You should see your code block is highlighted differently and you should see green arrow at the right hand site of that block. Press that green arrow to get the output in the _console_. You can also use `ctrl+enter` to do the same with the keyboard short cut.
+
+Let's do little data exploration in the _console_ and then copy interesting bits into R document. In the _console_ check data type using `class()` function, then get first few rows of the table with `head()`. It looks like a `data.frame` with two columns. Now lets plot our finding so we can share it with others.
 
 ```{r}
-summary(cars)
 plot(cars$speed, cars$dist)
 ```
 
-Let's add a title `main="Travelling speed vs Breaking distance"` and axis labels `xlab="Travelling speed (mhp)"` and `ylab="Stopping distance (ft)"`
+Here is perfect example where we don't really need our code to be shown, so lets from now onwards always have `echo=FALSE` as one of our options for all our plots below.
 
-```{r}
-plot(cars$speed, cars$dist, main="Travelling speed vs Breaking distance", xlab = "Travelling speed (mhp)", ylab="Stopping distance (ft)")
-```
-
-Having actual code for a figures is sometimes unnecessary, we can turn that off with `echo=FALSE` options e.g `  ```{r echo=FALSE} .. ``` `
+Let's add a title `main="Travelling speed vs Breaking distance"` and axis labels `xlab="Travelling speed (mhp)"` and `ylab="Stopping distance (ft)"` to make our plot a little more informative.
 
 ```{r echo=FALSE}
 plot(cars$speed, cars$dist, main="Travelling speed vs Breaking distance", xlab = "Travelling speed (mhp)", ylab="Stopping distance (ft)")
 ```
 
-Sometimes we might want to show actual code and not the output, for that use `eval=FALSE` e.g ` ```{r eval=FALSE} ..``` `
+Okay, this looks nice. Let me show you some of the options that can manipulate figures. 
 
-```{r eval=FALSE}
-plot(cars$speed, cars$dist, main="Travelling speed vs Breaking distance", xlab = "Travelling speed (mhp)", ylab="Stopping distance (ft)")
-```
-
-Let's have a look at some of the options that can manipulate figure item. 
-
-Figure alignment can be done with `fig.align` options e.g ```{r fig.align=default} ..``` It's a little strange but "default" is an options. Other options include, "left", "center" and "right". Lets try a couple of those out.
+Figure alignment can be done with `fig.align` options e.g ```{r fig.align=default} ..``` default means what ever your style sheet has. The other options are, "left", "center" and "right". Lets try one out.
 
 ```{r echo=FALSE, fig.align='right'}
 plot(cars$speed, cars$dist, main="Travelling speed vs Breaking distance", xlab = "Travelling speed (mhp)", ylab="Stopping distance (ft)")
@@ -245,7 +282,37 @@ plot(cars$speed, cars$dist, main="Travelling speed vs Breaking distance", xlab =
 
 **Note** that figure legend follows the same alignment as your figure. 
 
-Lets switch to a different code
-```{r eval=FALSE}
-print("Hey")
+I'm going to share with four other options that I find rather useful beforoe moving onto YAML header section.
+
+For this examplel I'm going to use simple `for` loop. We are going to use this variable `sentence <- c("Let", "the", "computer", "do", "the", "work")`
+
+```{r}
+sentence <- c("Let", "the", "computer", "do", "the", "work")
+
+for(word in sentence){
+  print(word)
+}
 ```
+
+These two options are cosmetis:
+
+  - `prompt=FALSE` is todisplay or not the prompt to mimic _consosle_
+  - `comment=` this is to change or remove doublel hash symbol comments 
+  
+Lets turn prompt on to see whats it looks like e.g ```{r prompt=TRUE} ..``` and change our comments symbol to double forward slash `//` 
+
+```{r prompt=TRUE, comment="//"}
+sentence <- c("Let", "the", "computer", "do", "the", "work")
+
+for(word in sentence){
+  print(word)
+}
+```
+
+The two other options I just want to mention and will let you explore at your own leisure.
+
+  - `engine=` you can use to specify different language type. This is very cool. You can actually embed python, BASH JavaScript and nubmer of other languages. 
+  - `child=` You use this options to "merge" several `.Rmd` into one. 
+
+# YAML header and R slides 
+

@@ -180,7 +180,7 @@ R can give a command to the shell using the `system` function. For example the "
 system("uptime")
 ```
 
-Let's say we want to examine the quality of some FASTQ files, which contain reads from a sequencing machine. An experiment has been run over several days, and we want to run a program called "fastqc" on each of the FASTQ files. Here is how we want to run fastqc for day 0:
+Let's say we want to examine the quality of some FASTQ files, which contain reads from a sequencing machine. An experiment has been run over several days, and we want to run a program called FastQC on each of the FASTQ files. Here is how we want to run FastQC for day 0:
 
 ```{r cache=TRUE}
 system("fastqc --extract --outdir . r-more-files/Day0.fastq")
@@ -188,6 +188,7 @@ system("fastqc --extract --outdir . r-more-files/Day0.fastq")
 
 In the "Files" tab of the bottom right pane in RStudio, you should see that some new files and a directory have been created. Click on "Day0_fastqc.html" to examine it. Also examine the file in the "Day0_fastqc" folder called "summary.txt".
 
+<b>If you don't have FastQC, or it failed to run for some reason:</b> The expected output files can be found in the folder "r-more-files/fastqc-output".
 
 ## For-loops revisited
 
@@ -225,6 +226,8 @@ for(day in days) {
 
 
 ## Loading the summary.txt files
+
+<b>Note:</b> If you weren't able to run FastQC earlier, the expected output files can be found in the folder "r-more-files/fastqc-output". You will need to adjust the filenames appropriately in the R code below.
 
 The summary.txt files are in "tab separated value" format. This is similar to comma separated value format we've seen in the introductory R day, but instead of using a comma it uses a special character called a tab to delimit columns. Tabs show up as variable amounts of space in a text editor. In R, they can be written `"\t"`.
 
@@ -264,7 +267,7 @@ sumtab$grade <- factor(sumtab$grade, c("FAIL","WARN","PASS"))
 sumtab
 ```
 
-We expect to have to examine many Fastqc reports in future. It will be convenient to have this as a function!
+We expect to have to examine many FastQC reports in future. It will be convenient to have this as a function!
 
 `filename` is going to be different each time we use this code, so it wants to be an argument to the function. The rest of the code goes in the body of the function. The returned value will be `sumtab`.
 
@@ -342,7 +345,7 @@ cat("done\n")               #       4
 The second line of this code uses an if-statement to tell R that we want to make a choice. If the following test is `TRUE`, the body of the `if` (i.e., the lines in the curly braces underneath it) are executed. If the test is `FALSE`, the body of the `else` is executed instead.
 Only one or the other is ever executed.
 
-In the example above, the test `num > 100` returns the value `FALSE`, which is why the code inside the `if` block was skipped and the code inside the `else` statment was run instead.
+In the example above, the test `num > 100` returns the value `FALSE`, which is why the code inside the `if` block was skipped and the code inside the `else` block was run instead.
 
 If-statements don't have to include an `else`. If there isn't one, R simply does nothing if the test is FALSE:
 
@@ -443,5 +446,42 @@ What other R code from this lesson could we put in a .R file?
 
 How should we break up a large project into files?
 
+How do we ensure the code for a project can be run by others, ensuring it is reproducible?
+
+How should we share a project with others?
 
 
+# Packages
+
+Packages are the next step up from sourcing .R files. They let you write code that other people can install and load with `library`. Packages generally contain documentation for all functions, and one or more vignettes describing how to use the package.
+
+Hadley Wickham has a great package called `devtools` that takes a lot of the pain out of package writing.
+
+```{r, eval=FALSE}
+# Create an empty package template
+devtools::create("mylibrary")
+
+# ... Edit mylibrary/DESCRIPTION file
+# ... Write .R files in mylibrary/R folder
+
+# Load package. Use this during development.
+devtools::load_all("mylibrary")
+
+# Build package, including converting inline documentation to .Rds files using roxygen2.
+# Check for common problems and missing documentation.
+# A CRAN package must pass all checks.
+devtools::check("mylibrary")
+```
+
+* [R packages book](http://r-pkgs.had.co.nz/)
+
+Packages are most easily distributed by placing them on GitHub. They can then be installed by others using the `devtools` function `install_github`. Once a package is mature and well documented, it can be submitted to CRAN or Bioconductor.
+
+```{r eval=FALSE}
+devtools::install_github("github_username/repository_name")
+```
+
+
+```{r}
+sessionInfo()
+```

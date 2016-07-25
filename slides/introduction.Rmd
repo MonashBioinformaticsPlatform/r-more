@@ -92,21 +92,25 @@ Advanced/specialized packages: glht, broom, limma, edgeR
 
 ## Tidy data is key
 
-Tidy data doesn't mean a neat presentation for a person to read, it means in the easiest form for the computer to work with.
+Tidy data doesn't mean a neat presentation for a person to read, it means data in the easiest form for the computer to work with.
 
-R has been revolutionized by Hadley Wickham's formalization of this idea.
-
-Similar to database normalization.
-
-Data frames
-
+* use data frames
 * each row is a unit of observation
 * each column is a single piece of information of a distinct type
 
-## Not tidy
+Similar to database normalization we avoid complex structures, preferring one or more simple tables.
 
-## Tidy
+The experimental design is in the body of the table alongside the data, *not* in row names or column names.
 
+## Not tidy ...
+
+Example from: [Wickham, H. (2015) Tidy data. The Journal of Statistical Software, vol. 59.](http://vita.had.co.nz/papers/tidy-data.html)
+
+<img src="../figures/untidy.png" height="350">
+
+## ... tidier ... tidy
+
+<img src="../figures/tidy.png" height="450">
 
 
 ## Programming
@@ -136,7 +140,7 @@ Science is sharing. Science is reproducable.
 
 If you act as a model, your peers and students may surprise you with an unsuspected aptitude.
 
-Therefore, whatever you do, show your code.
+Therefore, show your code.
 
 * Document your analysis in Rmarkdown.
 * Share useful functions in packages, eg on GitHub.

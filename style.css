@@ -3,11 +3,19 @@ body {
     margin-bottom: 4em;
 }
 
+
+h1,h2,h3,h4,h5,h6 {
+    margin-top: 2em;
+    margin-bottom: 0.5em;
+}
+
 h1 {
   font-size: 50px;
 }
+
 h1.title {
   font-size: 70px;
+  margin-top: 0.5em;
 }
 
 h2 {
@@ -24,11 +32,6 @@ h5 {
 }
 h6 {
   font-size: 12px;
-}
-
-h1,h2,h3,h4,h5,h6 {
-    margin-top: 2em;
-    margin-bottom: 0.5em;
 }
 
 pre {

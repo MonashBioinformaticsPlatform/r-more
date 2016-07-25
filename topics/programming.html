@@ -65,7 +65,7 @@ h6 {
 }
 </style>
 
-<link href="data:text/css;charset=utf-8,%0Abody%20%7B%0Amargin%2Dbottom%3A%204em%3B%0A%7D%0Ah1%20%7B%0Afont%2Dsize%3A%2050px%3B%0A%7D%0Ah1%2Etitle%20%7B%0Afont%2Dsize%3A%2070px%3B%0A%7D%0Ah2%20%7B%0Afont%2Dsize%3A%2030px%3B%0A%7D%0Ah3%20%7B%0Afont%2Dsize%3A%2024px%3B%0A%7D%0Ah4%20%7B%0Afont%2Dsize%3A%2018px%3B%0A%7D%0Ah5%20%7B%0Afont%2Dsize%3A%2016px%3B%0A%7D%0Ah6%20%7B%0Afont%2Dsize%3A%2012px%3B%0A%7D%0Ah1%2Ch2%2Ch3%2Ch4%2Ch5%2Ch6%20%7B%0Amargin%2Dtop%3A%202em%3B%0Amargin%2Dbottom%3A%200%2E5em%3B%0A%7D%0Apre%20%7B%0Amargin%2Dleft%3A%204em%3B%0Amargin%2Dright%3A%204em%3B%0A%7D%0A%2Echallenge%20%7B%0Amargin%3A%204em%3B%0Apadding%3A%202em%3B%0Aborder%3A%201px%20solid%20black%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%3A%20%23ddf%3B%0A%7D%0A%2Echallenge%20%3E%20%3Afirst%2Dchild%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0A%2Eobjectives%20%7B%0Amargin%3A%204em%3B%0Apadding%3A%202em%3B%0Aborder%3A%201px%20solid%20black%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%3A%20%23fed%3B%0A%7D%0A%2Eobjectives%20%3E%20%3Afirst%2Dchild%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0A" rel="stylesheet" type="text/css" />
+<link href="data:text/css;charset=utf-8,%0Abody%20%7B%0Amargin%2Dbottom%3A%204em%3B%0A%7D%0Ah1%2Ch2%2Ch3%2Ch4%2Ch5%2Ch6%20%7B%0Amargin%2Dtop%3A%202em%3B%0Amargin%2Dbottom%3A%200%2E5em%3B%0A%7D%0Ah1%20%7B%0Afont%2Dsize%3A%2050px%3B%0A%7D%0Ah1%2Etitle%20%7B%0Afont%2Dsize%3A%2070px%3B%0Amargin%2Dtop%3A%200%2E5em%3B%0A%7D%0Ah2%20%7B%0Afont%2Dsize%3A%2030px%3B%0A%7D%0Ah3%20%7B%0Afont%2Dsize%3A%2024px%3B%0A%7D%0Ah4%20%7B%0Afont%2Dsize%3A%2018px%3B%0A%7D%0Ah5%20%7B%0Afont%2Dsize%3A%2016px%3B%0A%7D%0Ah6%20%7B%0Afont%2Dsize%3A%2012px%3B%0A%7D%0Apre%20%7B%0Amargin%2Dleft%3A%204em%3B%0Amargin%2Dright%3A%204em%3B%0A%7D%0A%2Echallenge%20%7B%0Amargin%3A%204em%3B%0Apadding%3A%202em%3B%0Aborder%3A%201px%20solid%20black%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%3A%20%23ddf%3B%0A%7D%0A%2Echallenge%20%3E%20%3Afirst%2Dchild%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0A%2Eobjectives%20%7B%0Amargin%3A%204em%3B%0Apadding%3A%202em%3B%0Aborder%3A%201px%20solid%20black%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%3A%20%23fed%3B%0A%7D%0A%2Eobjectives%20%3E%20%3Afirst%2Dchild%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0A" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -125,6 +125,7 @@ $(document).ready(function () {
 <li><a href="#a-practical-programming-exercise">A practical programming exercise</a></li>
 <li><a href="#if-statements">If statements</a></li>
 <li><a href="#sourcing-.r-files">Sourcing .R files</a></li>
+<li><a href="#packages">Packages</a></li>
 </ul>
 </div>
 
@@ -242,9 +243,10 @@ fahr_to_celsius(212)</code></pre>
 <p>Software outside of R is normally run from a “terminal” window, which is rather like the console in RStudio. You type in a command and the operating system runs it for you. The commands you type in are interpreted by something called a “shell”, because it acts like a shell around the operating system. For more information, see the <a href="http://software-carpentry.org/lessons/">Software Carpentry</a> course on the Unix shell.</p>
 <p>R can give a command to the shell using the <code>system</code> function. For example the “uptime” command tells you how long the computer has been running for.</p>
 <pre class="r"><code>system(&quot;uptime&quot;)</code></pre>
-<p>Let’s say we want to examine the quality of some FASTQ files, which contain reads from a sequencing machine. An experiment has been run over several days, and we want to run a program called “fastqc” on each of the FASTQ files. Here is how we want to run fastqc for day 0:</p>
+<p>Let’s say we want to examine the quality of some FASTQ files, which contain reads from a sequencing machine. An experiment has been run over several days, and we want to run a program called FastQC on each of the FASTQ files. Here is how we want to run FastQC for day 0:</p>
 <pre class="r"><code>system(&quot;fastqc --extract --outdir . r-more-files/Day0.fastq&quot;)</code></pre>
 <p>In the “Files” tab of the bottom right pane in RStudio, you should see that some new files and a directory have been created. Click on “Day0_fastqc.html” to examine it. Also examine the file in the “Day0_fastqc” folder called “summary.txt”.</p>
+<p><b>If you don’t have FastQC, or it failed to run for some reason:</b> The expected output files can be found in the folder “r-more-files/fastqc-output”.</p>
 </div>
 <div id="for-loops-revisited" class="section level2">
 <h2>For-loops revisited</h2>
@@ -289,6 +291,7 @@ for(day in days) {
 </div>
 <div id="loading-the-summary.txt-files" class="section level2">
 <h2>Loading the summary.txt files</h2>
+<p><b>Note:</b> If you weren’t able to run FastQC earlier, the expected output files can be found in the folder “r-more-files/fastqc-output”. You will need to adjust the filenames appropriately in the R code below.</p>
 <p>The summary.txt files are in “tab separated value” format. This is similar to comma separated value format we’ve seen in the introductory R day, but instead of using a comma it uses a special character called a tab to delimit columns. Tabs show up as variable amounts of space in a text editor. In R, they can be written <code>&quot;\t&quot;</code>.</p>
 <p>In base R we could use the function <code>read.delim</code> to read this file. It’s quite similar to <code>read.csv</code>.</p>
 <p>However, let’s use one of Hadley Wickham’s packages, <code>readr</code>, to load the file. If this package isn’t installed, you can install it with:</p>
@@ -343,7 +346,7 @@ sumtab</code></pre>
 ## 10  WARN    Overrepresented sequences Day0.fastq
 ## 11  PASS              Adapter Content Day0.fastq
 ## 12  PASS                 Kmer Content Day0.fastq</code></pre>
-<p>We expect to have to examine many Fastqc reports in future. It will be convenient to have this as a function!</p>
+<p>We expect to have to examine many FastQC reports in future. It will be convenient to have this as a function!</p>
 <p><code>filename</code> is going to be different each time we use this code, so it wants to be an argument to the function. The rest of the code goes in the body of the function. The returned value will be <code>sumtab</code>.</p>
 <pre class="r"><code>load_fastqc &lt;- function(filename) {
     sumtab &lt;- read_tsv(filename, col_names=FALSE)
@@ -438,7 +441,7 @@ cat(&quot;done\n&quot;)               #       4
 <pre><code>## not greater
 ## done</code></pre>
 <p>The second line of this code uses an if-statement to tell R that we want to make a choice. If the following test is <code>TRUE</code>, the body of the <code>if</code> (i.e., the lines in the curly braces underneath it) are executed. If the test is <code>FALSE</code>, the body of the <code>else</code> is executed instead. Only one or the other is ever executed.</p>
-<p>In the example above, the test <code>num &gt; 100</code> returns the value <code>FALSE</code>, which is why the code inside the <code>if</code> block was skipped and the code inside the <code>else</code> statment was run instead.</p>
+<p>In the example above, the test <code>num &gt; 100</code> returns the value <code>FALSE</code>, which is why the code inside the <code>if</code> block was skipped and the code inside the <code>else</code> block was run instead.</p>
 <p>If-statements don’t have to include an <code>else</code>. If there isn’t one, R simply does nothing if the test is FALSE:</p>
 <pre class="r"><code>num &lt;- 53                            # 1
 if (num &gt; 100) {                     #   2
@@ -513,7 +516,52 @@ load_fastqc &lt;- function(filename) {
 <h2>Discussion</h2>
 <p>What other R code from this lesson could we put in a .R file?</p>
 <p>How should we break up a large project into files?</p>
+<p>How do we ensure the code for a project can be run by others, ensuring it is reproducible?</p>
+<p>How should we share a project with others?</p>
 </div>
+</div>
+<div id="packages" class="section level1">
+<h1>Packages</h1>
+<p>Packages are the next step up from sourcing .R files. They let you write code that other people can install and load with <code>library</code>. Packages generally contain documentation for all functions, and one or more vignettes describing how to use the package.</p>
+<p>Hadley Wickham has a great package called <code>devtools</code> that takes a lot of the pain out of package writing.</p>
+<pre class="r"><code># Create an empty package template
+devtools::create(&quot;mylibrary&quot;)
+
+# ... Edit mylibrary/DESCRIPTION file
+# ... Write .R files in mylibrary/R folder
+
+# Load package. Use this during development.
+devtools::load_all(&quot;mylibrary&quot;)
+
+# Build package, including converting inline documentation to .Rds files using roxygen2.
+# Check for common problems and missing documentation.
+# A CRAN package must pass all checks.
+devtools::check(&quot;mylibrary&quot;)</code></pre>
+<ul>
+<li><a href="http://r-pkgs.had.co.nz/">R packages book</a></li>
+</ul>
+<p>Packages are most easily distributed by placing them on GitHub. They can then be installed by others using the <code>devtools</code> function <code>install_github</code>. Once a package is mature and well documented, it can be submitted to CRAN or Bioconductor.</p>
+<pre class="r"><code>devtools::install_github(&quot;github_username/repository_name&quot;)</code></pre>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>## R version 3.3.0 (2016-05-03)
+## Platform: x86_64-apple-darwin13.4.0 (64-bit)
+## Running under: OS X 10.11.4 (El Capitan)
+## 
+## locale:
+## [1] en_AU.UTF-8/en_AU.UTF-8/en_AU.UTF-8/C/en_AU.UTF-8/en_AU.UTF-8
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  base     
+## 
+## other attached packages:
+## [1] dplyr_0.5.0 readr_0.2.2
+## 
+## loaded via a namespace (and not attached):
+##  [1] Rcpp_0.12.5     digest_0.6.9    assertthat_0.1  R6_2.1.2       
+##  [5] DBI_0.4-1       formatR_1.4     magrittr_1.5    evaluate_0.9   
+##  [9] stringi_1.1.1   rmarkdown_1.0   tools_3.3.0     stringr_1.0.0  
+## [13] yaml_2.1.13     htmltools_0.3.5 knitr_1.13      methods_3.3.0  
+## [17] tibble_1.1</code></pre>
 </div>
 
 

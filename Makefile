@@ -1,5 +1,11 @@
 
-RMDS=$(wildcard *.Rmd */*.Rmd)
+RMDS=index.Rmd \
+     slides/introduction.Rmd \
+     topics/Rmarkdown.Rmd \
+     topics/programming.Rmd \
+     topics/tidyverse.Rmd \
+     topics/sequences_and_features.Rmd
+
 HTMLS=$(patsubst %.Rmd,%.html,$(RMDS))
 
 all : $(HTMLS) r-more-files.zip

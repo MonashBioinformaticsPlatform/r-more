@@ -47,6 +47,8 @@ library(BSgenome)       # Provides getSeq()
 library(GenomicRanges)  # Provides GRanges, etc
 library(rtracklayer)    # Provides import() and export()
 
+library(dplyr)          # Pipe %>%
+
 myseq <- DNAString("ACCATTGATTAT")
 myseq
 class(myseq)
@@ -193,6 +195,9 @@ seq_stop <- getSeq(seqs, feat_stop)
 translate(seq_stop)
 ```
 
+`resize` can fix either the `fix="start"` or `fix="end"` of the sequence.
+
+`flank` can be either flank the start (`start=TRUE`) or end (`start=FALSE`).
 
 ## Inter-range
 
@@ -211,6 +216,8 @@ features[subjectHits(hits),]
 
 findOverlaps(query, features, ignore.strand=FALSE)
 ```
+
+With `findOverlaps`, we can use genomic location as the key when *joining* disparate types of data, so this is an important tool for *integrative* analysis.
 
 
 ## Challenge {.challenge}
@@ -278,29 +285,41 @@ Let's try to "discover" the Shine-Dalgarno sequence for ourselves.
 # Note: bacteria do not have introns
 # In a eukaryote, you would need to merge CDS by transcript
 
-size <- 50
+size <- 20
 
 initiation_regions <- flank(cds, size, start=TRUE)
 initiation_seqs <- getSeq(seqs, initiation_regions)
+names(initiation_seqs) <- initiation_regions$gene_id
 
+# Look for any composition bias
 library(seqLogo)
-seqLogo(consensusMatrix(initiation_seqs, as.prob=T, baseOnly=TRUE))
+letter_counts <- consensusMatrix(initiation_seqs)
+probs <- prop.table(letter_counts[1:4,], 2)
+seqLogo(probs, ic.scale=FALSE)
+seqLogo(probs)
 
-n <- 4000
-background_regions <- GRanges("Chromosome", 
-    IRanges(
-        start=sample.int(seqlengths(seqs)["Chromosome"] - size, n), 
-        width=size
-    ),
-    strand=sample(c("+","-"), n, replace=TRUE)
-)
-background_seqs <- getSeq(seqs, background_regions)
+
+# Generate a background set of sequences by shuffling 
+shuffle <- function(dna) {
+    strsplit(as.character(dna),"")[[1]] %>% 
+        sample %>% 
+        paste(collapse="") %>%
+        DNAString
+}
+
+background_seqs <- lapply(initiation_seqs, shuffle) %>% DNAStringSet
+names(background_seqs) <- paste0(names(background_seqs), "-shuffled")
+
 ```
 
 ```{r cache=TRUE, warning=FALSE, message=FALSE}
 library(motifRG)
 
-results <- findMotifFgBg(initiation_seqs, background_seqs, both.strand=FALSE, enriched.only=TRUE)
+results <- findMotifFgBg(
+    initiation_seqs, background_seqs, 
+    both.strand=FALSE, start.width=4)
+
+summaryMotif(results$motif, results$category)
 
 motifHtmlTable(results)
 
@@ -309,6 +328,17 @@ seqLogo(refined$model$prob)
 ```
 
 There are many other motif finding programs available, outside of R. An alternative approach would be to construct the foreground and background sequences as above, then write them to FASTA files for use with an external program.
+
+```{r}
+writeXStringSet(initiation_seqs, "fg.fa")
+writeXStringSet(background_seqs, "bg.fa")
+```
+
+For example MEME (which doesn't actually need background sequences):
+
+```{r eval=FALSE}
+system("meme -dna -maxsize 1000000 fg.fa")
+```
 
 
 # Next steps
@@ -355,5 +385,9 @@ Access to BioMart data, on the internet -- translation of gene ids, gene sets, g
 
 Access to experimental data which maps to locations on a genome, on the internet. Programmatic access to the sorts of tracks you would load up in the UCSC browser.
 
+
+```{r}
+sessionInfo()
+```
 
 
