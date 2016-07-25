@@ -1,5 +1,5 @@
 ---
-title: "Shiny"
+title: "Intro to Shiny"
 author: "Adele B"
 date: "7/7/2016"
 output: ioslides_presentation
@@ -9,9 +9,6 @@ runtime: shiny
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
-
----
-![](../figures/cropped_logo.png)
 
 ## Overview
 
@@ -57,7 +54,7 @@ A basic Shiny app consists of two R scripts within their own directory:
 
 * server.R - contains the code for all the calculations the app will need. Generates an output which is returned to the ui.
 
-<center>![](../figures/shiny_structure.png)</center>
+<center>![](shiny_structure.png)</center>
 
 ## ui.R
 
@@ -145,5 +142,6 @@ Here are a few examples web apps built by Monash bioinformaticians...
 
 * http://bioinformatics.erc.monash.edu/shiny/adele/time_app/
 
-## Time for a tutorial!
+## Let's get into Shiny!
 
+[Shiny tutorial](../topics/shiny_tutorial.html)

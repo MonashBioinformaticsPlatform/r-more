@@ -67,13 +67,14 @@ install.packages("shiny")
 library(shiny)
 ```
 
-To start off, we're going to create a blank Shiny app, to show what is the bare minimum to create a Shiny app. In ui.R, type:
+To start off, we're going to create a blank app, to show what is the bare minimum to create a Shiny app. In ui.R, type:
 
 ```{r, eval = FALSE}
 shinyUI(fluidPage(
 
 ))
 ```
+
 
 And in server.R, type:
 ```{r, eval = FALSE}
@@ -84,7 +85,7 @@ shinyServer(function(input, output) {
 
 This will always be the starting point of a Shiny app, generally everything that will go into the app will end up between the innermost brackets and curly braces.
 
-In RStudio, click the `Run App` button or type `runApp()` on the console. A blank window should open up.
+In RStudio, click the `Run App` button or type `runApp()` on the console. A blank window should open up, this is an empty shiny app. 
 
 ## Building the UI layout
 
@@ -110,15 +111,15 @@ The sidebar can be moved to the right by adding the position argument to `sideba
 
 ```{r, eval=FALSE}
 sidebarLayout(position = "right",
-              sidebarPanel( "sidebar panel"),
-              mainPanel("main panel")
+              sidebarPanel( "This is a sidebar panel"),
+              mainPanel("And this is the main panel")
 )
 ```
 
 
 #### Using widgets
 
-We are going to one two widgets to the ui. These will control which samples gets plotted to the x and y axis of the plot and will be located in the sidebar panel. We will use `selectInput` to create these widgets but these could easily be swapped out for other widgets such radiobuttons. To see what widgets are available, look at the [Shiny widget gallery.](http://shiny.rstudio.com/gallery/widget-gallery.html)
+We are going to add two widgets to the ui. These will control which samples gets plotted to the x and y axis of the plot and will be located in the sidebar panel. We will use `selectInput` to create these widgets but these could easily be swapped out for other widgets such radiobuttons. To see what widgets are available, look at the [Shiny widget gallery.](http://shiny.rstudio.com/gallery/widget-gallery.html)
 
 To start off with, let's add just one widget to the sidebar. 
 ```{r, eval = FALSE}
@@ -146,7 +147,7 @@ This is where shiny starts to get a little tricky, a lot of ui code will be end 
 
 Let's break down the `selectInput` function. `inputId` is the name of widget, in this case `x_select` is the name that'll be used in the server.r file to access the current value of the widget. The `labels` argument takes a string that will be used to label above the widget. 
 
-`choices` takes a list of values and can be a bit confusing to understand. For simplicity's sake, we have given an unnamed list, which will directly display the values themselves. `"sample1"` happens to be a column name for the csv that contains the data the app will be using, so this widget can be used to select which column gets plotted. However, if the names of the choices needs to be different from the values, a named list can be used. 
+`choices` takes a list of values and can be a bit confusing to understand. For simplicity's sake, we have given an unnamed list, which will directly display the values themselves. `"sample1"` happens to be a column name in the data the app will be using, so this widget can be used to select which column gets plotted. However, if the names of the choices needs to be different from the values, a named list can be used. 
 
 For example:
 ```{r, eval = F}
@@ -191,11 +192,11 @@ shinyUI(fluidPage(
   )
 ))
 ```
-This widget is nearly identical to the first, all that has changed is the name of the widget and which sample2 has been pre-selected. This widget has been called `y_select` and it will start on `sample2` so that the columns selected for the x and y axis will be different. 
+This widget is nearly identical to the first, all that has changed is the name of the widget and which sample has been pre-selected. This widget has been called `y_select` and it will start on `sample2` so that the columns selected for the x and y axis will be different. 
 
 #### Adding an output
 
-There's one last thing to do before moving onto the server.R file. The app has inputs now, but it doesn't have any outputs! For this app, we will use one output, `plotOutput`, as we want to generate a plot and it will be located in the main panel.
+There's one last thing to do before moving onto the server.R file. The app has inputs now, but it doesn't have any outputs! For this app, we will use one output, `plotOutput`, as we want to generate a plot and it will be located in the main panel. There are numerous types of outputs Shiny can generate
 
 ```{r, eval = F}
 shinyUI(fluidPage(
