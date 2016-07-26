@@ -453,7 +453,7 @@ How should we share a project with others?
 
 # Packages
 
-Packages are the next step up from sourcing .R files. They let you write code that other people can install and load with `library`. Packages generally contain documentation for all functions, and one or more vignettes describing how to use the package.
+Packages are the next step up from sourcing .R files. They let you write code that other people can install and then load with `library`. Packages generally contain documentation for all functions, and one or more vignettes describing how to use the package.
 
 Hadley Wickham has a great package called `devtools` that takes a lot of the pain out of package writing.
 

@@ -522,7 +522,7 @@ load_fastqc &lt;- function(filename) {
 </div>
 <div id="packages" class="section level1">
 <h1>Packages</h1>
-<p>Packages are the next step up from sourcing .R files. They let you write code that other people can install and load with <code>library</code>. Packages generally contain documentation for all functions, and one or more vignettes describing how to use the package.</p>
+<p>Packages are the next step up from sourcing .R files. They let you write code that other people can install and then load with <code>library</code>. Packages generally contain documentation for all functions, and one or more vignettes describing how to use the package.</p>
 <p>Hadley Wickham has a great package called <code>devtools</code> that takes a lot of the pain out of package writing.</p>
 <pre class="r"><code># Create an empty package template
 devtools::create(&quot;mylibrary&quot;)
@@ -557,11 +557,11 @@ devtools::check(&quot;mylibrary&quot;)</code></pre>
 ## [1] dplyr_0.5.0 readr_0.2.2
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.12.5     digest_0.6.9    assertthat_0.1  R6_2.1.2       
-##  [5] DBI_0.4-1       formatR_1.4     magrittr_1.5    evaluate_0.9   
-##  [9] stringi_1.1.1   rmarkdown_1.0   tools_3.3.0     stringr_1.0.0  
-## [13] yaml_2.1.13     htmltools_0.3.5 knitr_1.13      methods_3.3.0  
-## [17] tibble_1.1</code></pre>
+##  [1] Rcpp_0.12.5      codetools_0.2-14 digest_0.6.9     assertthat_0.1  
+##  [5] R6_2.1.2         DBI_0.4-1        formatR_1.4      magrittr_1.5    
+##  [9] evaluate_0.9     stringi_1.1.1    rmarkdown_1.0    tools_3.3.0     
+## [13] stringr_1.0.0    yaml_2.1.13      htmltools_0.3.5  knitr_1.13      
+## [17] tibble_1.1       methods_3.3.0</code></pre>
 </div>
 
 

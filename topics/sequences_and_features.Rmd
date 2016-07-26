@@ -3,6 +3,11 @@ title: "Working with sequences and genomic features"
 output: html_document
 ---
 
+```{r echo=FALSE}
+options(width=90)
+```
+
+
 This section looks at working with sequences, primarily DNA sequences, and genomic features.
 
 We will be using Bioconductor packages for this. Recall that most R packages are available on the CRAN package repository, and installed using `install.packages()`. Bioconductor is another specialized repository devoted to bioinformatics R packages. Here is how to install packages from Bioconductor:
@@ -16,6 +21,8 @@ biocLite()
 
 # Install further packages used in this tutorial
 biocLite(c(
+    "Biostrings",
+    "GenomicRanges",
     "BSgenome", 
     "rtracklayer",
     "motifRG"
@@ -25,6 +32,7 @@ biocLite(c(
 #   library(BiocInstaller)
 #   biocLite( ... )
 ```
+
 
 Bioconductor represents a different strand of current development in R, separate from the Hadley Wickham tidyverse. Where Hadley emphasizes the data frame above all else, Bioconductor uses a great variety of data types. It's the very opposite of tidy!
 
@@ -86,24 +94,36 @@ getSeq(myset, range1)
 
 range2 <- GRanges("chrI", IRanges(start=3,end=5), strand="-")
 getSeq(myset, range2)
+```
 
-# GRanges are sometimes like vectors
-c(range1, range2)
+Accessing GRanges data:
 
-# Accessing GRanges data
+```{r}
 seqnames(range1)
 start(range1)
 end(range1)
 strand(range1)
 as.data.frame(range1)
+```
 
-# GRanges can have metadata columns, so they are also like data frames
+GRanges are sometimes like vectors:
+
+```{r}
+c(range1, range2)
+```
+
+But GRanges can have metadata columns, so they are also like data frames:
+
+```{r}
 mcols(range1)$wobble <- 10
 range1
 mcols(range1)$wobble
 range1$wobble
+```
 
-# Another way to create a GRanges
+Another way to create a GRanges:
+    
+```{r}
 as("chrI:3-5:+", "GRanges")
 ```
 
@@ -112,7 +132,9 @@ as("chrI:3-5:+", "GRanges")
 
 Reverse complement the following DNA sequence and then translate to an amino acid sequence:
 
-`TTCCATTTCCAT`
+```
+TTCCATTTCCAT
+````
 
 
 # Loading files
@@ -135,8 +157,13 @@ Conversely, a DNAStringSet can also be written to a file with `writeXStringSet`.
 
 Genome annotations are available in a variety of text formats such as GFF3 and GTF. They can be loaded with the `import` function from `rtracklayer`. This GTF file is also from Ensembl, and gives the locations of the genes in the genome, and features within them:
 
+
 ```{r warning=FALSE, message=FALSE}
 features <- import("r-more-files/Escherichia_coli_k_12.GCA_000800765.1.29.gtf")
+
+# Optional: just retain the columns of metadata we need
+mcols(features) <- mcols(features)[,c("type","gene_name","gene_id")]
+
 features
 ```
 
@@ -156,7 +183,7 @@ translate(feat_seq)
 
 The metadata columns let us query the GRanges, for example for a particular gene.
 
-```{r}
+```{r results="hold"}
 subset(features, gene_name == "lacA")
 # Equivalently:
 #   features[features$gene_name == "lacA" & !is.na(features$gene_name),]
@@ -166,12 +193,13 @@ Note: `subset` is a generic R function similar to dplyr's `filter`. The second a
 
 We could also get all features of a particular type.
 
-```{r}
+```{r results="hold"}
 cds <- subset(features, type == "CDS")
 cds
 # Equivalently:
 #   features[features$type == "CDS",]
 ```
+
 
 
 # Further operations on GRanges
@@ -180,7 +208,7 @@ cds
 
 Various useful manipulations of individual ranges are defined. 
 
-```
+```{r eval=FALSE}
 ?"intra-range-methods"
 ```
 
@@ -199,10 +227,27 @@ translate(seq_stop)
 
 `flank` can be either flank the start (`start=TRUE`) or end (`start=FALSE`).
 
+```
+input
+                        (----)
+                        .    .
+resize                  (--------)
+resize(fix="end")   (--------)
+                        .    .
+flank              (---).    .
+flank(start=F)          .    .(---)
+                        .    .
+promoters          (------)  .
+                        .    .
+narrow                  .(--).
+```
+
+
 ## Inter-range
 
-```
+```{r eval=FALSE}
 ?"inter-range-methods"
+?"setops-methods"
 ```
 
 One compelling feature of GenomicRanges is that it is able to find overlapping ranges very quickly.
@@ -218,6 +263,33 @@ findOverlaps(query, features, ignore.strand=FALSE)
 ```
 
 With `findOverlaps`, we can use genomic location as the key when *joining* disparate types of data, so this is an important tool for *integrative* analysis.
+
+`GenomicRanges` also provides:
+
+* `range` - get a feature that spans from the start to the end of all features in a `GRanges`.
+
+* `reduce` - merge overlapping features, so that the same bases are covered by a reduced collection of features.
+
+* `disjoin` - as with reduce, but broken at each start and end of the input features.
+
+* `setdiff` - subtracts one set of features from another, could be used with range on a set of exons to get introns. Might need to use `GenomicRanges::setdiff` if also using `dplyr`.
+
+```
+input
+        (--------)
+             (----------------)
+                     (-----)
+                                    (---)
+                                    
+range   (-------------------------------)
+
+reduce  (----------------------)    (---)
+
+disjoin (---)(---)(-)(-----)(--)    (---)
+
+GenomicRanges::setdiff(range(input),input)
+                                (--)
+```
 
 
 ## Challenge {.challenge}
@@ -249,8 +321,7 @@ vmatchPattern("AGGAGGT", seqs)
 vmatchPattern(reverseComplement(DNAString("AGGAGGT")), seqs)
 ```
 
-Demanding an exact match here is overly strict. `vmatchPattern` has arguments allowing inexact matches.
-Alternatively, there is a similar function for searching for a Position Weight Matrix pattern, `matchPWM`.
+Demanding an exact match here is overly strict. `vmatchPattern` has arguments allowing inexact matches. Alternatively, there is a similar function for searching for a Position Weight Matrix pattern, `matchPWM`.
 
 The following will search both strands, allowing one mismatch, and produce the result in convenient GRanges form:
 

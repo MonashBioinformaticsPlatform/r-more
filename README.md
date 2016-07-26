@@ -23,8 +23,8 @@ PATH=/usr/lib/rstudio-server/bin/pandoc:$PATH make
 Command line software:
 
 * R
-* RStudio
 * pandoc
+* java (Ubuntu: apt-get install default-jre)
 * fastqc
 
 R packages:
@@ -44,6 +44,8 @@ install.packages(c(
 source("https://bioconductor.org/biocLite.R")
 biocLite()
 biocLite(c(
+    "Biostrings",
+    "GenomicRanges",
     "BSgenome",
     "rtracklayer",
     "motifRG"
