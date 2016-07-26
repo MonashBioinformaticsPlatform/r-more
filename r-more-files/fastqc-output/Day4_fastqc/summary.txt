@@ -1,0 +1,12 @@
+PASS	Basic Statistics	Day4.fastq
+PASS	Per base sequence quality	Day4.fastq
+PASS	Per tile sequence quality	Day4.fastq
+PASS	Per sequence quality scores	Day4.fastq
+FAIL	Per base sequence content	Day4.fastq
+WARN	Per sequence GC content	Day4.fastq
+PASS	Per base N content	Day4.fastq
+PASS	Sequence Length Distribution	Day4.fastq
+PASS	Sequence Duplication Levels	Day4.fastq
+PASS	Overrepresented sequences	Day4.fastq
+PASS	Adapter Content	Day4.fastq
+PASS	Kmer Content	Day4.fastq

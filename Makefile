@@ -13,7 +13,7 @@ all : $(HTMLS) r-more-files.zip
 %.html : %.Rmd
 	Rscript -e 'rmarkdown::render("$<", "all")'
 
-r-more-files.zip : r-more-files/*
+r-more-files.zip : r-more-files/* r-more-files/fastqc-output/*
 	zip -FSr r-more-files.zip r-more-files
 
 clean :
