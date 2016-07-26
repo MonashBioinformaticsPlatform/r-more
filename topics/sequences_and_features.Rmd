@@ -56,7 +56,12 @@ library(GenomicRanges)  # Provides GRanges, etc
 library(rtracklayer)    # Provides import() and export()
 
 library(dplyr)          # Pipe %>%
+```
 
+
+## DNAString
+
+```{r}
 myseq <- DNAString("ACCATTGATTAT")
 myseq
 class(myseq)
@@ -74,6 +79,8 @@ methods(class="DNAString")
 ```
 
 
+## DNAStringSet
+
 Often we want to work with a list of sequences, such as chromosomes.
 
 ```{r}
@@ -85,6 +92,8 @@ myset$chrII
 # or myset[[2]]
 ```
 
+
+## GRanges
 
 We may then wish to refer to regions of these sequences, often with an associated strand. This is done with the `GRanges` type. `GRanges` builds on `IRanges`, "integer ranges". An IRanges has a starts and ends. A GRanges additionally has sequence names and strand information.
 
@@ -106,24 +115,20 @@ strand(range1)
 as.data.frame(range1)
 ```
 
-GRanges are sometimes like vectors:
+
+Further manipulations:
 
 ```{r}
+# GRanges are sometimes like vectors:
 c(range1, range2)
-```
 
-But GRanges can have metadata columns, so they are also like data frames:
-
-```{r}
+# GRanges can have metadata columns, so they are also like data frames:
 mcols(range1)$wobble <- 10
 range1
 mcols(range1)$wobble
 range1$wobble
-```
 
-Another way to create a GRanges:
-    
-```{r}
+# A handy way to create a GRanges
 as("chrI:3-5:+", "GRanges")
 ```
 
@@ -134,10 +139,12 @@ Reverse complement the following DNA sequence and then translate to an amino aci
 
 ```
 TTCCATTTCCAT
-````
+```
 
 
 # Loading files
+
+## Loading sequences
 
 DNA sequences are generally stored in FASTA format, a simple text format. These can be loaded with `readDNAStringSet` from `Biostrings`. Let's load the genome of E. coli strain K-12, obtained from the Ensembl FTP site:
 
@@ -145,15 +152,17 @@ DNA sequences are generally stored in FASTA format, a simple text format. These 
 seqs <- readDNAStringSet("r-more-files/Escherichia_coli_k_12.GCA_000800765.1.29.dna.genome.fa")
 seqs
 
-names(seqs)
 # Our chromosome name is too verbose.
 # Remove everything from the name after the first space.
+names(seqs)
 names(seqs) <- sub(" .*","",names(seqs))
 names(seqs)
 ```
 
 Conversely, a DNAStringSet can also be written to a file with `writeXStringSet`.
 
+
+## Loading features
 
 Genome annotations are available in a variety of text formats such as GFF3 and GTF. They can be loaded with the `import` function from `rtracklayer`. This GTF file is also from Ensembl, and gives the locations of the genes in the genome, and features within them:
 
@@ -369,7 +378,6 @@ probs <- prop.table(letter_counts[1:4,], 2)
 seqLogo(probs, ic.scale=FALSE)
 seqLogo(probs)
 
-
 # Generate a background set of sequences by shuffling 
 shuffle <- function(dna) {
     strsplit(as.character(dna),"")[[1]] %>% 
@@ -380,7 +388,6 @@ shuffle <- function(dna) {
 
 background_seqs <- lapply(initiation_seqs, shuffle) %>% DNAStringSet
 names(background_seqs) <- paste0(names(background_seqs), "-shuffled")
-
 ```
 
 ```{r cache=TRUE, warning=FALSE, message=FALSE}
