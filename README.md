@@ -41,6 +41,9 @@ install.packages(c(
     "rmarkdown"
 ))
 
+# To force a Bioconductor upgrade if you have an older version than 3.3:
+try( remove.packages("BiocInstaller") )
+
 source("https://bioconductor.org/biocLite.R")
 biocLite()
 biocLite(c(

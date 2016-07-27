@@ -135,6 +135,12 @@ $(document).ready(function () {
 <pre class="r"><code># This loads the Bioconductor installer
 source(&quot;https://bioconductor.org/biocLite.R&quot;)
 
+# If this says you have a version of Bioconductor prior to 3.3
+# some things in this tutorial may fail. To upgrade:
+# - Make sure you have R 3.3 or higher
+# - remove.packages(&quot;BiocInstaller&quot;)
+# - Restart R try again from the top
+
 # Install a basic set of packages
 biocLite()
 
@@ -158,6 +164,7 @@ vignette(package=&quot;Biostrings&quot;)
 vignette(&quot;BiostringsQuickOverview&quot;, package=&quot;Biostrings&quot;)</code></pre>
 <div id="dna-sequences-and-genomic-ranges" class="section level1">
 <h1>DNA sequences and genomic ranges</h1>
+<p>Load packages we will be using:</p>
 <pre class="r"><code>library(Biostrings)     # Provides DNAString, DNAStringSet, etc
 library(BSgenome)       # Provides getSeq()
 library(GenomicRanges)  # Provides GRanges, etc
@@ -166,6 +173,7 @@ library(rtracklayer)    # Provides import() and export()
 library(dplyr)          # Pipe %&gt;%</code></pre>
 <div id="dnastring" class="section level2">
 <h2>DNAString</h2>
+<p>Package <code>Biostrings</code> offers classes for storing DNA strings, <code>DNAString</code>, amino acid sequences, <code>AAString</code>, or anything else in a <code>BString</code>. These are very like character strings, but a variety of biologically meaningful functions can be applied to them.</p>
 <pre class="r"><code>myseq &lt;- DNAString(&quot;ACCATTGATTAT&quot;)
 myseq</code></pre>
 <pre><code>##   12-letter &quot;DNAString&quot; instance
@@ -287,7 +295,16 @@ as(&quot;chrI:3-5:+&quot;, &quot;GRanges&quot;)</code></pre>
 <h1>Loading files</h1>
 <div id="loading-sequences" class="section level2">
 <h2>Loading sequences</h2>
-<p>DNA sequences are generally stored in FASTA format, a simple text format. These can be loaded with <code>readDNAStringSet</code> from <code>Biostrings</code>. Let’s load the genome of E. coli strain K-12, obtained from the Ensembl FTP site:</p>
+<p>DNA sequences are generally stored in FASTA format, a simple text format. These can be loaded with <code>readDNAStringSet</code> from <code>Biostrings</code>. Let’s load the genome of E. coli strain K-12, obtained from the Ensembl FTP site.</p>
+<pre><code>### The start of the .fa file looks like this:
+# &gt;Chromosome dna:chromosome chromosome:GCA_000800765.1:Chromosome:1:4558660:1
+# AGCTTTTCATTCTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTC
+# TGATAGCAGCTTCTGAACTGGTTACCTGCCGTGAGTAAATTAAAATTTTATTGACTTAGG
+# TCACTAAATACTTTAACCAATATAGGCATAGCGCACAGACAGATAAAAATTACAGAGTAC
+# ACAACATCCATGAAACGCATTAGCACCACCATTACCACCACCATCACCATTACCACAGGT
+# AACGGTGCGGGCTGACGCGTACAGGAAACACAGAAAAAAGCCCGCACCTGACAGTGCGGG
+# CTTTTTTTTTCGACCAAAGGTAACGAGGTAACAACCATGCGAGTGTTGAAGTTCGGCGGT
+# ...</code></pre>
 <pre class="r"><code>seqs &lt;- readDNAStringSet(&quot;r-more-files/Escherichia_coli_k_12.GCA_000800765.1.29.dna.genome.fa&quot;)
 seqs</code></pre>
 <pre><code>##   A DNAStringSet instance of length 1
@@ -304,7 +321,18 @@ names(seqs)</code></pre>
 </div>
 <div id="loading-features" class="section level2">
 <h2>Loading features</h2>
-<p>Genome annotations are available in a variety of text formats such as GFF3 and GTF. They can be loaded with the <code>import</code> function from <code>rtracklayer</code>. This GTF file is also from Ensembl, and gives the locations of the genes in the genome, and features within them:</p>
+<p>Genome annotations are available in a variety of text formats such as GFF3 and GTF. They can be loaded with the <code>import</code> function from <code>rtracklayer</code>. This GTF file is also from Ensembl, and gives the locations of the genes in the genome, and features within them.</p>
+<pre><code>### The start of the .gtf file looks like this:
+# #!genome-build ASM80076v1
+# #!genome-version GCA_000800765.1
+# #!genome-date 2014-12
+# #!genome-build-accession GCA_000800765.1
+# #!genebuild-last-updated 2014-12
+# Chromosome      ena     gene    190     255     .       +       .       gene_id &quot;ER3413_4519&quot;; gene_version &quot;1&quot;; gene_name &quot;thrL&quot;; gene_source &quot;ena&quot;; gene_biotype &quot;protein_coding&quot;;
+# Chromosome      ena     transcript      190     255     .       +       .       gene_id &quot;ER3413_4519&quot;; gene_version &quot;1&quot;; transcript_id &quot;AIZ54182&quot;; transcript_version &quot;1&quot;; gene_name &quot;thrL&quot;; gene_source &quot;ena&quot;; gene_biotype &quot;protein_coding&quot;; transcript_name &quot;thrL-1&quot;; transcript_source &quot;ena&quot;; transcript_biotype &quot;protein_coding&quot;;
+# Chromosome      ena     exon    190     255     .       +       .       gene_id &quot;ER3413_4519&quot;; gene_version &quot;1&quot;; transcript_id &quot;AIZ54182&quot;; transcript_version &quot;1&quot;; exon_number &quot;1&quot;; gene_name &quot;thrL&quot;; gene_source &quot;ena&quot;; gene_biotype &quot;protein_coding&quot;; transcript_name &quot;thrL-1&quot;; transcript_source &quot;ena&quot;; transcript_biotype &quot;protein_coding&quot;; exon_id &quot;AIZ54182-1&quot;; exon_version &quot;1&quot;;
+# Chromosome      ena     CDS     190     252     .       +       0       gene_id &quot;ER3413_4519&quot;; gene_version &quot;1&quot;; transcript_id &quot;AIZ54182&quot;; transcript_version &quot;1&quot;; exon_number &quot;1&quot;; gene_name &quot;thrL&quot;; gene_source &quot;ena&quot;; gene_biotype &quot;protein_coding&quot;; transcript_name &quot;thrL-1&quot;; transcript_source &quot;ena&quot;; transcript_biotype &quot;protein_coding&quot;; protein_id &quot;AIZ54182&quot;; protein_version &quot;1&quot;;
+# ...</code></pre>
 <pre class="r"><code>features &lt;- import(&quot;r-more-files/Escherichia_coli_k_12.GCA_000800765.1.29.gtf&quot;)
 
 # Optional: just retain the columns of metadata we need

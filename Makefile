@@ -25,4 +25,4 @@ r-more-files.zip : r-more-files/* r-more-files/fastqc-output/* $(RS)
 	zip -FSr r-more-files.zip r-more-files
 
 clean :
-	rm $(HTMLS) r-more-files.zip
+	rm $(HTMLS) $(RS) r-more-files.zip

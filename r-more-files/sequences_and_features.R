@@ -8,6 +8,12 @@ options(width=90)
 # This loads the Bioconductor installer
 source("https://bioconductor.org/biocLite.R")
 
+# If this says you have a version of Bioconductor prior to 3.3
+# some things in this tutorial may fail. To upgrade:
+# - Make sure you have R 3.3 or higher
+# - remove.packages("BiocInstaller")
+# - Restart R try again from the top
+
 # Install a basic set of packages
 biocLite()
 
@@ -123,6 +129,17 @@ TTCCATTTCCAT
 ## Loading sequences
 ## -----------------
 
+### The start of the .fa file looks like this:
+# >Chromosome dna:chromosome chromosome:GCA_000800765.1:Chromosome:1:4558660:1
+# AGCTTTTCATTCTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTC
+# TGATAGCAGCTTCTGAACTGGTTACCTGCCGTGAGTAAATTAAAATTTTATTGACTTAGG
+# TCACTAAATACTTTAACCAATATAGGCATAGCGCACAGACAGATAAAAATTACAGAGTAC
+# ACAACATCCATGAAACGCATTAGCACCACCATTACCACCACCATCACCATTACCACAGGT
+# AACGGTGCGGGCTGACGCGTACAGGAAACACAGAAAAAAGCCCGCACCTGACAGTGCGGG
+# CTTTTTTTTTCGACCAAAGGTAACGAGGTAACAACCATGCGAGTGTTGAAGTTCGGCGGT
+# ...
+
+
 seqs <- readDNAStringSet("r-more-files/Escherichia_coli_k_12.GCA_000800765.1.29.dna.genome.fa")
 seqs
 
@@ -136,6 +153,19 @@ names(seqs)
 ## ----------------
 ## Loading features
 ## ----------------
+
+### The start of the .gtf file looks like this:
+# #!genome-build ASM80076v1
+# #!genome-version GCA_000800765.1
+# #!genome-date 2014-12
+# #!genome-build-accession GCA_000800765.1
+# #!genebuild-last-updated 2014-12
+# Chromosome      ena     gene    190     255     .       +       .       gene_id "ER3413_4519"; gene_version "1"; gene_name "thrL"; gene_source "ena"; gene_biotype "protein_coding";
+# Chromosome      ena     transcript      190     255     .       +       .       gene_id "ER3413_4519"; gene_version "1"; transcript_id "AIZ54182"; transcript_version "1"; gene_name "thrL"; gene_source "ena"; gene_biotype "protein_coding"; transcript_name "thrL-1"; transcript_source "ena"; transcript_biotype "protein_coding";
+# Chromosome      ena     exon    190     255     .       +       .       gene_id "ER3413_4519"; gene_version "1"; transcript_id "AIZ54182"; transcript_version "1"; exon_number "1"; gene_name "thrL"; gene_source "ena"; gene_biotype "protein_coding"; transcript_name "thrL-1"; transcript_source "ena"; transcript_biotype "protein_coding"; exon_id "AIZ54182-1"; exon_version "1";
+# Chromosome      ena     CDS     190     252     .       +       0       gene_id "ER3413_4519"; gene_version "1"; transcript_id "AIZ54182"; transcript_version "1"; exon_number "1"; gene_name "thrL"; gene_source "ena"; gene_biotype "protein_coding"; transcript_name "thrL-1"; transcript_source "ena"; transcript_biotype "protein_coding"; protein_id "AIZ54182"; protein_version "1";
+# ...
+
 
 features <- import("r-more-files/Escherichia_coli_k_12.GCA_000800765.1.29.gtf")
 

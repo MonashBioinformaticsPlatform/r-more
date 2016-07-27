@@ -16,6 +16,12 @@ We will be using Bioconductor packages for this. Recall that most R packages are
 # This loads the Bioconductor installer
 source("https://bioconductor.org/biocLite.R")
 
+# If this says you have a version of Bioconductor prior to 3.3
+# some things in this tutorial may fail. To upgrade:
+# - Make sure you have R 3.3 or higher
+# - remove.packages("BiocInstaller")
+# - Restart R try again from the top
+
 # Install a basic set of packages
 biocLite()
 
@@ -49,6 +55,8 @@ vignette("BiostringsQuickOverview", package="Biostrings")
 
 # DNA sequences and genomic ranges
 
+Load packages we will be using:
+
 ```{r warning=FALSE, message=FALSE}
 library(Biostrings)     # Provides DNAString, DNAStringSet, etc
 library(BSgenome)       # Provides getSeq()
@@ -60,6 +68,8 @@ library(dplyr)          # Pipe %>%
 
 
 ## DNAString
+
+Package `Biostrings` offers classes for storing DNA strings, `DNAString`, amino acid sequences, `AAString`, or anything else in a `BString`. These are very like character strings, but a variety of biologically meaningful functions can be applied to them.
 
 ```{r}
 myseq <- DNAString("ACCATTGATTAT")
@@ -148,7 +158,19 @@ TTCCATTTCCAT
 
 ## Loading sequences
 
-DNA sequences are generally stored in FASTA format, a simple text format. These can be loaded with `readDNAStringSet` from `Biostrings`. Let's load the genome of E. coli strain K-12, obtained from the Ensembl FTP site:
+DNA sequences are generally stored in FASTA format, a simple text format. These can be loaded with `readDNAStringSet` from `Biostrings`. Let's load the genome of E. coli strain K-12, obtained from the Ensembl FTP site.
+
+```
+### The start of the .fa file looks like this:
+# >Chromosome dna:chromosome chromosome:GCA_000800765.1:Chromosome:1:4558660:1
+# AGCTTTTCATTCTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTC
+# TGATAGCAGCTTCTGAACTGGTTACCTGCCGTGAGTAAATTAAAATTTTATTGACTTAGG
+# TCACTAAATACTTTAACCAATATAGGCATAGCGCACAGACAGATAAAAATTACAGAGTAC
+# ACAACATCCATGAAACGCATTAGCACCACCATTACCACCACCATCACCATTACCACAGGT
+# AACGGTGCGGGCTGACGCGTACAGGAAACACAGAAAAAAGCCCGCACCTGACAGTGCGGG
+# CTTTTTTTTTCGACCAAAGGTAACGAGGTAACAACCATGCGAGTGTTGAAGTTCGGCGGT
+# ...
+```
 
 ```{r}
 seqs <- readDNAStringSet("r-more-files/Escherichia_coli_k_12.GCA_000800765.1.29.dna.genome.fa")
@@ -166,7 +188,21 @@ Conversely, a DNAStringSet can also be written to a file with `writeXStringSet`.
 
 ## Loading features
 
-Genome annotations are available in a variety of text formats such as GFF3 and GTF. They can be loaded with the `import` function from `rtracklayer`. This GTF file is also from Ensembl, and gives the locations of the genes in the genome, and features within them:
+Genome annotations are available in a variety of text formats such as GFF3 and GTF. They can be loaded with the `import` function from `rtracklayer`. This GTF file is also from Ensembl, and gives the locations of the genes in the genome, and features within them.
+
+```
+### The start of the .gtf file looks like this:
+# #!genome-build ASM80076v1
+# #!genome-version GCA_000800765.1
+# #!genome-date 2014-12
+# #!genome-build-accession GCA_000800765.1
+# #!genebuild-last-updated 2014-12
+# Chromosome      ena     gene    190     255     .       +       .       gene_id "ER3413_4519"; gene_version "1"; gene_name "thrL"; gene_source "ena"; gene_biotype "protein_coding";
+# Chromosome      ena     transcript      190     255     .       +       .       gene_id "ER3413_4519"; gene_version "1"; transcript_id "AIZ54182"; transcript_version "1"; gene_name "thrL"; gene_source "ena"; gene_biotype "protein_coding"; transcript_name "thrL-1"; transcript_source "ena"; transcript_biotype "protein_coding";
+# Chromosome      ena     exon    190     255     .       +       .       gene_id "ER3413_4519"; gene_version "1"; transcript_id "AIZ54182"; transcript_version "1"; exon_number "1"; gene_name "thrL"; gene_source "ena"; gene_biotype "protein_coding"; transcript_name "thrL-1"; transcript_source "ena"; transcript_biotype "protein_coding"; exon_id "AIZ54182-1"; exon_version "1";
+# Chromosome      ena     CDS     190     252     .       +       0       gene_id "ER3413_4519"; gene_version "1"; transcript_id "AIZ54182"; transcript_version "1"; exon_number "1"; gene_name "thrL"; gene_source "ena"; gene_biotype "protein_coding"; transcript_name "thrL-1"; transcript_source "ena"; transcript_biotype "protein_coding"; protein_id "AIZ54182"; protein_version "1";
+# ...
+```
 
 
 ```{r warning=FALSE, message=FALSE}
