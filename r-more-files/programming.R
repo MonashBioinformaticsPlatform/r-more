@@ -6,7 +6,6 @@
 # Functions
 # =========
 
-
 fahr_to_kelvin <- function(temp) {
     (temp-32) * (5/9) + 273.15
 }
@@ -21,7 +20,6 @@ fahr_to_kelvin(212)
 ## ----------
 ## Variations
 ## ----------
-
 
 fahr_to_kelvin <- function(temp) {
     kelvin <- (temp-32) * (5/9) + 273.15
@@ -74,7 +72,6 @@ charmander <- function(bulbasaur) {
 ## Composing Functions
 ## -------------------
 
-
 kelvin_to_celsius <- function(temp) {
     temp - 273.15
 }
@@ -97,33 +94,30 @@ debugonce(fahr_to_celsius)
 fahr_to_celsius(212)
 
 
-## ----------------------
-## Challenge {.challenge}
-## ----------------------
-
-
-Write a function to calculate the length of the hypotenuse of a right angled triangle using Pythagorus's rule, given the lengths of the other sides.
-
-Hint: `sqrt` calculates the square root of a number.
-
-Testing your code is important. Invent a test case for your code consisting of:
-
-* The input arguments to your function.
-* The return value you expect.
-
-Confirm that your function works as expected.
-
-
+## ---------
+## Challenge
+## ---------
+# 
+# Write a function to calculate the length of the hypotenuse of a right angled triangle using Pythagorus's rule, given the lengths of the other sides.
+# 
+# Hint: `sqrt` calculates the square root of a number.
+# 
+# Testing your code is important. Invent a test case for your code consisting of:
+# 
+# * The input arguments to your function.
+# * The return value you expect.
+# 
+# Confirm that your function works as expected.
+# 
+# 
 
 # ================================
 # A practical programming exercise
 # ================================
 
-
 ## -------------------------
 ## Running external software
 ## -------------------------
-
 
 system("uptime")
 
@@ -134,7 +128,6 @@ system("fastqc --extract --outdir . r-more-files/Day0.fastq")
 ## -------------------
 ## For-loops revisited
 ## -------------------
-
 
 for(i in c(1,2,3,4,5)) {     #    1
     cat("i is",i,"\n")       #      2   4   6   8   10
@@ -162,7 +155,6 @@ for(day in days) {
 ## -----------------------------
 ## Loading the summary.txt files
 ## -----------------------------
-
 
 install.packages("readr")
 
@@ -197,7 +189,6 @@ load_fastqc("Day0_fastqc/summary.txt")
 ## Applying the function
 ## ---------------------
 
-
 days <- c(0,4,7,10,15,20)
 filenames <- paste0("Day", days, "_fastqc/summary.txt")
 filenames
@@ -220,7 +211,6 @@ table(bigtab$test, bigtab$grade)
 # =============
 # If statements
 # =============
-
 
 num <- 37                   # 1
 if (num > 100) {            #   2
@@ -255,19 +245,17 @@ sign(0)
 sign(2/3)
 
 
-## -----------------
-## Quiz {.challenge}
-## -----------------
-
-
-Which lines of the function `sign` executed when it was called above, and in what order?
-
-
+## ----
+## Quiz
+## ----
+# 
+# Which lines of the function `sign` executed when it was called above, and in what order?
+# 
+# 
 
 ## ---------------------
 ## Improving load_fastqc
 ## ---------------------
-
 
 load_fastqc("nosuchfile.txt")
 
@@ -291,6 +279,7 @@ load_fastqc("nosuchfile.txt")
 # Sourcing .R files
 # =================
 
+# fastqc.R file should contain:
 
 library(readr)
 
@@ -302,28 +291,28 @@ load_fastqc <- function(filename) {
 }
 
 
+# From the console:
+
 source("fastqc.R")
 
 
-## -----------------------
-## Discussion {.challenge}
-## -----------------------
-
-
-What other R code from this lesson could we put in a .R file?
-
-How should we break up a large project into files?
-
-How do we ensure the code for a project can be run by others, ensuring it is reproducible?
-
-How should we share a project with others?
-
-
+## ----------
+## Discussion
+## ----------
+# 
+# What other R code from this lesson could we put in a .R file?
+# 
+# How should we break up a large project into files?
+# 
+# How do we ensure the code for a project can be run by others, ensuring it is reproducible?
+# 
+# How should we share a project with others?
+# 
+# 
 
 # ========
 # Packages
 # ========
-
 
 # Create an empty package template
 devtools::create("mylibrary")
@@ -340,7 +329,8 @@ devtools::load_all("mylibrary")
 devtools::check("mylibrary")
 
 
-devtools::install_github("github_username/repository_name")
+# To install from GitHub:
+devtools::install_github("myusername/mylibrary")
 
 
 sessionInfo()

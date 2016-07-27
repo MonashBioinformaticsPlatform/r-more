@@ -10,6 +10,7 @@ meme_out/
 
 # knit cache directories
 *_cache/
+*_files/
 
 # Mac OS likes creating this
 .DS_Store

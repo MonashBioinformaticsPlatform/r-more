@@ -85,6 +85,7 @@ Often we want to work with a list of sequences, such as chromosomes.
 
 ```{r}
 myset <- DNAStringSet(list(chrI=myseq, chrII=DNAString("ACGTACGT")))
+myset
 
 # A DNAStringSet is list-like
 myset$chrII
@@ -99,6 +100,7 @@ We may then wish to refer to regions of these sequences, often with an associate
 
 ```{r}
 range1 <- GRanges("chrI", IRanges(start=3,end=5), strand="+")
+range1
 getSeq(myset, range1)
 
 range2 <- GRanges("chrI", IRanges(start=3,end=5), strand="-")
@@ -125,7 +127,7 @@ c(range1, range2)
 # GRanges can have metadata columns, so they are also like data frames:
 mcols(range1)$wobble <- 10
 range1
-mcols(range1)$wobble
+mcols(range1)
 range1$wobble
 
 # A handy way to create a GRanges

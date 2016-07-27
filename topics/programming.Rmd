@@ -417,8 +417,9 @@ Having developed some useful functions, we might want to re-use them in a future
 
 Put your `load_fastqc` function in a file called "fastqc.R". It uses the `readr` library, so be sure to load the library in the file as well.
 
-fastqc.R should contain:
 ```
+# fastqc.R file should contain:
+
 library(readr)
 
 load_fastqc <- function(filename) {
@@ -429,9 +430,9 @@ load_fastqc <- function(filename) {
 }
 ```
 
-You can now load it with:
-
 ```{r eval=FALSE}
+# From the console:
+
 source("fastqc.R")
 ```
 
@@ -478,7 +479,8 @@ devtools::check("mylibrary")
 Packages are most easily distributed by placing them on GitHub. They can then be installed by others using the `devtools` function `install_github`. Once a package is mature and well documented, it can be submitted to CRAN or Bioconductor.
 
 ```{r eval=FALSE}
-devtools::install_github("github_username/repository_name")
+# To install from GitHub:
+devtools::install_github("myusername/mylibrary")
 ```
 
 

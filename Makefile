@@ -9,19 +9,19 @@ RMDS=index.Rmd \
 HTMLS=$(patsubst %.Rmd,%.html,$(RMDS))
 
 # Create stripped down versions of .Rmd files
-RS=topics/programming.R \
-   topics/tidyverse.R \
-   topics/sequences_and_features.R
+RS=r-more-files/programming.R \
+   r-more-files/tidyverse.R \
+   r-more-files/sequences_and_features.R
 
 all : $(RS) $(HTMLS) r-more-files.zip
 
 %.html : %.Rmd
 	Rscript -e 'rmarkdown::render("$<", "all")'
 
-%.R : %.Rmd
+r-more-files/%.R : topics/%.Rmd purify.py
 	python purify.py <$< >$@
 
-r-more-files.zip : r-more-files/* r-more-files/fastqc-output/*
+r-more-files.zip : r-more-files/* r-more-files/fastqc-output/* $(RS)
 	zip -FSr r-more-files.zip r-more-files
 
 clean :

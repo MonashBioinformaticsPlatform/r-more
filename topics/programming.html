@@ -499,8 +499,9 @@ load_fastqc(&quot;nosuchfile.txt&quot;)</code></pre>
 <h1>Sourcing .R files</h1>
 <p>Having developed some useful functions, we might want to re-use them in a future project or share them with a friend. We can store R code in a file, usually with extension “.R”, and load it with the <code>source</code> function.</p>
 <p>Put your <code>load_fastqc</code> function in a file called “fastqc.R”. It uses the <code>readr</code> library, so be sure to load the library in the file as well.</p>
-<p>fastqc.R should contain:</p>
-<pre><code>library(readr)
+<pre><code># fastqc.R file should contain:
+
+library(readr)
 
 load_fastqc &lt;- function(filename) {
     sumtab &lt;- read_tsv(filename, col_names=FALSE)
@@ -508,8 +509,9 @@ load_fastqc &lt;- function(filename) {
     sumtab$grade &lt;- factor(sumtab$grade, c(&quot;FAIL&quot;,&quot;WARN&quot;,&quot;PASS&quot;))
     sumtab
 }</code></pre>
-<p>You can now load it with:</p>
-<pre class="r"><code>source(&quot;fastqc.R&quot;)</code></pre>
+<pre class="r"><code># From the console:
+
+source(&quot;fastqc.R&quot;)</code></pre>
 <p>Everything in the file runs as though it were typed on the console.</p>
 <p>Similarly, if you are going to be doing several different things with a data set, you could write a .R file to load the data into a tidy form, and several other .R scripts to do various different things with it.</p>
 <div id="discussion" class="section level2 challenge">
@@ -541,7 +543,8 @@ devtools::check(&quot;mylibrary&quot;)</code></pre>
 <li><a href="http://r-pkgs.had.co.nz/">R packages book</a></li>
 </ul>
 <p>Packages are most easily distributed by placing them on GitHub. They can then be installed by others using the <code>devtools</code> function <code>install_github</code>. Once a package is mature and well documented, it can be submitted to CRAN or Bioconductor.</p>
-<pre class="r"><code>devtools::install_github(&quot;github_username/repository_name&quot;)</code></pre>
+<pre class="r"><code># To install from GitHub:
+devtools::install_github(&quot;myusername/mylibrary&quot;)</code></pre>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R version 3.3.0 (2016-05-03)
 ## Platform: x86_64-apple-darwin13.4.0 (64-bit)
@@ -557,11 +560,11 @@ devtools::check(&quot;mylibrary&quot;)</code></pre>
 ## [1] dplyr_0.5.0 readr_0.2.2
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.12.5      codetools_0.2-14 digest_0.6.9     assertthat_0.1  
-##  [5] R6_2.1.2         DBI_0.4-1        formatR_1.4      magrittr_1.5    
-##  [9] evaluate_0.9     stringi_1.1.1    rmarkdown_1.0    tools_3.3.0     
-## [13] stringr_1.0.0    yaml_2.1.13      htmltools_0.3.5  knitr_1.13      
-## [17] tibble_1.1       methods_3.3.0</code></pre>
+##  [1] Rcpp_0.12.5     digest_0.6.9    assertthat_0.1  R6_2.1.2       
+##  [5] DBI_0.4-1       formatR_1.4     magrittr_1.5    evaluate_0.9   
+##  [9] stringi_1.1.1   rmarkdown_1.0   tools_3.3.0     stringr_1.0.0  
+## [13] yaml_2.1.13     htmltools_0.3.5 knitr_1.13      methods_3.3.0  
+## [17] tibble_1.1</code></pre>
 </div>
 
 

@@ -34,7 +34,6 @@ vignette("BiostringsQuickOverview", package="Biostrings")
 # DNA sequences and genomic ranges
 # ================================
 
-
 library(Biostrings)     # Provides DNAString, DNAStringSet, etc
 library(BSgenome)       # Provides getSeq()
 library(GenomicRanges)  # Provides GRanges, etc
@@ -46,7 +45,6 @@ library(dplyr)          # Pipe %>%
 ## ---------
 ## DNAString
 ## ---------
-
 
 myseq <- DNAString("ACCATTGATTAT")
 myseq
@@ -64,8 +62,8 @@ methods(class="DNAString")
 ## DNAStringSet
 ## ------------
 
-
 myset <- DNAStringSet(list(chrI=myseq, chrII=DNAString("ACGTACGT")))
+myset
 
 # A DNAStringSet is list-like
 myset$chrII
@@ -77,8 +75,8 @@ myset$chrII
 ## GRanges
 ## -------
 
-
 range1 <- GRanges("chrI", IRanges(start=3,end=5), strand="+")
+range1
 getSeq(myset, range1)
 
 range2 <- GRanges("chrI", IRanges(start=3,end=5), strand="-")
@@ -98,35 +96,32 @@ c(range1, range2)
 # GRanges can have metadata columns, so they are also like data frames:
 mcols(range1)$wobble <- 10
 range1
-mcols(range1)$wobble
+mcols(range1)
 range1$wobble
 
 # A handy way to create a GRanges
 as("chrI:3-5:+", "GRanges")
 
 
-## ----------------------
-## Challenge {.challenge}
-## ----------------------
-
-
-Reverse complement the following DNA sequence and then translate to an amino acid sequence:
-
+## ---------
+## Challenge
+## ---------
+# 
+# Reverse complement the following DNA sequence and then translate to an amino acid sequence:
+# 
 
 TTCCATTTCCAT
 
-
-
+# 
+# 
 
 # =============
 # Loading files
 # =============
 
-
 ## -----------------
 ## Loading sequences
 ## -----------------
-
 
 seqs <- readDNAStringSet("r-more-files/Escherichia_coli_k_12.GCA_000800765.1.29.dna.genome.fa")
 seqs
@@ -141,7 +136,6 @@ names(seqs)
 ## ----------------
 ## Loading features
 ## ----------------
-
 
 features <- import("r-more-files/Escherichia_coli_k_12.GCA_000800765.1.29.gtf")
 
@@ -173,11 +167,9 @@ cds
 # Further operations on GRanges
 # =============================
 
-
 ## -----------
 ## Intra-range
 ## -----------
-
 
 ?"intra-range-methods"
 
@@ -205,7 +197,6 @@ narrow                  .(--).
 ## -----------
 ## Inter-range
 ## -----------
-
 
 ?"inter-range-methods"
 ?"setops-methods"
@@ -236,29 +227,27 @@ GenomicRanges::setdiff(range(input),input)
                                 (--)
 
 
-## ----------------------
-## Challenge {.challenge}
-## ----------------------
-
-
-What are E. coli's most common start and stop codons?
-
-The start codon is the first three bases of the CDS, and the stop codon is the three bases following the end of the CDS.
-
-Hint: Recall that we could get all CDS ranges with:
-
+## ---------
+## Challenge
+## ---------
+# 
+# What are E. coli's most common start and stop codons?
+# 
+# The start codon is the first three bases of the CDS, and the stop codon is the three bases following the end of the CDS.
+# 
+# Hint: Recall that we could get all CDS ranges with:
+# 
 
 cds <- subset(features, type == "CDS")
 
-
-Hint: Use `flank()` and `resize()` to manipulate these ranges.
-
-
+# 
+# Hint: Use `flank()` and `resize()` to manipulate these ranges.
+# 
+# 
 
 # =====================
 # Finding a known motif
 # =====================
-
 
 vmatchPattern("AGGAGGT", seqs)
 
@@ -286,7 +275,6 @@ export(complete, "motif-matches.gff")
 # =====================
 # De novo motif finding
 # =====================
-
 
 # Note: bacteria do not have introns
 # In a eukaryote, you would need to merge CDS by transcript
@@ -341,31 +329,25 @@ system("meme -dna -maxsize 1000000 fg.fa")
 # Next steps
 # ==========
 
-
 ### ---------------------------
 ### BSgenome.Hsapiens.UCSC.hg38
 ### ---------------------------
-
 
 ### ---------------------------------
 ### TxDb.Hsapiens.UCSC.hg38.knownGene
 ### ---------------------------------
 
-
 ### ------------
 ### org.Hs.eg.db
 ### ------------
-
 
 ### -------
 ### biomaRt
 ### -------
 
-
 ### -------------
 ### AnnotationHub
 ### -------------
-
 
 sessionInfo()
 

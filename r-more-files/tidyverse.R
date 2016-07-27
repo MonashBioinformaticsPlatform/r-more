@@ -34,7 +34,6 @@ vignette("introduction", package="dplyr")
 # dplyr
 # =====
 
-
 bigtab <- read_csv("r-more-files/fastqc.csv")
 bigtab$grade <- factor(bigtab$grade, c("FAIL","WARN","PASS"))
 
@@ -49,14 +48,12 @@ View(bigtab)
 ## filter
 ## ------
 
-
 filter(bigtab, grade == "FAIL")
 
 
 ## -------
 ## arrange
 ## -------
-
 
 arrange(bigtab, grade)
 
@@ -67,7 +64,6 @@ arrange(bigtab, desc(grade))
 ## ------
 ## select
 ## ------
-
 
 select(bigtab, test,grade)
 select(bigtab, 2,1)
@@ -80,7 +76,6 @@ select(bigtab, -file)
 ## -----
 ## Joins
 ## -----
-
 
 fwp <- c("FAIL","WARN","PASS")
 scoring <- tibble(grade=factor(fwp,levels=fwp), score=c(0,0.5,1))
@@ -99,7 +94,6 @@ scoretab
 ## mutate
 ## ------
 
-
 mutate(scoretab, doublescore = score*2)
 
 
@@ -110,7 +104,6 @@ scoretab2$doublescore <- scoretab2$score * 2
 ## ---------
 ## summarize
 ## ---------
-
 
 summarize(scoretab, total=sum(score))
 
@@ -127,7 +120,6 @@ summarize(group_by(bigtab, grade), count=n())
 # The pipe %>%
 # ============
 
-
 bigtab %>% group_by(grade) %>% summarize(count=n())
 
 
@@ -139,7 +131,6 @@ rep("hello", 5)
 # ggplot2 revisited
 # =================
 
-
 ggplot(bigtab,aes(x=file,y=test,color=grade)) + geom_point()
 
 
@@ -149,7 +140,6 @@ ggplot(bigtab,aes(x=file,y=test,fill=grade)) + geom_tile()
 ## --------------------------
 ## Publication quality images
 ## --------------------------
-
 
 plot <- ggplot(bigtab,aes(x=file,y=test,fill=grade)) +
     geom_tile(color="black",size=0.5) +
@@ -170,11 +160,9 @@ ggsave("plot2.png", plot, width=10, height=10, dpi=300)
 # A simple RNA-Seq example
 # ========================
 
-
 ## -------
 ## Tidying
 ## -------
-
 
 # Use readr's read_csv function to load the file
 counts_untidy <- read_csv("r-more-files/read-counts.csv")
@@ -197,11 +185,12 @@ summary(counts)
 ## Transformation and normalization
 ## --------------------------------
 
-
 ggplot(counts, aes(x=sample, y=count)) + geom_boxplot() + coord_flip()
 
 
 ggplot(counts, aes(x=sample, y=log2(count))) + geom_boxplot() + coord_flip()
+
+ggplot(counts, aes(x=log2(count), group=sample)) + geom_line(stat="density")
 
 
 normalizer <- counts %>%
@@ -224,7 +213,6 @@ ggplot(counts_norm, aes(x=sample, y=log_norm_count)) + geom_boxplot() + coord_fl
 ## Visualization
 ## -------------
 
-
 ggplot(counts_norm, aes(x=time, y=gene, fill=log_norm_count)) +
     geom_tile() + facet_grid(~ strain) +
     scale_fill_viridis() + theme_minimal()
@@ -239,27 +227,25 @@ ggplot(counts_norm, aes(x=time, y=log_norm_count, color=strain, group=strain)) +
     geom_line() + facet_wrap(~ gene, scale="free")
 
 
-## ----------------------
-## Challenge {.challenge}
-## ----------------------
-
-
-1. Make a line plot as above but just showing the gene HHF1.
-
-Hint: `intToUtf8(utf8ToInt("vtf!gjmufs")-1)`
-
-2. Which are the three most variable genes?
-
-Hint: `intToUtf8(utf8ToInt("xvh#jurxsbe|/#vxppdul}h/#vg/#dqg#duudqjh")-3)`
-
-3. Different genes have different average expression levels, but what we are interested in is how they change over time. Further normalize the data by subtracting the average for each gene from `log_norm_count`.
-
-
+## ---------
+## Challenge
+## ---------
+# 
+# 1. Make a line plot as above but just showing the gene HHF1.
+# 
+# Hint: intToUtf8(utf8ToInt("vtf!gjmufs")-1)
+# 
+# 2. Which are the three most variable genes?
+# 
+# Hint: intToUtf8(utf8ToInt("xvh#jurxsbe|/#vxppdul}h/#vg/#dqg#duudqjh")-3)
+# 
+# 3. Different genes have different average expression levels, but what we are interested in is how they change over time. Further normalize the data by subtracting the average for each gene from `log_norm_count`.
+# 
+# 
 
 # ================
 # Linear modelling
 # ================
-
 
 sut476 <- counts_norm %>% filter(gene=="SUT476")
 sut476_wt <- sut476 %>% filter(strain=="WT")

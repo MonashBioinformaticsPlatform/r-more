@@ -18,13 +18,14 @@ for line in sys.stdin:
     elif in_code:
         print line
     elif line.startswith("#"):
+        in_challenge = "{.challenge}" in line
+        if in_challenge:
+            line = line.replace("{.challenge}","").rstrip()
         n = line.count("#")
         banner = "#"*n + " " + ("-" if n > 1 else "=") * (len(line)-n-1)
         print
         print banner
         print line
         print banner
-        print
-        in_challenge = ".challenge" in line
     elif in_challenge:
-        print line
+        print "# " + line

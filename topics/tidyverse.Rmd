@@ -294,6 +294,8 @@ We immediately see from a [Tukey](https://www.amazon.com/Exploratory-Data-Analys
 
 ```{r}
 ggplot(counts, aes(x=sample, y=log2(count))) + geom_boxplot() + coord_flip()
+
+ggplot(counts, aes(x=log2(count), group=sample)) + geom_line(stat="density")
 ```
 
 Log transformation has greatly improved things, although now there are more outliers left of the whiskers, and some zeros we will need to be careful of. We also see one of the samples has less reads than the others.
@@ -342,11 +344,11 @@ ggplot(counts_norm, aes(x=time, y=log_norm_count, color=strain, group=strain)) +
 
 1. Make a line plot as above but just showing the gene HHF1.
 
-Hint: `intToUtf8(utf8ToInt("vtf!gjmufs")-1)`
+Hint: intToUtf8(utf8ToInt("vtf!gjmufs")-1)
 
 2. Which are the three most variable genes?
 
-Hint: `intToUtf8(utf8ToInt("xvh#jurxsbe|/#vxppdul}h/#vg/#dqg#duudqjh")-3)`
+Hint: intToUtf8(utf8ToInt("xvh#jurxsbe|/#vxppdul}h/#vg/#dqg#duudqjh")-3)
 
 3. Different genes have different average expression levels, but what we are interested in is how they change over time. Further normalize the data by subtracting the average for each gene from `log_norm_count`.
 
