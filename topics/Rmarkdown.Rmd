@@ -314,5 +314,58 @@ The two other options I just want to mention and will let you explore at your ow
   - `engine=` you can use to specify different language type. This is very cool. You can actually embed python, BASH JavaScript and nubmer of other languages. 
   - `child=` You use this options to "merge" several `.Rmd` into one. 
 
-# YAML header and R slides 
+# YAML header
 
+At the very top of your `.Rmd` file you can, optionaly, include YAML block. In this block you can fine turn your output document, adding some metadata and changing documents font and theme. You can also pass additional files such as stylesheet `.css` file and bibliography file `.bib` if you want to do text citation.  I'm only going to show you a few possible options and will let you explore the rest on your own.
+
+Navigate to the top of your `.Rmd` document and find YAML section there. Just like with the options we passed in to manipulate R code block, YAML block also has **key = value** pairs, but instead they are separated by colon ( `:` ). Now lets add table of content to our document, this will make it easier to navigate your page as well as give nice over view of the content our **key** is `toc` with value `true` or `yes` which one you prefer better. 
+
+```
+---
+title: "Hello world"
+author: "Kirill"
+date: "13 July 2016"
+output:
+  html_document:
+    toc: true
+---
+```
+
+**Note** that you need to bring `html_document` onto new line and indent it with two spaces. `html_document` is a value of `output` key. `output` can have other values e.g `pdf_document`, `word_document`. However `html_document` also becomes a key for `toc` value and `toc` becames a key for its own value. 
+
+Now that we have sort it initial YAML layout we can continue adding more options to style our HTML document. The other two useful options that I like to pass in are `toc_depth` and `number_sections`
+
+
+```
+---
+title: "Hello world"
+author: "Kirill"
+date: "13 July 2016"
+output:
+  html_document:
+    toc: true
+    toc_depth: 4
+    number_sections: yes
+---
+```
+
+Most of those options are self explanatory. They best way to learn what each does, is to pass them in. Note that you can comment lines out inside YAML section with `#` symbol. 
+
+The last two options that can change your document apperance are `theme` and `highlight`. There are nubmer of different themes and highlight options. I suggest you find the one you like in your own time.
+
+# R slides - ioslides
+
+As I mentioned in previous section, `output` has many options, one of which is `ioslides_presentation`. You can simple add 
+
+```
+---
+output: ioslides_presentation
+---
+```
+
+at the top of your document and your `.Rmd` files will be complied to slide presentation instead.
+
+Another options is select **presentation** options when you were opening R markdown file. Either way you'll notice YAML header reflects your selected output type. 
+Let's open new R markdown document and lets select presentation instead and lets select HTML (ioslides) option there. You can still save your files as `.Rmd`, and then press `Knit HTML` button.
+
+The syntax for the document is more or less the same, expcept `##` is now used to mark new slide. 
