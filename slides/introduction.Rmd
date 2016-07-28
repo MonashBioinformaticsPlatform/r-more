@@ -27,9 +27,11 @@ Understanding what you have requires a cyclic process of exploratation.
 
 ### Integrative
 
-You may have many different views of a biological process: DNA, RNA, epigenetics, proteins, metabolome, cell morphology, ...
+You may want to join together many different views of a biological process: DNA, RNA, epigenetics, proteins, metabolome, cell morphology, ...
 
 Your data can potentially be viewed in the context of a vast array of other data sets.
+
+A reference genome and gene annotations are essential, and also serve as the key to joining different types of data.
 
 
 ## Analysis cycle
@@ -43,14 +45,14 @@ See also: [Hadley Wickham talking on this topic at useR! 2016](https://channel9.
 
 <img src="../figures/data-cycle.svg" style="position: absolute; right: 0px; top: 0px;" height="200">
 
-### Tidy and correctly transformed data
+### Load, tidy, and correctly transform data
 
 * Tidy data makes visualization and modelling fast and easy.
 * Correctly normalized and transformed data brings out the signal in visualizations, and is necessary for correct modelling.
 
 Key packages: readr tidyr dplyr
 
-Specialized packages: rtracklayer
+Specialized packages: Biostrings, rtracklayer
 
 
 ## Analysis cycle
@@ -81,13 +83,14 @@ Key packages: ggplot2
 
 * Shrinks large data sets for more manageable visualization.
 * Confirm what can be seen in visualization, tells us what *isn't* real in a visualization.
+* What hypotheses does the data support and reject?
 * Failures should prompt a rethink of normalization and tranformation, and further visualization to understand the data.
 
 Key packages: dplyr
 
-Basic R functions: mean, min, max, sd, apply, tapply, summary, lm, glm, anova, ...
+Base R functions: mean, min, max, sd, apply, tapply, summary, lm, glm, anova, ...
 
-Advanced/specialized packages: glht, broom, limma, edgeR
+Advanced/specialized packages: multcomp, broom, limma, edgeR
 
 
 ## Tidy data is key
@@ -129,9 +132,9 @@ Programming lets us tell the computer to do a whole lot of things without furthe
 
 For a bioinformatician, the bulk of programming is often writing short scripts that do the repetitive grunt work to get your data into a tidy form. Bioinformatics is a mess of file formats, largely text based, haphazardly standardized.
 
-The hard *algorithmic* work for most problems has been done for you. Once your data is tidy, R makes it easy to bring this to bear. (This is actually why S, and later R, exists!)
+The hard *algorithmic* work for most problems has been done for you. Once your data is tidy, R makes it easy to bring this to bear. (This is actually why S, and later R, exist.)
 
-Of course if algorithms are your thing, there is plenty still to be done in computer science and statistics.
+Although if algorithms are your thing, there is plenty still to be done in computer science and statistics.
 
 
 ## Best practices

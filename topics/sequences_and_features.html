@@ -132,7 +132,9 @@ $(document).ready(function () {
 
 <p>This section looks at working with sequences, primarily DNA sequences, and genomic features.</p>
 <p>We will be using Bioconductor packages for this. Recall that most R packages are available on the CRAN package repository, and installed using <code>install.packages()</code>. Bioconductor is another specialized repository devoted to bioinformatics R packages. Here is how to install packages from Bioconductor:</p>
-<pre class="r"><code># This loads the Bioconductor installer
+<pre class="r"><code># Don't run this if you are using our biotraining server, the packages are already installed!
+
+# This loads the Bioconductor installer
 source(&quot;https://bioconductor.org/biocLite.R&quot;)
 
 # If this says you have a version of Bioconductor prior to 3.3
@@ -155,7 +157,12 @@ biocLite(c(
 
 # If you want to install further packages in future, you can use
 #   library(BiocInstaller)
-#   biocLite( ... )</code></pre>
+#   biocLite( ... )
+
+
+# The pipe %&gt;% from dplyr is also used in this tutorial,
+# dplyr is in CRAN so we use install.packages()
+install.packages(&quot;dplyr&quot;)</code></pre>
 <p>Bioconductor represents a different strand of current development in R, separate from the Hadley Wickham tidyverse. Where Hadley emphasizes the data frame above all else, Bioconductor uses a great variety of data types. It’s the very opposite of tidy!</p>
 <p>Nevertheless, Bioconductor is overwhelmingly <em>comprehensive</em>, and represents the most complete environment available for working with bioinformatic data currently available.</p>
 <p>Bioconductor packages usually have useful documentation in the form of “vignettes”. These are readable on the Bioconductor website, or within R:</p>
@@ -430,18 +437,20 @@ translate(seq_stop)</code></pre>
 ## [1]    22 MKRISTTITTTITITTGNGAG*</code></pre>
 <p><code>resize</code> can fix either the <code>fix=&quot;start&quot;</code> or <code>fix=&quot;end&quot;</code> of the sequence.</p>
 <p><code>flank</code> can be either flank the start (<code>start=TRUE</code>) or end (<code>start=FALSE</code>).</p>
-<pre><code>input
-                        (----)
-                        .    .
-resize                  (--------)
-resize(fix=&quot;end&quot;)   (--------)
-                        .    .
-flank              (---).    .
-flank(start=F)          .    .(---)
-                        .    .
-promoters          (------)  .
-                        .    .
-narrow                  .(--).</code></pre>
+<pre><code># input
+#                         (----)
+#                         .    .
+# resize                  (--------)
+# resize(fix=&quot;end&quot;)   (--------)
+#                         .    .
+# flank              (---).    .
+# flank(start=F)          .    .(---)
+#                         .    .
+# promoters          (------)  .
+#                         .    .
+# narrow                  .(--).
+#
+# shift (ignores strand!) .  (----)</code></pre>
 </div>
 <div id="inter-range" class="section level2">
 <h2>Inter-range</h2>
@@ -503,20 +512,20 @@ hits</code></pre>
 <li><p><code>disjoin</code> - as with reduce, but broken at each start and end of the input features.</p></li>
 <li><p><code>setdiff</code> - subtracts one set of features from another, could be used with range on a set of exons to get introns. Might need to use <code>GenomicRanges::setdiff</code> if also using <code>dplyr</code>.</p></li>
 </ul>
-<pre><code>input
-        (--------)
-             (----------------)
-                     (-----)
-                                    (---)
-                                    
-range   (-------------------------------)
-
-reduce  (----------------------)    (---)
-
-disjoin (---)(---)(-)(-----)(--)    (---)
-
-GenomicRanges::setdiff(range(input),input)
-                                (--)</code></pre>
+<pre><code># input
+#         (--------)
+#              (----------------)
+#                      (-----)
+#                                     (---)
+#                                     
+# range   (-------------------------------)
+# 
+# reduce  (----------------------)    (---)
+# 
+# disjoin (---)(---)(-)(-----)(--)    (---)
+# 
+# GenomicRanges::setdiff(range(input),input)
+#                                 (--)</code></pre>
 </div>
 <div id="challenge-1" class="section level2 challenge">
 <h2>Challenge</h2>
@@ -692,6 +701,7 @@ writeXStringSet(background_seqs, &quot;bg.fa&quot;)</code></pre>
 <p>We’ve seen just the smallest part of what Bioconductor has to offer in this space.</p>
 <ul>
 <li><a href="http://bioconductor.org/packages/stats/">Most downloaded Bioconctor packages</a></li>
+<li><a href="https://github.com/mikelove/bioc-refcard/blob/master/README.Rmd">Bioconductor cheat sheet</a></li>
 </ul>
 <p>Besides software, Bioconductor includes packages with data for model organisms, for example. The data is generally from these central repositories:</p>
 <ul>

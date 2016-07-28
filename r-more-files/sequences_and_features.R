@@ -5,6 +5,8 @@
 options(width=90)
 
 
+# Don't run this if you are using our biotraining server, the packages are already installed!
+
 # This loads the Bioconductor installer
 source("https://bioconductor.org/biocLite.R")
 
@@ -29,6 +31,11 @@ biocLite(c(
 # If you want to install further packages in future, you can use
 #   library(BiocInstaller)
 #   biocLite( ... )
+
+
+# The pipe %>% from dplyr is also used in this tutorial,
+# dplyr is in CRAN so we use install.packages()
+install.packages("dplyr")
 
 
 vignette()
@@ -113,14 +120,15 @@ as("chrI:3-5:+", "GRanges")
 ## Challenge
 ## ---------
 # 
-# Reverse complement the following DNA sequence and then translate to an amino acid sequence:
+# Reverse complement the following DNA sequence and then translate to an
+# amino acid sequence:
 # 
 
 TTCCATTTCCAT
 
 # 
 # 
-
+#
 # =============
 # Loading files
 # =============
@@ -210,18 +218,20 @@ seq_stop <- getSeq(seqs, feat_stop)
 translate(seq_stop)
 
 
-input
-                        (----)
-                        .    .
-resize                  (--------)
-resize(fix="end")   (--------)
-                        .    .
-flank              (---).    .
-flank(start=F)          .    .(---)
-                        .    .
-promoters          (------)  .
-                        .    .
-narrow                  .(--).
+# input
+#                         (----)
+#                         .    .
+# resize                  (--------)
+# resize(fix="end")   (--------)
+#                         .    .
+# flank              (---).    .
+# flank(start=F)          .    .(---)
+#                         .    .
+# promoters          (------)  .
+#                         .    .
+# narrow                  .(--).
+#
+# shift (ignores strand!) .  (----)
 
 
 ## -----------
@@ -241,20 +251,20 @@ features[subjectHits(hits),]
 findOverlaps(query, features, ignore.strand=FALSE)
 
 
-input
-        (--------)
-             (----------------)
-                     (-----)
-                                    (---)
-
-range   (-------------------------------)
-
-reduce  (----------------------)    (---)
-
-disjoin (---)(---)(-)(-----)(--)    (---)
-
-GenomicRanges::setdiff(range(input),input)
-                                (--)
+# input
+#         (--------)
+#              (----------------)
+#                      (-----)
+#                                     (---)
+#
+# range   (-------------------------------)
+#
+# reduce  (----------------------)    (---)
+#
+# disjoin (---)(---)(-)(-----)(--)    (---)
+#
+# GenomicRanges::setdiff(range(input),input)
+#                                 (--)
 
 
 ## ---------
@@ -263,7 +273,8 @@ GenomicRanges::setdiff(range(input),input)
 # 
 # What are E. coli's most common start and stop codons?
 # 
-# The start codon is the first three bases of the CDS, and the stop codon is the three bases following the end of the CDS.
+# The start codon is the first three bases of the CDS, and the stop
+# codon is the three bases following the end of the CDS.
 # 
 # Hint: Recall that we could get all CDS ranges with:
 # 
@@ -274,7 +285,7 @@ cds <- subset(features, type == "CDS")
 # Hint: Use `flank()` and `resize()` to manipulate these ranges.
 # 
 # 
-
+#
 # =====================
 # Finding a known motif
 # =====================

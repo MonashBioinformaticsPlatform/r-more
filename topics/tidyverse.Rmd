@@ -8,6 +8,7 @@ This lesson covers packages primarily by Hadley Wickham for tidying data and the
 The packages we are using in this lesson are all from CRAN, so we can install them with `install.packages`.
 
 ```{r eval=FALSE}
+# Don't run this if you are using our biotraining server, the packages are already installed!
 install.packages(c(
     # Hadley Wickham packages
     "readr",    # read tabular data

@@ -2,6 +2,13 @@
 
 
 
+# Don't run this if you are using our biotraining server, the packages are already installed!
+install.packages(c(
+    "readr",    # read tabular data
+    "dplyr"     # general data frame manipulation
+))
+
+
 # =========
 # Functions
 # =========
@@ -98,11 +105,14 @@ fahr_to_celsius(212)
 ## Challenge
 ## ---------
 # 
-# Write a function to calculate the length of the hypotenuse of a right angled triangle using Pythagorus's rule, given the lengths of the other sides.
+# Write a function to calculate the length of the hypotenuse of a right
+# angled triangle using Pythagorus's rule, given the lengths of the
+# other sides.
 # 
 # Hint: `sqrt` calculates the square root of a number.
 # 
-# Testing your code is important. Invent a test case for your code consisting of:
+# Testing your code is important. Invent a test case for your code
+# consisting of:
 # 
 # * The input arguments to your function.
 # * The return value you expect.
@@ -110,7 +120,7 @@ fahr_to_celsius(212)
 # Confirm that your function works as expected.
 # 
 # 
-
+#
 # ================================
 # A practical programming exercise
 # ================================
@@ -249,10 +259,11 @@ sign(2/3)
 ## Quiz
 ## ----
 # 
-# Which lines of the function `sign` executed when it was called above, and in what order?
+# Which lines of the function `sign` executed when it was called above,
+# and in what order?
 # 
 # 
-
+#
 ## ---------------------
 ## Improving load_fastqc
 ## ---------------------
@@ -261,11 +272,13 @@ load_fastqc("nosuchfile.txt")
 
 
 load_fastqc <- function(filename) {
+    # Check arguments are sane
     if (!file.exists(filename)) {
         warning("No such file: ", filename)
         return(NULL)
     }
 
+    # Load and tidy data
     sumtab <- read_tsv(filename, col_names=FALSE)
     colnames(sumtab) <- c("grade", "test", "file")
     sumtab$grade <- factor(sumtab$grade, c("FAIL","WARN","PASS"))
@@ -304,12 +317,17 @@ source("fastqc.R")
 # 
 # How should we break up a large project into files?
 # 
-# How do we ensure the code for a project can be run by others, ensuring it is reproducible?
+# How do we ensure the code for a project can be run by others, ensuring
+# it is reproducible?
 # 
 # How should we share a project with others?
 # 
+# * [Software Carpentry's list of base practices in
+# R](http://swcarpentry.github.io/r-novice-inflammation/06-best-
+# practices-R/)
 # 
-
+# 
+#
 # ========
 # Packages
 # ========

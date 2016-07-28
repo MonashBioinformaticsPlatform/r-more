@@ -5,6 +5,17 @@ output: html_document
 
 In the introductory R day, we mostly used R interactively, but one of the final topics introduced our first programming concept, [for-loops](https://monashbioinformaticsplatform.github.io/r-intro/for_loops.html). Today we will expand our knowledge of programming by writing functions and if-statements, and apply this knowledge to automate a typical task from bioinformatics.
 
+We are using a couple of packages from CRAN in this tutorial, which we can install with `install.packages`:
+
+```{r eval=FALSE}
+# Don't run this if you are using our biotraining server, the packages are already installed!
+install.packages(c(
+    "readr",    # read tabular data
+    "dplyr"     # general data frame manipulation
+))
+```
+
+
 # Functions
 
 In the introductory R day, we used a lot of functions that other people had written. We're now going to see how to create our own functions.
@@ -394,11 +405,13 @@ Depending on how we intend to use it, we might instead want the function to issu
 
 ```{r}
 load_fastqc <- function(filename) {
+    # Check arguments are sane
     if (!file.exists(filename)) {
         warning("No such file: ", filename)
         return(NULL)
     }
     
+    # Load and tidy data
     sumtab <- read_tsv(filename, col_names=FALSE)
     colnames(sumtab) <- c("grade", "test", "file")
     sumtab$grade <- factor(sumtab$grade, c("FAIL","WARN","PASS"))
@@ -450,6 +463,8 @@ How should we break up a large project into files?
 How do we ensure the code for a project can be run by others, ensuring it is reproducible?
 
 How should we share a project with others?
+
+* [Software Carpentry's list of base practices in R](http://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R/)
 
 
 # Packages

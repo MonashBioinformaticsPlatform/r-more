@@ -13,6 +13,8 @@ This section looks at working with sequences, primarily DNA sequences, and genom
 We will be using Bioconductor packages for this. Recall that most R packages are available on the CRAN package repository, and installed using `install.packages()`. Bioconductor is another specialized repository devoted to bioinformatics R packages. Here is how to install packages from Bioconductor:
 
 ```{r eval=FALSE}
+# Don't run this if you are using our biotraining server, the packages are already installed!
+
 # This loads the Bioconductor installer
 source("https://bioconductor.org/biocLite.R")
 
@@ -37,6 +39,11 @@ biocLite(c(
 # If you want to install further packages in future, you can use
 #   library(BiocInstaller)
 #   biocLite( ... )
+
+
+# The pipe %>% from dplyr is also used in this tutorial,
+# dplyr is in CRAN so we use install.packages()
+install.packages("dplyr")
 ```
 
 
@@ -275,18 +282,20 @@ translate(seq_stop)
 `flank` can be either flank the start (`start=TRUE`) or end (`start=FALSE`).
 
 ```
-input
-                        (----)
-                        .    .
-resize                  (--------)
-resize(fix="end")   (--------)
-                        .    .
-flank              (---).    .
-flank(start=F)          .    .(---)
-                        .    .
-promoters          (------)  .
-                        .    .
-narrow                  .(--).
+# input
+#                         (----)
+#                         .    .
+# resize                  (--------)
+# resize(fix="end")   (--------)
+#                         .    .
+# flank              (---).    .
+# flank(start=F)          .    .(---)
+#                         .    .
+# promoters          (------)  .
+#                         .    .
+# narrow                  .(--).
+#
+# shift (ignores strand!) .  (----)
 ```
 
 
@@ -322,20 +331,20 @@ With `findOverlaps`, we can use genomic location as the key when *joining* dispa
 * `setdiff` - subtracts one set of features from another, could be used with range on a set of exons to get introns. Might need to use `GenomicRanges::setdiff` if also using `dplyr`.
 
 ```
-input
-        (--------)
-             (----------------)
-                     (-----)
-                                    (---)
-                                    
-range   (-------------------------------)
-
-reduce  (----------------------)    (---)
-
-disjoin (---)(---)(-)(-----)(--)    (---)
-
-GenomicRanges::setdiff(range(input),input)
-                                (--)
+# input
+#         (--------)
+#              (----------------)
+#                      (-----)
+#                                     (---)
+#                                     
+# range   (-------------------------------)
+# 
+# reduce  (----------------------)    (---)
+# 
+# disjoin (---)(---)(-)(-----)(--)    (---)
+# 
+# GenomicRanges::setdiff(range(input),input)
+#                                 (--)
 ```
 
 
@@ -462,6 +471,7 @@ system("meme -dna -maxsize 1000000 fg.fa")
 We've seen just the smallest part of what Bioconductor has to offer in this space.
 
 * [Most downloaded Bioconctor packages](http://bioconductor.org/packages/stats/)
+* [Bioconductor cheat sheet](https://github.com/mikelove/bioc-refcard/blob/master/README.Rmd)
 
 Besides software, Bioconductor includes packages with data for model organisms, for example. The data is generally from these central repositories:
 

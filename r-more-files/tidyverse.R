@@ -2,6 +2,7 @@
 
 
 
+# Don't run this if you are using our biotraining server, the packages are already installed!
 install.packages(c(
     # Hadley Wickham packages
     "readr",    # read tabular data
@@ -237,12 +238,16 @@ ggplot(counts_norm, aes(x=time, y=log_norm_count, color=strain, group=strain)) +
 # 
 # 2. Which are the three most variable genes?
 # 
-# Hint: intToUtf8(utf8ToInt("xvh#jurxsbe|/#vxppdul}h/#vg/#dqg#duudqjh")-3)
+# Hint:
+# intToUtf8(utf8ToInt("xvh#jurxsbe|/#vxppdul}h/#vg/#dqg#duudqjh")-3)
 # 
-# 3. Different genes have different average expression levels, but what we are interested in is how they change over time. Further normalize the data by subtracting the average for each gene from `log_norm_count`.
+# 3. Different genes have different average expression levels, but what
+# we are interested in is how they change over time. Further normalize
+# the data by subtracting the average for each gene from
+# `log_norm_count`.
 # 
 # 
-
+#
 # ================
 # Linear modelling
 # ================
