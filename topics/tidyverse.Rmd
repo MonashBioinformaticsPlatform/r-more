@@ -70,7 +70,7 @@ Say we want to know all the tests that failed. `filter` provides a convenient wa
 filter(bigtab, grade == "FAIL")
 ```
 
-Something is magic here: we do not have `grade` in our environment, only within the data frame.
+Something is magic here: we do not have `grade` in our environment, only within the data frame. Arguments to `filter` can use any column of the data frame as a variable. `dplyr` uses this idea heavily, arguments to `dplyr` verbs often behave in a special way.
 
 ## arrange
 
@@ -100,6 +100,8 @@ You can also remove specific columns like this:
 select(bigtab, -file)
 ```
 
+The magic here is that column variables refer to their column number. `select` subsets columns rather like subsetting vectors with `[ ]`. So `-file` becomes `-1`, and negative numbers remove items. We can also refer to ranges of columns, such as `grade:file`, which would become `1:3`, which is `c(1,2,3)`.
+
 
 ## Joins
 
@@ -115,9 +117,9 @@ scoring <- tibble(grade=factor(fwp,levels=fwp), score=c(0,0.5,1))
 scoring
 ```
 
-In the introduction to R day, we saw the `merge` function. dplyr has its own version of this in the form of several functions: `left_join`, `right_join`, `inner_join`, `full_join`.
+In the introduction to R day, we saw the `merge` function. dplyr has its own version of this in the form of several functions: `left_join`, `right_join`, `inner_join`, `full_join`, `anti_join`.
 
-The difference between these functions is what happens when there is a row in one data frame without a corresponding row in the other data frame. `inner_join` discards such rows. `full_join` always keeps them, filling in missing data with NA. `left_join` always keeps rows from the first data frame. `right_join` always keeps rows from the second data frame.
+The difference between these functions is what happens when there is a row in one data frame without a corresponding row in the other data frame. `inner_join` discards such rows. `full_join` always keeps them, filling in missing data with NA. `left_join` always keeps rows from the first data frame. `right_join` always keeps rows from the second data frame. `anti_join` is a bit different, it gives you rows from the first data frame that *aren't* in the second data frame.
 
 Often we use a join to augment a data frame with some extra information. `left_join` is a good default choice for this as it will never delete rows from the data frame that is being augmented.
 
@@ -132,6 +134,9 @@ One important thing that all the join functions do: if multiple rows have the sa
 
 Joins are the key tool for *integrating* different types of data, based on some common key such as gene id.
 
+<b>See also:</b> `match` and `merge` in base R.
+
+
 ## mutate
 
 `mutate` lets us add or overwrite columns by computing a new value for them.
@@ -140,7 +145,7 @@ Joins are the key tool for *integrating* different types of data, based on some 
 mutate(scoretab, doublescore = score*2)
 ```
 
-This is equivalent to
+This is equivalent to:
 
 ```{r eval=FALSE}
 scoretab2 <- scoretab
@@ -161,13 +166,13 @@ We really want to summarize the data grouped by file, so we can see if there are
 ```{r}
 group_by(scoretab, file)
 
-summarize(group_by(scoretab, file), total=sum(score))
+summarize(group_by(scoretab, file), average_score=mean(score))
 ```
 
 The special function `n()` can be used within `summarize` to get the number of rows. (This also works in `mutate`, but is most useful in `summarize`.)
 
 ```{r}
-summarize(group_by(bigtab, grade), count=n())
+summarize(group_by(scoretab, grade), count=n())
 ```
 
 So `summarize` lets us do the things we did with `table` and `tapply`, but staying tidy by using data frames.
@@ -179,10 +184,10 @@ See also functions for common uses of summarize: `count`, `distinct`.
 
 # The pipe %>%
 
-We often want to string together a series of `dplyr` functions. This is achieved using `dplyr`'s new pipe operator, `%>%`. This takes the value on the left, and passes it as the first argument to the function call on the right. So the previous summarization could be written:
+We often want to string together a series of `dplyr` functions. This is achieved using `dplyr`'s pipe operator, `%>%`. This takes the value on the left, and passes it as the first argument to the function call on the right. So the previous summarization could be written:
 
 ```{r eval=FALSE}
-bigtab %>% group_by(grade) %>% summarize(count=n())
+scoretab %>% group_by(grade) %>% summarize(count=n())
 ```
 
 `%>%` isn't limited to `dplyr` functions. It's an alternative way of writing any R code.
@@ -203,13 +208,15 @@ The idea of adding geoms is rather like the dplyr pipe. `ggplot2` predates `dply
 With `ggplot2` we don't need to summarize `bigtab`, we can just view the whole data set.
 
 ```{r}
-ggplot(bigtab,aes(x=file,y=test,color=grade)) + geom_point()
+ggplot(bigtab, aes(x=file,y=test,color=grade)) + 
+    geom_point()
 ```
 
 With categorical data on the x and y axes, an even better geom to use is `geom_tile`.
 
 ```{r}
-ggplot(bigtab,aes(x=file,y=test,fill=grade)) + geom_tile()
+ggplot(bigtab, aes(x=file,y=test,fill=grade)) + 
+    geom_tile()
 ```
 
 
@@ -241,10 +248,52 @@ ggsave("plot2.png", plot, width=10, height=10, dpi=300)
 It may be necessary to edit a plot further in a program such as Inkscape or Adobe Illustrator. To allow this, the image needs to be saved in a "vector" format such as SVG, EPS, or PDF. In this case, the DPI argument isn't needed.
 
 
+# tidyr
+
+`tidyr` is Hadley Wickham's package for getting data frames to tidy. Recall that in a tidy data frame:
+
+* each row is a unit of observation
+* each column is a single piece of information
+
+I'm not sure `tidyr` is a great package, but the *ideas* behind it are very important. `dplyr` uses magic arguments to produces very beautiful R code, but in `tidyr` it gets a bit confusing. Anyway, let's work through a toy example:
+
+```{r}
+untidy <- read_csv(
+    "country,male-young,male-old,female-young,female-old
+     Australia,1,2,3,4
+     New Zealand,5,6,7,8")
+
+untidy
+```
+
+The first problem is that rows are not distinct units of observations, there are actually four observations per row.
+
+```{r}
+gathered <- gather(untidy, key=group, value=cases, -country)
+gathered
+```
+
+We give a data frame, a name for the key and value columns to be created. Remaining arguments behave like `select`, here we are saying that the country column shouldn't be gathered.
+
+In the introductory R day we saw `melt` from the `reshape2` package, which did a similar thing to matrices.
+
+`spread` is the opposite operation, spreading a column into many columns, which generally makes data less tidy but is sometimes necessary.
+
+```{r}
+spread(bigtab, file, grade)
+```
+
+In our toy example, we have a further problem that the "group" column contains two pieces of data. This can be fixed with `separate`. By default `separate` splits on any non-alphanumeric characters, but different separator characters can be specified.
+
+```{r}
+separate(gathered, group, into=c("gender","age"))
+```
+
+
 
 # A simple RNA-Seq example
 
-We will now look at a small gene expression data set. To simplify somewhat: The data was generated from a multiplex PCR targetting 44 genes. The PCR product is quantified by counting reads from high throughput sequencing. The experiment is of yeast released synchronously into cell cycling, so that we can see which genes are active at different points in the cycle. Several strains of yeast have been used, a wildtype and several gene knock-downs. Each has nine time points, covering two cell cycles (two hours). 
+We will now put this all together by looking at a small gene expression data set. To simplify somewhat: The data was generated from a multiplex PCR targetting 44 genes. The PCR product is quantified by counting reads from high throughput sequencing. The experiment is of yeast released synchronously into cell cycling, so that we can see which genes are active at different points in the cycle. Several strains of yeast have been used, a wildtype and several gene knock-downs. Each has nine time points, covering two cell cycles (two hours). 
 
 This is much smaller than a typical RNA-Seq dataset. We are only looking at 44 genes, rather than all of the thousands of genes in the yeast genome.
 
@@ -253,6 +302,7 @@ Recall the three activities involved in data analysis:
 <img src="../figures/data-cycle.svg" height="400">
 
 This data set requires all of them.
+
 
 ## Tidying
 
@@ -276,32 +326,31 @@ counts <- counts_untidy %>%
 summary(counts)
 ```
 
-Here we've used two tidying functions from `tidyr`:
-
-* `gather` gathers columns into a key column and a value column. It's similar to `reshape2`'s `melt` function.
-
-* `separate` splits character columns by a separator string (actually, a regular expression), creating new columns.
-
-"Time point 1" was omitted because it isn't actually part of the time series, it's from cells in an unsynchronized state. If we wanted to be even tidier, the remaining time points could be recoded with the actual time within the experiment -- they're at 15 minute intervals.
+Time point 1 was omitted because it isn't actually part of the time series, it's from cells in an unsynchronized state. If we wanted to be even tidier, the remaining time points could be recoded with the actual time within the experiment -- they are at 15 minute intervals.
 
 
 ## Transformation and normalization
 
 ```{r}
-ggplot(counts, aes(x=sample, y=count)) + geom_boxplot() + coord_flip()
+ggplot(counts, aes(x=sample, y=count)) + 
+    geom_boxplot() + 
+    coord_flip()
 ```
 
 We immediately see from a [Tukey](https://www.amazon.com/Exploratory-Data-Analysis-John-Tukey/dp/0201076160/ref=sr_1_1?s=books&ie=UTF8&qid=1469077563&sr=1-1) box plot that the data is far from normal -- there are outliers many box-widths to the right of the box. Perhaps a log transformation is in order.
 
 ```{r}
-ggplot(counts, aes(x=sample, y=log2(count))) + geom_boxplot() + coord_flip()
+ggplot(counts, aes(x=sample, y=log2(count))) + 
+    geom_boxplot() + 
+    coord_flip()
 
-ggplot(counts, aes(x=log2(count), group=sample)) + geom_line(stat="density")
+ggplot(counts, aes(x=log2(count), group=sample)) + 
+    geom_line(stat="density")
 ```
 
 Log transformation has greatly improved things, although now there are more outliers left of the whiskers, and some zeros we will need to be careful of. We also see one of the samples has less reads than the others.
 
-The gene SRP68 was included as a control housekeeping gene. Its expression level should be the same in all samples. We will divide counts in each sample by the count for SRP68 to correct for library size, then log transform the data. We add a small constant when log transforming so that zeros do not become negative infinity.
+The gene SRP68 was included as a control housekeeping gene. Its expression level should be the same in all samples. We will divide counts in each sample by the count for SRP68 to correct for library size, then log-transform the data. We add a small constant when log-transforming so that zeros do not become negative infinity.
 
 ```{r}
 normalizer <- counts %>%
@@ -317,27 +366,45 @@ counts_norm <- counts %>%
         log_norm_count = log2(norm_count+moderation)
     )
 
-ggplot(counts_norm, aes(x=sample, y=log_norm_count)) + geom_boxplot() + coord_flip()
+ggplot(counts_norm, aes(x=sample, y=log_norm_count)) + 
+    geom_boxplot() + 
+    coord_flip()
 ```
 
 
 ## Visualization
 
+The data is now suitably transformed and normalized for visualization. `ggplot2` gives us a lot of freedom to juxtapose information from different columns.
+
+```{r fig.width=8, fig.height=8}
+ggplot(counts_norm, aes(x=sample, y=gene, fill=log_norm_count)) + 
+    geom_tile() + 
+    scale_fill_viridis() + 
+    theme_minimal() +
+    theme(axis.text.x=element_text(           # Vertical text on x axis
+              angle=90,vjust=0.5,hjust=1))              
+```
+
 ```{r fig.width=8, fig.height=8}
 ggplot(counts_norm, aes(x=time, y=gene, fill=log_norm_count)) + 
-    geom_tile() + facet_grid(~ strain) + 
-    scale_fill_viridis() + theme_minimal()
+    geom_tile() + 
+    facet_grid(~ strain) + 
+    scale_fill_viridis() + 
+    theme_minimal()
 ```
 
 ```{r fig.width=10, fig.height=8}
 ggplot(counts_norm, aes(x=time, y=strain, fill=log_norm_count)) + 
-    geom_tile() + facet_wrap(~ gene) + 
-    scale_fill_viridis() + theme_minimal()
+    geom_tile() + 
+    facet_wrap(~ gene) + 
+    scale_fill_viridis() + 
+    theme_minimal()
 ```
 
 ```{r fig.width=10, fig.height=8}
 ggplot(counts_norm, aes(x=time, y=log_norm_count, color=strain, group=strain)) + 
-    geom_line() + facet_wrap(~ gene, scale="free")
+    geom_line() + 
+    facet_wrap(~ gene, scale="free")
 ```
 
 
@@ -351,7 +418,7 @@ Hint: intToUtf8(utf8ToInt("vtf!gjmufs")-1)
 
 Hint: intToUtf8(utf8ToInt("xvh#jurxsbe|/#vxppdul}h/#vg/#dqg#duudqjh")-3)
 
-3. Different genes have different average expression levels, but what we are interested in is how they change over time. Further normalize the data by subtracting the average for each gene from `log_norm_count`.
+3. (Advanced!) Different genes have different average expression levels, but what we are interested in is how they change over time. Further normalize the data by subtracting the average for each gene from `log_norm_count`.
 
 
 # Linear modelling
@@ -374,7 +441,7 @@ model <- lm(log_norm_count ~ time, data=sut476_wt)
 model
 # Note: The p-values listed by summary aren't always meaningful.
 # It makes no sense to remove the intercept term but retain the time term.
-# Significance testing can better be done with anova() and the glht package.
+# Significance testing can better be done with anova() and the multcomp package.
 summary(model)
 model.matrix(log_norm_count ~ time, data=sut476_wt)
 ```
@@ -393,7 +460,7 @@ A linear trend is not supported, in comparison to the null hypothesis that expre
 * .fitted = Model prediction.
 * .residual = Actual value minus .fitted.
 * .hat = The leverage -- how important the observation is in the design of the experiment. This can be considered before performing the experiment!
-*  .cooksd = How much actual influence the observation had on the model. Combines information from .residual and .hat.
+*  .cooksd = Cook's Distance -- how much actual influence the observation had on the model. Combines information from .residual and .hat.
 
 ```{r}
 augment(model, sut476_wt) %>% head
@@ -403,8 +470,8 @@ augment(model, newdata=sut476_wt[1:5,])
 
 # Let's look at the model fit, and how influential each observation was
 augment(model, sut476_wt) %>%
-ggplot(aes(x=time, y=log_norm_count)) + 
-    geom_point(aes(size=.cooksd), alpha=0.5) +
+ggplot(aes(x=time)) + 
+    geom_point(aes(y=log_norm_count, size=.cooksd)) +
     geom_line(aes(y=.fitted))
 ```
 
@@ -417,8 +484,8 @@ model2 <- lm(log_norm_count ~ strain*poly(time,3), data=sut476)
 model2
 
 augment(model2, sut476) %>%
-ggplot(aes(x=time, y=log_norm_count, color=strain, group=strain)) + 
-    geom_point(aes(size=.cooksd), alpha=0.5) +
+ggplot(aes(x=time, color=strain, group=strain)) + 
+    geom_point(aes(y=log_norm_count, size=.cooksd), alpha=0.5) +
     geom_line(aes(y=.fitted))
 ```
 

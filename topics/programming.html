@@ -257,22 +257,23 @@ fahr_to_celsius(212)</code></pre>
 <div id="for-loops-revisited" class="section level2">
 <h2>For-loops revisited</h2>
 <p>Recall in the introductory R day we used for-loops to perform repetitive tasks.</p>
-<pre class="r"><code>for(i in c(1,2,3,4,5)) {     #    1
-    cat(&quot;i is&quot;,i,&quot;\n&quot;)       #      2   4   6   8   10
-    cat(&quot;potato\n&quot;)          #        3   5   7   9    11
-}                            #
-cat(&quot;done\n&quot;)                #                            12
-                             #   --time--&gt;
-                             # i= - 1 1 2 2 3 3 4 4 5  5  5  ...</code></pre>
-<pre><code>## i is 1 
+<pre class="r"><code>for(i in c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;,&quot;e&quot;)) {  #    1
+    cat(&quot;i is&quot;,i,&quot;\n&quot;)              #      2   4   6   8   10
+    cat(&quot;potato\n&quot;)                 #        3   5   7   9    11
+}                                   #
+cat(&quot;done\n&quot;)                       #                            12
+                                    #   --order-of-execution--&gt;
+                                    #
+                                    # i= - a a b b c c d d e  e  e ...</code></pre>
+<pre><code>## i is a 
 ## potato
-## i is 2 
+## i is b 
 ## potato
-## i is 3 
+## i is c 
 ## potato
-## i is 4 
+## i is d 
 ## potato
-## i is 5 
+## i is e 
 ## potato
 ## done</code></pre>
 <p>Typing out the fastqc command for each day will get repetitive. Let’s use a for-loop to automate this task. The <code>paste0</code> function lets us “paste” together character strings, so we can use that to construct the commands to run, like this:</p>
@@ -571,11 +572,11 @@ devtools::install_github(&quot;myusername/mylibrary&quot;)</code></pre>
 ## [1] dplyr_0.5.0 readr_0.2.2
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.12.5      codetools_0.2-14 digest_0.6.9     assertthat_0.1  
-##  [5] R6_2.1.2         DBI_0.4-1        formatR_1.4      magrittr_1.5    
-##  [9] evaluate_0.9     stringi_1.1.1    rmarkdown_1.0    tools_3.3.0     
-## [13] stringr_1.0.0    yaml_2.1.13      htmltools_0.3.5  knitr_1.13      
-## [17] tibble_1.1       methods_3.3.0</code></pre>
+##  [1] Rcpp_0.12.5     digest_0.6.9    assertthat_0.1  R6_2.1.2       
+##  [5] DBI_0.4-1       formatR_1.4     magrittr_1.5    evaluate_0.9   
+##  [9] stringi_1.1.1   rmarkdown_1.0   tools_3.3.0     stringr_1.0.0  
+## [13] yaml_2.1.13     htmltools_0.3.5 knitr_1.13      methods_3.3.0  
+## [17] tibble_1.1</code></pre>
 </div>
 
 

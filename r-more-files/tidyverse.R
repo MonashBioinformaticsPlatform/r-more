@@ -111,17 +111,17 @@ summarize(scoretab, total=sum(score))
 
 group_by(scoretab, file)
 
-summarize(group_by(scoretab, file), total=sum(score))
+summarize(group_by(scoretab, file), average_score=mean(score))
 
 
-summarize(group_by(bigtab, grade), count=n())
+summarize(group_by(scoretab, grade), count=n())
 
 
 # ============
 # The pipe %>%
 # ============
 
-bigtab %>% group_by(grade) %>% summarize(count=n())
+scoretab %>% group_by(grade) %>% summarize(count=n())
 
 
 rep("hello", 5)
@@ -132,10 +132,12 @@ rep("hello", 5)
 # ggplot2 revisited
 # =================
 
-ggplot(bigtab,aes(x=file,y=test,color=grade)) + geom_point()
+ggplot(bigtab, aes(x=file,y=test,color=grade)) +
+    geom_point()
 
 
-ggplot(bigtab,aes(x=file,y=test,fill=grade)) + geom_tile()
+ggplot(bigtab, aes(x=file,y=test,fill=grade)) +
+    geom_tile()
 
 
 ## --------------------------
@@ -155,6 +157,28 @@ plot
 
 ggsave("plot1.png", plot, width=5,  height=5,  dpi=600)
 ggsave("plot2.png", plot, width=10, height=10, dpi=300)
+
+
+# =====
+# tidyr
+# =====
+
+untidy <- read_csv(
+    "country,male-young,male-old,female-young,female-old
+     Australia,1,2,3,4
+     New Zealand,5,6,7,8")
+
+untidy
+
+
+gathered <- gather(untidy, key=group, value=cases, -country)
+gathered
+
+
+spread(bigtab, file, grade)
+
+
+separate(gathered, group, into=c("gender","age"))
 
 
 # ========================
@@ -186,12 +210,17 @@ summary(counts)
 ## Transformation and normalization
 ## --------------------------------
 
-ggplot(counts, aes(x=sample, y=count)) + geom_boxplot() + coord_flip()
+ggplot(counts, aes(x=sample, y=count)) +
+    geom_boxplot() +
+    coord_flip()
 
 
-ggplot(counts, aes(x=sample, y=log2(count))) + geom_boxplot() + coord_flip()
+ggplot(counts, aes(x=sample, y=log2(count))) +
+    geom_boxplot() +
+    coord_flip()
 
-ggplot(counts, aes(x=log2(count), group=sample)) + geom_line(stat="density")
+ggplot(counts, aes(x=log2(count), group=sample)) +
+    geom_line(stat="density")
 
 
 normalizer <- counts %>%
@@ -207,25 +236,40 @@ counts_norm <- counts %>%
         log_norm_count = log2(norm_count+moderation)
     )
 
-ggplot(counts_norm, aes(x=sample, y=log_norm_count)) + geom_boxplot() + coord_flip()
+ggplot(counts_norm, aes(x=sample, y=log_norm_count)) +
+    geom_boxplot() +
+    coord_flip()
 
 
 ## -------------
 ## Visualization
 ## -------------
 
+ggplot(counts_norm, aes(x=sample, y=gene, fill=log_norm_count)) +
+    geom_tile() +
+    scale_fill_viridis() +
+    theme_minimal() +
+    theme(axis.text.x=element_text(           # Vertical text on x axis
+              angle=90,vjust=0.5,hjust=1))
+
+
 ggplot(counts_norm, aes(x=time, y=gene, fill=log_norm_count)) +
-    geom_tile() + facet_grid(~ strain) +
-    scale_fill_viridis() + theme_minimal()
+    geom_tile() +
+    facet_grid(~ strain) +
+    scale_fill_viridis() +
+    theme_minimal()
 
 
 ggplot(counts_norm, aes(x=time, y=strain, fill=log_norm_count)) +
-    geom_tile() + facet_wrap(~ gene) +
-    scale_fill_viridis() + theme_minimal()
+    geom_tile() +
+    facet_wrap(~ gene) +
+    scale_fill_viridis() +
+    theme_minimal()
 
 
 ggplot(counts_norm, aes(x=time, y=log_norm_count, color=strain, group=strain)) +
-    geom_line() + facet_wrap(~ gene, scale="free")
+    geom_line() +
+    facet_wrap(~ gene, scale="free")
 
 
 ## ---------
@@ -241,10 +285,10 @@ ggplot(counts_norm, aes(x=time, y=log_norm_count, color=strain, group=strain)) +
 # Hint:
 # intToUtf8(utf8ToInt("xvh#jurxsbe|/#vxppdul}h/#vg/#dqg#duudqjh")-3)
 # 
-# 3. Different genes have different average expression levels, but what
-# we are interested in is how they change over time. Further normalize
-# the data by subtracting the average for each gene from
-# `log_norm_count`.
+# 3. (Advanced!) Different genes have different average expression
+# levels, but what we are interested in is how they change over time.
+# Further normalize the data by subtracting the average for each gene
+# from `log_norm_count`.
 # 
 # 
 #
@@ -264,7 +308,7 @@ model <- lm(log_norm_count ~ time, data=sut476_wt)
 model
 # Note: The p-values listed by summary aren't always meaningful.
 # It makes no sense to remove the intercept term but retain the time term.
-# Significance testing can better be done with anova() and the glht package.
+# Significance testing can better be done with anova() and the multcomp package.
 summary(model)
 model.matrix(log_norm_count ~ time, data=sut476_wt)
 
@@ -280,8 +324,8 @@ augment(model, newdata=sut476_wt[1:5,])
 
 # Let's look at the model fit, and how influential each observation was
 augment(model, sut476_wt) %>%
-ggplot(aes(x=time, y=log_norm_count)) +
-    geom_point(aes(size=.cooksd), alpha=0.5) +
+ggplot(aes(x=time)) +
+    geom_point(aes(y=log_norm_count, size=.cooksd)) +
     geom_line(aes(y=.fitted))
 
 
@@ -289,8 +333,8 @@ model2 <- lm(log_norm_count ~ strain*poly(time,3), data=sut476)
 model2
 
 augment(model2, sut476) %>%
-ggplot(aes(x=time, y=log_norm_count, color=strain, group=strain)) +
-    geom_point(aes(size=.cooksd), alpha=0.5) +
+ggplot(aes(x=time, color=strain, group=strain)) +
+    geom_point(aes(y=log_norm_count, size=.cooksd), alpha=0.5) +
     geom_line(aes(y=.fitted))
 
 

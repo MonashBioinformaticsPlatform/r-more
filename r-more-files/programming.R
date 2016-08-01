@@ -139,13 +139,14 @@ system("fastqc --extract --outdir . r-more-files/Day0.fastq")
 ## For-loops revisited
 ## -------------------
 
-for(i in c(1,2,3,4,5)) {     #    1
-    cat("i is",i,"\n")       #      2   4   6   8   10
-    cat("potato\n")          #        3   5   7   9    11
-}                            #
-cat("done\n")                #                            12
-                             #   --time-->
-                             # i= - 1 1 2 2 3 3 4 4 5  5  5  ...
+for(i in c("a","b","c","d","e")) {  #    1
+    cat("i is",i,"\n")              #      2   4   6   8   10
+    cat("potato\n")                 #        3   5   7   9    11
+}                                   #
+cat("done\n")                       #                            12
+                                    #   --order-of-execution-->
+                                    #
+                                    # i= - a a b b c c d d e  e  e ...
 
 
 day <- 0
