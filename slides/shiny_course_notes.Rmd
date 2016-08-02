@@ -133,6 +133,13 @@ renderPlot({
 ```
 The server code plots a histogram for a dataset called faithful. It has an arguement for the number of breaks plotted which is dependent on the value from the selectInput.
 
+## Example apps
+
+Here are some apps made by Monash bioinformaticians:
+
+Stuart's TCP app that went into his Nature paper: http://bioapps.erc.monash.edu.ezproxy.lib.monash.edu.au/TCP/
+Paul's Varistran app: http://rnasystems.erc.monash.edu:3838/pfh/2015/demo-varistran/
+
 ## Let's get into Shiny!
 
-[Shiny tutorial](../topics/shiny_tutorial.html)
+[Shiny tutorial](http://biotraining.erc.monash.edu:3838/tutorial/)
