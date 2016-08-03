@@ -26,7 +26,7 @@ This builds on our ["Introduction to R"](https://monashbioinformaticsplatform.gi
 * [Programming](topics/programming.html) ([.Rmd](topics/programming.Rmd))
 * [The tidyverse: dplyr, ggplot2, and friends](topics/tidyverse.html) ([.Rmd](topics/tidyverse.Rmd))
 * [Sequences and genomic features](topics/sequences_and_features.html) ([.Rmd](topics/sequences_and_features.Rmd))
-* [Shiny](http://biotraining.erc.monash.edu:3838/tutorial/) [.Rmd](topics/shiny_tutorial.Rmd)
+* [Shiny](http://biotraining.erc.monash.edu:3838/tutorial/) ([.Rmd](topics/shiny_tutorial.Rmd))
 
 ---
 
