@@ -42,25 +42,92 @@ vignette("introduction", package="dplyr")
 ```
 
 
-# dplyr
-
 Let's continue our examination of the FastQC output. If you're starting fresh for this lesson, you can load the necessary data frame with:
 
 ```{r}
 bigtab <- read_csv("r-more-files/fastqc.csv")
-bigtab$grade <- factor(bigtab$grade, c("FAIL","WARN","PASS"))
+```
 
+# ggplot2 revisited
+
+We [saw ggplot2 in the introductory R day](https://monashbioinformaticsplatform.github.io/r-intro/ggplot.html). Recall that we could assign columns of a data frame to aesthetics--x and y position, color, etc--and then add "geom"s to draw the data.
+
+With `ggplot2` we can easily view the whole data set.
+
+```{r}
+ggplot(bigtab, aes(x=file,y=test,color=grade)) + 
+    geom_point()
+```
+
+With categorical data on the x and y axes, a better geom to use is `geom_tile`.
+
+```{r}
+ggplot(bigtab, aes(x=file,y=test,fill=grade)) + 
+    geom_tile()
+```
+
+
+## Publication quality images
+
+`ggplot2` offers a very wide variety of ways to adjust a plot. For categorical aesthetics, usually the first step is ensuring the relevant column is a factor with a meaningful level order.
+
+```{r}
+y_order <- sort(unique(bigtab$test), decreasing=T)  # y axis plots from bottom to top, so reverse
+bigtab$test <- factor(bigtab$test, levels=y_order)
+
+x_order <- unique(bigtab$file)                      
+bigtab$file <- factor(bigtab$file, levels=x_order)
+
+color_order <- c("FAIL", "WARN", "PASS")
+bigtab$grade <- factor(bigtab$grade, levels=color_order)
+
+plot <- ggplot(bigtab, aes(x=file, y=test, fill=grade)) + 
+    geom_tile(color="black", size=0.5) +      # Black border on tiles
+    labs(x="", y="", fill="") +               # Remove axis labels
+    coord_fixed() +                           # Square tiles
+    theme_minimal() +                         # Minimal theme, no grey background
+    theme(panel.grid=element_blank(),         # No underlying grid lines
+          axis.text.x=element_text(           # Vertical text on x axis
+              angle=90,vjust=0.5,hjust=0))              
+plot
+```
+
+Plots can be saved with ``ggsave``. Width and height are given in inches, and an image resolution in Dots Per Inch should also be given. The width and height will determine the relative size of text and graphics, so increasing the resolution is best done by adjusting the DPI. Compare the files produced by:
+
+```{r, eval=FALSE}
+ggsave("plot1.png", plot, width=5,  height=5,  dpi=600)
+ggsave("plot2.png", plot, width=10, height=10, dpi=300)
+```
+
+It may be necessary to edit a plot further in a program such as Inkscape or Adobe Illustrator. To allow this, the image needs to be saved in a "vector" format such as SVG, EPS, or PDF. In this case, the DPI argument isn't needed.
+
+
+# dplyr
+
+`dplyr` gives us a collection of convenient "verbs" for manipulating data frames. The name is a contraction of "Data frame apPLYeR", as some of these verbs have a similar flavour to apply/lappy/tapply/etc.
+
+Each verb takes a data frame as input and returns a modified version of it. The idea is that complex operations can be performed by stringing together a series of simpler operations in a pipeline.
+
+```
+# input         +--------+        +--------+        +--------+      result
+#  data   %>%   |  verb  |  %>%   |  verb  |  %>%   |  verb  |  ->   data
+#   frame       +--------+        +--------+        +--------+        frame
+```
+
+
+## tibbles
+
+```{r}
 bigtab
 ```
 
-`bigtab` is a "tibble", which is Hadley Wickham's slightly improved data frame. One convenient feature is that it only shows a few rows of the data frame when you print it. If you do want to see the whole table, you can use `as.data.frame`, or use the `View` function to view it in a tab.
+As we used `readr` to read the data, `bigtab` is a "tibble", which is Hadley Wickham's slightly improved data frame. The `dplyr` verbs also all return their results as tibbles. You can also create tibbles explicitly with the `tibble` function. One convenient feature is that it only shows a few rows of the data frame when you print it. If you do want to see the whole table, you can use `as.data.frame`, or use the `View` function to view it in a tab.
 
 ```{r eval=FALSE}
 as.data.frame(bigtab)
 View(bigtab)
 ```
 
-`dplyr` gives us a collection of convenient "verbs" for manipulating data frames.
 
 ## filter
 
@@ -177,7 +244,7 @@ summarize(group_by(scoretab, grade), count=n())
 
 So `summarize` lets us do the things we did with `table` and `tapply`, but staying tidy by using data frames.
 
-<b>Tip:</b> `group_by` also affects other verbs, such as mutate. This is more advanced than we will be going in to today. Grouping can be removed with `ungroup`.
+<b>Tip:</b> `group_by` also affects other verbs, such as mutate. This is more advanced than we will be going into today. Grouping can be removed with `ungroup`.
 
 See also functions for common uses of summarize: `count`, `distinct`.
 
@@ -193,59 +260,12 @@ scoretab %>% group_by(grade) %>% summarize(count=n())
 `%>%` isn't limited to `dplyr` functions. It's an alternative way of writing any R code.
 
 ```{r}
-rep("hello", 5)
-"hello" %>% rep(5)
+rep(paste("hello", "world"), 5)
+
+"hello" %>% paste("world") %>% rep(5)
 ```
 
-
-# ggplot2 revisited
-
-This section builds on [what we saw of ggplot2](https://monashbioinformaticsplatform.github.io/r-intro/ggplot.html) in the introductory R day. Recall that we could assign columns of a data from to aesthetics--x and y position, color, etc--and then add "geom"s to draw the data.
-
-The idea of adding geoms is rather like the dplyr pipe. `ggplot2` predates `dplyr`, and Hadley Wickham has had a progression of ideas. It will probably be possible to use `%>%` instead of `+` in the not too distant future.
-
-
-With `ggplot2` we don't need to summarize `bigtab`, we can just view the whole data set.
-
-```{r}
-ggplot(bigtab, aes(x=file,y=test,color=grade)) + 
-    geom_point()
-```
-
-With categorical data on the x and y axes, an even better geom to use is `geom_tile`.
-
-```{r}
-ggplot(bigtab, aes(x=file,y=test,fill=grade)) + 
-    geom_tile()
-```
-
-
-## Publication quality images
-
-`ggplot2` offers a very wide array of ways to adjust a plot.
-
-```{r}
-plot <- ggplot(bigtab,aes(x=file,y=test,fill=grade)) + 
-    geom_tile(color="black",size=0.5) +
-    labs(x="",y="",fill="") +                 # Remove axis labels
-    coord_fixed() +                           # Square tiles
-    theme_minimal() +                         # Minimal theme, no grey background
-    theme(panel.grid=element_blank(),         # No underlying grid lines
-          axis.text.x=element_text(           # Vertical text on x axis
-              angle=90,vjust=0.5,hjust=1))              
-plot
-```
-
-We would ideally also reorder the x and y axes meaningfully, and refine the x axis labels.
-
-Plots can be saved with ``ggsave``. Width and height are given in inches, and an image resolution in Dots Per Inch should also be given. The width and height will determine the relative size of text and graphics, so increasing the resolution is best done by adjusting the DPI. Compare the files produced by:
-
-```{r, eval=FALSE}
-ggsave("plot1.png", plot, width=5,  height=5,  dpi=600)
-ggsave("plot2.png", plot, width=10, height=10, dpi=300)
-```
-
-It may be necessary to edit a plot further in a program such as Inkscape or Adobe Illustrator. To allow this, the image needs to be saved in a "vector" format such as SVG, EPS, or PDF. In this case, the DPI argument isn't needed.
+The idea of adding geoms in `ggplot2` is rather like the `dplyr` pipe. `ggplot2` predates `dplyr`, and Hadley Wickham has had a progression of ideas. It will probably be possible to use `%>%` instead of `+` in `ggplot2` in the not too distant future.
 
 
 # tidyr
@@ -259,10 +279,9 @@ I'm not sure `tidyr` is a great package, but the *ideas* behind it are very impo
 
 ```{r}
 untidy <- read_csv(
-    "country,male-young,male-old,female-young,female-old
-     Australia,1,2,3,4
-     New Zealand,5,6,7,8")
-
+    "country,     male-young, male-old, female-young, female-old
+     Australia,            1,        2,            3,          4
+     New Zealand,          5,        6,            7,          8")
 untidy
 ```
 
@@ -277,7 +296,7 @@ We give a data frame, a name for the key and value columns to be created. Remain
 
 In the introductory R day we saw `melt` from the `reshape2` package, which did a similar thing to matrices.
 
-`spread` is the opposite operation, spreading a column into many columns, which generally makes data less tidy but is sometimes necessary.
+`spread` is the opposite operation, spreading a column into many columns, which generally makes data less tidy but is sometimes necessary. It's a little like calling `tapply` with a function that just returns the data unaltered (`identity`).
 
 ```{r}
 spread(bigtab, file, grade)
@@ -289,6 +308,23 @@ In our toy example, we have a further problem that the "group" column contains t
 separate(gathered, group, into=c("gender","age"))
 ```
 
+All of this would typically be written as a single pipline:
+
+```{r}
+tidied <- untidy %>%
+    gather(key=group, value=cases, -country) %>%
+    separate(group, into=c("gender","age"))
+```
+
+<b>Advanced:</b> `tidyr` has a number of other useful data frame manipulations. For completeness, we mention `nest` and `unnest`. These create or unpack a *list column* in a tibble, the list column containing one tibble per row. Yo, Hadley put tibbles in your tibble so you can dplyr while you dplyr. `nest` and `unnest` go well with creating or modifying list columns in a `mutate` with `lapply` or `Map`.
+
+```{r}
+# Advanced!
+nested <- nest(gathered, -country)
+nested
+nested$data
+unnest(nested)
+```
 
 
 # A simple RNA-Seq example

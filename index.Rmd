@@ -1,13 +1,15 @@
 ---
 title: "R more"
+subtitle: "Best practices using R in 2016"
 output: 
     html_document:
         theme: cerulean
         css: style.css
 ---
 
+<br>
 These are the course notes for the Monash Bioinformatics Platform's "R More" course.
-This builds on our ["R introduction"](https://monashbioinformaticsplatform.github.io/r-intro/) course. In this course we cover best practices for reproducable sharable results, programming, "tidy" exploratory data analysis, manipulating DNA sequences and features with Bioconductor, and presenting data interactively with Shiny. We will be covering much more ground than the introductory course, to give a broad overview of the various ways R is currently used.
+This builds on our ["Introduction to R"](https://monashbioinformaticsplatform.github.io/r-intro/) course. In this course we cover best practices for reproducable sharable results, programming, "tidy" exploratory data analysis, manipulating DNA sequences and features with Bioconductor, and presenting data interactively with Shiny. We will be covering much more ground than the introductory course, to give a broad overview of the various ways R is currently used.
 
 ## Files
 
@@ -16,9 +18,7 @@ This builds on our ["R introduction"](https://monashbioinformaticsplatform.githu
 ## Slides
 
 * [Introduction](slides/introduction.html) ([.Rmd](slides/introduction.Rmd))
-* Shiny [.Rmd](slides/shiny_course_notes.Rmd)
-
-The Shiny slides are interactive, the .Rmd file can be downloaded and run from within RStudio.
+* [Shiny](http://biotraining.erc.monash.edu:3838/tutorial/slideshow.Rmd) ([.Rmd](slides/shiny_course_notes.Rmd))
 
 ## Topics
 
@@ -26,7 +26,7 @@ The Shiny slides are interactive, the .Rmd file can be downloaded and run from w
 * [Programming](topics/programming.html) ([.Rmd](topics/programming.Rmd))
 * [The tidyverse: dplyr, ggplot2, and friends](topics/tidyverse.html) ([.Rmd](topics/tidyverse.Rmd))
 * [Sequences and genomic features](topics/sequences_and_features.html) ([.Rmd](topics/sequences_and_features.Rmd))
-* [Shiny](http://biotraining.erc.monash.edu:3838/tutorial/) [.Rmd](topics/shiny_tutorial.Rmd)
+* [Shiny](http://biotraining.erc.monash.edu:3838/tutorial/) ([.Rmd](topics/shiny_tutorial.Rmd))
 
 ---
 
@@ -34,7 +34,7 @@ The Shiny slides are interactive, the .Rmd file can be downloaded and run from w
 
 In this series:
 
-* [R introduction](https://monashbioinformaticsplatform.github.io/r-intro/)
+* [Introduction to R](https://monashbioinformaticsplatform.github.io/r-intro/)
 * [RNAseq DE analysis using R](http://monashbioinformaticsplatform.github.io/RNAseq-DE-analysis-with-R/)
 
 Other resources:
