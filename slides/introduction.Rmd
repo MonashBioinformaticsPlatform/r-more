@@ -31,7 +31,8 @@ You may want to join together many different views of a biological process: DNA,
 
 Your data can potentially be viewed in the context of a vast array of other data sets.
 
-A reference genome and gene annotations are essential, and also serve as the key to joining different types of data.
+<br>
+In biology, a reference genome and gene annotations are essential as the key to joining different types of data.
 
 
 ## Analysis cycle
@@ -45,7 +46,7 @@ See also: [Hadley Wickham talking on this topic at useR! 2016](https://channel9.
 
 <img src="../figures/data-cycle.svg" style="position: absolute; right: 0px; top: 0px;" height="200">
 
-### Load, tidy, and correctly transform data
+### Load, tidy, normalize and transform data
 
 * Tidy data makes visualization and modelling fast and easy.
 * Correctly normalized and transformed data brings out the signal in visualizations, and is necessary for correct modelling.
@@ -99,9 +100,11 @@ Tidy data doesn't mean a neat presentation for a person to read, it means data i
 
 * use data frames
 * each row is a unit of observation
-* each column is a single piece of information of a distinct type
+* each column is a single piece of information
+* each column is a distinct kind of information
 
-Similar to database normalization we avoid complex structures, preferring one or more simple tables.
+Avoid complex structures, preferring one or more simple tables. 
+<br>(Similar to database normalization.)
 
 The experimental design is in the body of the table alongside the data, *not* in row names or column names.
 
@@ -118,36 +121,41 @@ Example from: [Wickham, H. (2015) Tidy data. The Journal of Statistical Software
 
 ## Programming
 
-In the introduction to R day, we mostly used R interactively.
+Programming (or scripting) lets us tell the computer to do a whole lot of things without further instruction.
 
-Programming lets us tell the computer to do a whole lot of things without further instruction. Elements of this we will be looking at today:
+* If every step of your analysis can run as a script, you have a complete record of what you have done.
+* Changes are easily tested, a poor decision at an early stage is easily fixed.
+* Today's big project becomes tomorrow's building block.
+
+Elements of programming we will be looking at today:
 
 * re-usable step-by-step procedures with `function`
 * doing something "for each ..." with `for` loops
 * making decisions with `if`
+* running external software with `system`
 * running all the code in a .R file as a "script", or to load a "library" of functions
-
-
-## Programming gets you to tidy
-
-For a bioinformatician, the bulk of programming is often writing short scripts that do the repetitive grunt work to get your data into a tidy form. Bioinformatics is a mess of file formats, largely text based, haphazardly standardized.
-
-The hard *algorithmic* work for most problems has been done for you. Once your data is tidy, R makes it easy to bring this to bear. (This is actually why S, and later R, exist.)
-
-Although if algorithms are your thing, there is plenty still to be done in computer science and statistics.
 
 
 ## Best practices
 
-Science is sharing. Science is reproducable.
+<img src="../figures/remember-kids.jpg" style="position: absolute; right: 0px; top: 0px;" height="400">
 
-If you act as a model, your peers and students may surprise you with an unsuspected aptitude.
+Show your code.
 
-Therefore, show your code.
+Science is about sharing. Science is reproducable.
 
-* Document your analysis in Rmarkdown.
-* Share useful functions in packages, eg on GitHub.
-* For reproducibility, record which versions of packages you used with sessionInfo().
+People may surprise you.
+
+* Document analysis in Rmarkdown.
+* Share useful functions in packages.
+    * Version control (eg git, GitHub)
+    * Documentation
+    * Testing
+    * `devtools::check`
+
+<br>
+
+* For reproducibility, record which versions of packages you used with `sessionInfo()`.
 
 
 ## Today
@@ -156,19 +164,10 @@ Rmarkdown documents
 
 Programming
 
-* function/for/if
-* packages
-
 Tidying data and visualizing it
-
-* tidyr, dplyr, ggplot2
 
 Working with sequence and genomic feature data
 
-* rtracklayer, GenomicRanges
-
-Exploring data interactively
-
-* shiny
+Sharing data interactively
 
 
