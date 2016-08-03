@@ -260,8 +260,9 @@ scoretab %>% group_by(grade) %>% summarize(count=n())
 `%>%` isn't limited to `dplyr` functions. It's an alternative way of writing any R code.
 
 ```{r}
-rep("hello", 5)
-"hello" %>% rep(5)
+rep(paste("hello", "world"), 5)
+
+"hello" %>% paste("world") %>% rep(5)
 ```
 
 The idea of adding geoms in `ggplot2` is rather like the `dplyr` pipe. `ggplot2` predates `dplyr`, and Hadley Wickham has had a progression of ideas. It will probably be possible to use `%>%` instead of `+` in `ggplot2` in the not too distant future.

@@ -1,13 +1,15 @@
 ---
 title: "R more"
+subtitle: "Best practices using R in 2016"
 output: 
     html_document:
         theme: cerulean
         css: style.css
 ---
 
+<br>
 These are the course notes for the Monash Bioinformatics Platform's "R More" course.
-This builds on our ["R introduction"](https://monashbioinformaticsplatform.github.io/r-intro/) course. In this course we cover best practices for reproducable sharable results, programming, "tidy" exploratory data analysis, manipulating DNA sequences and features with Bioconductor, and presenting data interactively with Shiny. We will be covering much more ground than the introductory course, to give a broad overview of the various ways R is currently used.
+This builds on our ["Introduction to R"](https://monashbioinformaticsplatform.github.io/r-intro/) course. In this course we cover best practices for reproducable sharable results, programming, "tidy" exploratory data analysis, manipulating DNA sequences and features with Bioconductor, and presenting data interactively with Shiny. We will be covering much more ground than the introductory course, to give a broad overview of the various ways R is currently used.
 
 ## Files
 
@@ -32,7 +34,7 @@ This builds on our ["R introduction"](https://monashbioinformaticsplatform.githu
 
 In this series:
 
-* [R introduction](https://monashbioinformaticsplatform.github.io/r-intro/)
+* [Introduction to R](https://monashbioinformaticsplatform.github.io/r-intro/)
 * [RNAseq DE analysis using R](http://monashbioinformaticsplatform.github.io/RNAseq-DE-analysis-with-R/)
 
 Other resources:
