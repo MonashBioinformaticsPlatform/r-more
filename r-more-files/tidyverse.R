@@ -173,8 +173,9 @@ summarize(group_by(scoretab, grade), count=n())
 scoretab %>% group_by(grade) %>% summarize(count=n())
 
 
-rep("hello", 5)
-"hello" %>% rep(5)
+rep(paste("hello", "world"), 5)
+
+"hello" %>% paste("world") %>% rep(5)
 
 
 # =====
