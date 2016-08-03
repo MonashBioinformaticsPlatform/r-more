@@ -16,9 +16,9 @@ knitr::opts_chunk$set(echo = FALSE)
 
 * Why should you use it and what for?
 
-* Basic setup of a Shiny app
-
 * Examples of shiny apps
+
+* Basic setup of a Shiny app
 
 * Tutorial: Let's make an app!
 
@@ -40,11 +40,19 @@ It's easier than learning HTML, CSS and JavaScript, although you can use those t
 
 You don't need to port any of your R code into another language in order to build a web app
 
-Incredibly flexibily, you can generate dynamic UI elements and create interactive plots
+Incredible flexibility, you can generate dynamic UI elements and create interactive plots
 
 It adds reproducibilty to your graphs
 
 **YOU DON'T NEED TO GENERATE A BILLION PLOTS MANUALLY** 
+
+## Example apps
+
+Here are some apps made by Monash bioinformaticians:
+
+* Stuart's TCP app that went into his Nature paper: http://bioapps.erc.monash.edu.ezproxy.lib.monash.edu.au/TCP/
+
+* Paul's Varistran app: http://rnasystems.erc.monash.edu:3838/pfh/2015/demo-varistran/
 
 ## Structure of a Shiny App
 
@@ -102,6 +110,7 @@ Data processing, analysis, plotting, this all happens here.
 
 Takes inputs from the ui and re-runs code chunks when the inputs change.
 
+Let's have a look at a handy example from the [Shiny tutorial](http://shiny.rstudio.com/tutorial/lesson1/)
 
 ## Example Interactive Plot
 
@@ -133,12 +142,6 @@ renderPlot({
 ```
 The server code plots a histogram for a dataset called faithful. It has an arguement for the number of breaks plotted which is dependent on the value from the selectInput.
 
-## Example apps
-
-Here are some apps made by Monash bioinformaticians:
-
-Stuart's TCP app that went into his Nature paper: http://bioapps.erc.monash.edu.ezproxy.lib.monash.edu.au/TCP/
-Paul's Varistran app: http://rnasystems.erc.monash.edu:3838/pfh/2015/demo-varistran/
 
 ## Let's get into Shiny!
 
