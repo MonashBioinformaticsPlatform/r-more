@@ -31,12 +31,61 @@ vignette(package="dplyr")
 vignette("introduction", package="dplyr")
 
 
+bigtab <- read_csv("r-more-files/fastqc.csv")
+
+
+# =================
+# ggplot2 revisited
+# =================
+
+ggplot(bigtab, aes(x=file,y=test,color=grade)) +
+    geom_point()
+
+
+ggplot(bigtab, aes(x=file,y=test,fill=grade)) +
+    geom_tile()
+
+
+## --------------------------
+## Publication quality images
+## --------------------------
+
+y_order <- sort(unique(bigtab$test), decreasing=T)  # y axis plots from bottom to top, so reverse
+bigtab$test <- factor(bigtab$test, levels=y_order)
+
+x_order <- unique(bigtab$file)
+bigtab$file <- factor(bigtab$file, levels=x_order)
+
+color_order <- c("FAIL", "WARN", "PASS")
+bigtab$grade <- factor(bigtab$grade, levels=color_order)
+
+plot <- ggplot(bigtab, aes(x=file, y=test, fill=grade)) +
+    geom_tile(color="black", size=0.5) +      # Black border on tiles
+    labs(x="", y="", fill="") +               # Remove axis labels
+    coord_fixed() +                           # Square tiles
+    theme_minimal() +                         # Minimal theme, no grey background
+    theme(panel.grid=element_blank(),         # No underlying grid lines
+          axis.text.x=element_text(           # Vertical text on x axis
+              angle=90,vjust=0.5,hjust=0))
+plot
+
+
+ggsave("plot1.png", plot, width=5,  height=5,  dpi=600)
+ggsave("plot2.png", plot, width=10, height=10, dpi=300)
+
+
 # =====
 # dplyr
 # =====
 
-bigtab <- read_csv("r-more-files/fastqc.csv")
-bigtab$grade <- factor(bigtab$grade, c("FAIL","WARN","PASS"))
+# input         +--------+        +--------+        +--------+      result
+#  data   %>%   |  verb  |  %>%   |  verb  |  %>%   |  verb  |  ->   data
+#   frame       +--------+        +--------+        +--------+        frame
+
+
+## -------
+## tibbles
+## -------
 
 bigtab
 
@@ -128,46 +177,14 @@ rep("hello", 5)
 "hello" %>% rep(5)
 
 
-# =================
-# ggplot2 revisited
-# =================
-
-ggplot(bigtab, aes(x=file,y=test,color=grade)) +
-    geom_point()
-
-
-ggplot(bigtab, aes(x=file,y=test,fill=grade)) +
-    geom_tile()
-
-
-## --------------------------
-## Publication quality images
-## --------------------------
-
-plot <- ggplot(bigtab,aes(x=file,y=test,fill=grade)) +
-    geom_tile(color="black",size=0.5) +
-    labs(x="",y="",fill="") +                 # Remove axis labels
-    coord_fixed() +                           # Square tiles
-    theme_minimal() +                         # Minimal theme, no grey background
-    theme(panel.grid=element_blank(),         # No underlying grid lines
-          axis.text.x=element_text(           # Vertical text on x axis
-              angle=90,vjust=0.5,hjust=1))
-plot
-
-
-ggsave("plot1.png", plot, width=5,  height=5,  dpi=600)
-ggsave("plot2.png", plot, width=10, height=10, dpi=300)
-
-
 # =====
 # tidyr
 # =====
 
 untidy <- read_csv(
-    "country,male-young,male-old,female-young,female-old
-     Australia,1,2,3,4
-     New Zealand,5,6,7,8")
-
+    "country,     male-young, male-old, female-young, female-old
+     Australia,            1,        2,            3,          4
+     New Zealand,          5,        6,            7,          8")
 untidy
 
 
@@ -179,6 +196,18 @@ spread(bigtab, file, grade)
 
 
 separate(gathered, group, into=c("gender","age"))
+
+
+tidied <- untidy %>%
+    gather(key=group, value=cases, -country) %>%
+    separate(group, into=c("gender","age"))
+
+
+# Advanced!
+nested <- nest(gathered, -country)
+nested
+nested$data
+unnest(nested)
 
 
 # ========================
