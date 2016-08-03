@@ -52,7 +52,11 @@ Here are some apps made by Monash bioinformaticians:
 
 * Stuart's TCP app that went into his Nature paper: http://bioapps.erc.monash.edu.ezproxy.lib.monash.edu.au/TCP/
 
+`Stuart K. Archer, Nikolay E. Shirokikh, Traude H. Beilharz, & Thomas Preiss. (2016). Dynamics of ribosome scanning and recycling revealed by translation complex profiling. Nature, 2016.`
+
 * Paul's Varistran app: http://rnasystems.erc.monash.edu:3838/pfh/2015/demo-varistran/
+
+[Varistran github page](https://github.com/MonashBioinformaticsPlatform/varistran)
 
 ## Structure of a Shiny App
 
