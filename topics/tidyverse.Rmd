@@ -286,7 +286,7 @@ untidy <- read_csv(
 untidy
 ```
 
-The first problem is that rows are not distinct units of observations, there are actually four observations per row.
+The first problem is that rows are not distinct units of observation, there are actually four observations per row. This is fixed using `gather`.
 
 ```{r}
 gathered <- gather(untidy, key=group, value=cases, -country)
@@ -317,7 +317,7 @@ tidied <- untidy %>%
     separate(group, into=c("gender","age"))
 ```
 
-<b>Advanced:</b> `tidyr` has a number of other useful data frame manipulations. For completeness, we mention `nest` and `unnest`. These create or unpack a *list column* in a tibble, the list column containing one tibble per row. Yo, Hadley put tibbles in your tibble so you can dplyr while you dplyr. `nest` and `unnest` go well with creating or modifying list columns in a `mutate` with `lapply` or `Map`.
+<b>Advanced:</b> `tidyr` has a number of other useful data frame manipulations. For completeness, we mention `nest`. This creates a *list column* in a tibble, the list column containing one tibble per row. Yo, Hadley put tibbles in your tibble so you can dplyr while you dplyr. The inverse operation is `unnest`. `nest` and `unnest` go well with creating or modifying list columns in a `mutate` with `lapply` or `Map`.
 
 ```{r}
 # Advanced!
@@ -328,17 +328,15 @@ unnest(nested)
 ```
 
 
-# A simple RNA-Seq example
+# A small RNA-Seq example
 
 We will now put this all together by looking at a small gene expression data set. To simplify somewhat: The data was generated from a multiplex PCR targetting 44 genes. The PCR product is quantified by counting reads from high throughput sequencing. The experiment is of yeast released synchronously into cell cycling, so that we can see which genes are active at different points in the cycle. Several strains of yeast have been used, a wildtype and several gene knock-downs. Each has nine time points, covering two cell cycles (two hours). 
 
 This is much smaller than a typical RNA-Seq dataset. We are only looking at 44 genes, rather than all of the thousands of genes in the yeast genome.
 
-Recall the three activities involved in data analysis:
+Recall the three activities involved in data analysis. This dataset requires all of them.
 
 <img src="../figures/data-cycle.svg" height="400">
-
-This data set requires all of them.
 
 
 ## Tidying
@@ -408,6 +406,15 @@ ggplot(counts_norm, aes(x=sample, y=log_norm_count)) +
     coord_flip()
 ```
 
+<b>Note:<b> Here all of the genes are potentially differentially expressed. For a full RNA-Seq data set we would probably assume most genes aren't differentially expressed, so rather than nominating a normalizing gene we would normalize by total library size with, typically with a slight adjustment using the "TMM" method as calculated by `calcNormFactors` in `edgeR`:
+
+```{r eval=FALSE}
+# For a full sized RNA-Seq dataset:
+library(edgeR)
+mat <- counts_untidy %>% select(-Feature) %>% as.matrix
+adjusted_lib_sizes <- colSums(mat) * calcNormFactors(mat)
+normalizer_by_tmm <- tibble(sample=names(adjusted_lib_sizes), norm=adjusted_lib_sizes)
+```
 
 ## Visualization
 

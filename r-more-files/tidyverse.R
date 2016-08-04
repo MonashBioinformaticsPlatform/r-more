@@ -212,9 +212,9 @@ nested$data
 unnest(nested)
 
 
-# ========================
-# A simple RNA-Seq example
-# ========================
+# =======================
+# A small RNA-Seq example
+# =======================
 
 ## -------
 ## Tidying
@@ -270,6 +270,13 @@ counts_norm <- counts %>%
 ggplot(counts_norm, aes(x=sample, y=log_norm_count)) +
     geom_boxplot() +
     coord_flip()
+
+
+# For a full sized RNA-Seq dataset:
+library(edgeR)
+mat <- counts_untidy %>% select(-Feature) %>% as.matrix
+adjusted_lib_sizes <- colSums(mat) * calcNormFactors(mat)
+normalizer_by_tmm <- tibble(sample=names(adjusted_lib_sizes), norm=adjusted_lib_sizes)
 
 
 ## -------------
