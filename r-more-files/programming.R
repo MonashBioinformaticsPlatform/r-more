@@ -318,12 +318,9 @@ source("fastqc.R")
 # .Rmd file?
 # 
 # How should we break up a large project (paper/thesis/software package)
-# into files, for our own workflow?
+# into files?
 # 
 # What about managing data files?
-# 
-# How do we ensure the code for a project can be run by others, ensuring
-# it is reproducible?
 # 
 # How should we share a project with others?
 # 

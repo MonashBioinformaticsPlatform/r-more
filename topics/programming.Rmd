@@ -459,11 +459,9 @@ Similarly, if you are going to be doing several different things with a data set
 
 What other R code from this lesson could we put in a .R file? Or a .Rmd file?
 
-How should we break up a large project (paper/thesis/software package) into files, for our own workflow?
+How should we break up a large project (paper/thesis/software package) into files?
 
 What about managing data files?
-
-How do we ensure the code for a project can be run by others, ensuring it is reproducible?
 
 How should we share a project with others?
 
