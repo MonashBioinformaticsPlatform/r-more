@@ -56,6 +56,7 @@ bigtab$test <- factor(bigtab$test, levels=y_order)
 x_order <- unique(bigtab$file)
 bigtab$file <- factor(bigtab$file, levels=x_order)
 
+# Only necessary if not continuing from previous lesson on programming!
 color_order <- c("FAIL", "WARN", "PASS")
 bigtab$grade <- factor(bigtab$grade, levels=color_order)
 

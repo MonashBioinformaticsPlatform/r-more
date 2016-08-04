@@ -29,7 +29,7 @@ fahr_to_kelvin <- function(temp) {
 We define `fahr_to_kelvin` by assigning it a `function`. The list of argument names are containted within parentheses. Next, the body of the function--the statements that are executed when it runs--is contained within curly braces (`{}`). The statements in the body have been indented by four spaces, which makes the code easier to read but does not affect how the code operates.
 
 When we call the function, the values we pass to it are assigned to those variables so that we can use them inside the function.
-The expression inside the function is evaluate and the result is "returned" back to whoever asked for it.
+The expression inside the function is evaluated and the result is "returned" back to whoever asked for it.
 
 Let's try running our function. Calling our own function is no different from calling any other function:
 
@@ -70,7 +70,7 @@ fahr_to_kelvin <- function(temp) {
 }
 ```
 
-Statements in the function may be split over several lines, so long as it is clear that the statement is incomplete due to an unclosed bracket or an operator in need of a right hand argument:
+Statements in the function may be split over several lines, so long as it is clear that the statement is incomplete due to an unclosed bracket or an operator in need of a right hand argument.
 
 ```{r}
 fahr_to_kelvin <- function(temp) {
@@ -176,7 +176,7 @@ Confirm that your function works as expected.
 
 # A practical programming exercise
 
-Let's say we want to examine the quality of some FASTQ files, which contain reads from a DNA sequencing machine. An experiment has been run over several days, and we want to run a program called "fastqc" on each of the FASTQ files.
+Let's say we want to examine the quality of some FASTQ files, which contain reads from a DNA sequencing machine. An experiment has been performed over several days, and we want to run a program called "fastqc" on each of the FASTQ files.
 
 FASTQ is a simple text format containg a series of DNA sequences and associated quality information. Examine "day0.fastq" in the "r-more-files" folder.
 
@@ -191,7 +191,7 @@ R can give a command to the shell using the `system` function. For example the "
 system("uptime")
 ```
 
-Let's say we want to examine the quality of some FASTQ files, which contain reads from a sequencing machine. An experiment has been run over several days, and we want to run a program called FastQC on each of the FASTQ files. Here is how we want to run FastQC for day 0:
+Here is how we want to run FastQC for day 0. To R the command is just a character string. It will be interpreted by the shell, which is external to R. The shell will then run FastQC for us.
 
 ```{r cache=TRUE}
 system("fastqc --extract --outdir . r-more-files/Day0.fastq")
@@ -297,7 +297,7 @@ load_fastqc("Day0_fastqc/summary.txt")
 
 ## Applying the function
 
-We now want to load each of the `summary.txt` files we created earlier. One perfectly valid way would be to use a for loop. An example of this was given in the introductory R day. However here we're going to use an apply-style function.
+We now want to load each of the `summary.txt` files we created earlier. One perfectly valid way would be to use a for-loop. An example of this was given in the introductory R day. However here we're going to use an apply-style function.
 
 In the introductory R day we saw a couple of flavours of `apply`. `apply` itself was for use with matrices. `tapply` was used with data frames and could produce a vector or a matrix or even a higher dimensional array. Another flavour is apply is `lapply` which produces lists. As lists can hold anything `lapply` can be used with any function, no matter what type of thing the function returns.
 
@@ -457,15 +457,17 @@ Similarly, if you are going to be doing several different things with a data set
 
 ## Discussion {.challenge}
 
-What other R code from this lesson could we put in a .R file?
+What other R code from this lesson could we put in a .R file? Or a .Rmd file?
 
-How should we break up a large project into files?
+How should we break up a large project (paper/thesis/software package) into files, for our own workflow?
+
+What about managing data files?
 
 How do we ensure the code for a project can be run by others, ensuring it is reproducible?
 
 How should we share a project with others?
 
-* [Software Carpentry's list of base practices in R](http://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R/)
+* [Software Carpentry's list of best practices in R](http://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R/)
 
 
 # Packages

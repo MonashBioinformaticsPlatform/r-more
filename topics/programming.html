@@ -143,7 +143,7 @@ install.packages(c(
     (temp-32) * (5/9) + 273.15
 }</code></pre>
 <p>We define <code>fahr_to_kelvin</code> by assigning it a <code>function</code>. The list of argument names are containted within parentheses. Next, the body of the function–the statements that are executed when it runs–is contained within curly braces (<code>{}</code>). The statements in the body have been indented by four spaces, which makes the code easier to read but does not affect how the code operates.</p>
-<p>When we call the function, the values we pass to it are assigned to those variables so that we can use them inside the function. The expression inside the function is evaluate and the result is “returned” back to whoever asked for it.</p>
+<p>When we call the function, the values we pass to it are assigned to those variables so that we can use them inside the function. The expression inside the function is evaluated and the result is “returned” back to whoever asked for it.</p>
 <p>Let’s try running our function. Calling our own function is no different from calling any other function:</p>
 <pre class="r"><code># freezing point of water
 fahr_to_kelvin(32)</code></pre>
@@ -167,7 +167,7 @@ fahr_to_kelvin(212)</code></pre>
     return(kelvin)
     plot(1:10)
 }</code></pre>
-<p>Statements in the function may be split over several lines, so long as it is clear that the statement is incomplete due to an unclosed bracket or an operator in need of a right hand argument:</p>
+<p>Statements in the function may be split over several lines, so long as it is clear that the statement is incomplete due to an unclosed bracket or an operator in need of a right hand argument.</p>
 <pre class="r"><code>fahr_to_kelvin &lt;- function(temp) {
     kelvin &lt;- 
         (temp-32) * (5/9) + 
@@ -242,14 +242,14 @@ fahr_to_celsius(212)</code></pre>
 </div>
 <div id="a-practical-programming-exercise" class="section level1">
 <h1>A practical programming exercise</h1>
-<p>Let’s say we want to examine the quality of some FASTQ files, which contain reads from a DNA sequencing machine. An experiment has been run over several days, and we want to run a program called “fastqc” on each of the FASTQ files.</p>
+<p>Let’s say we want to examine the quality of some FASTQ files, which contain reads from a DNA sequencing machine. An experiment has been performed over several days, and we want to run a program called “fastqc” on each of the FASTQ files.</p>
 <p>FASTQ is a simple text format containg a series of DNA sequences and associated quality information. Examine “day0.fastq” in the “r-more-files” folder.</p>
 <div id="running-external-software" class="section level2">
 <h2>Running external software</h2>
 <p>Software outside of R is normally run from a “terminal” window, which is rather like the console in RStudio. You type in a command and the operating system runs it for you. The commands you type in are interpreted by something called a “shell”, because it acts like a shell around the operating system. For more information, see the <a href="http://software-carpentry.org/lessons/">Software Carpentry</a> course on the Unix shell.</p>
 <p>R can give a command to the shell using the <code>system</code> function. For example the “uptime” command tells you how long the computer has been running for.</p>
 <pre class="r"><code>system(&quot;uptime&quot;)</code></pre>
-<p>Let’s say we want to examine the quality of some FASTQ files, which contain reads from a sequencing machine. An experiment has been run over several days, and we want to run a program called FastQC on each of the FASTQ files. Here is how we want to run FastQC for day 0:</p>
+<p>Here is how we want to run FastQC for day 0. To R the command is just a character string. It will be interpreted by the shell, which is external to R. The shell will then run FastQC for us.</p>
 <pre class="r"><code>system(&quot;fastqc --extract --outdir . r-more-files/Day0.fastq&quot;)</code></pre>
 <p>In the “Files” tab of the bottom right pane in RStudio, you should see that some new files and a directory have been created. Click on “Day0_fastqc.html” to examine it. Also examine the file in the “Day0_fastqc” folder called “summary.txt”.</p>
 <p><b>If you don’t have FastQC, or it failed to run for some reason:</b> The expected output files can be found in the folder “r-more-files/fastqc-output”.</p>
@@ -379,7 +379,7 @@ load_fastqc(&quot;Day0_fastqc/summary.txt&quot;)</code></pre>
 </div>
 <div id="applying-the-function" class="section level2">
 <h2>Applying the function</h2>
-<p>We now want to load each of the <code>summary.txt</code> files we created earlier. One perfectly valid way would be to use a for loop. An example of this was given in the introductory R day. However here we’re going to use an apply-style function.</p>
+<p>We now want to load each of the <code>summary.txt</code> files we created earlier. One perfectly valid way would be to use a for-loop. An example of this was given in the introductory R day. However here we’re going to use an apply-style function.</p>
 <p>In the introductory R day we saw a couple of flavours of <code>apply</code>. <code>apply</code> itself was for use with matrices. <code>tapply</code> was used with data frames and could produce a vector or a matrix or even a higher dimensional array. Another flavour is apply is <code>lapply</code> which produces lists. As lists can hold anything <code>lapply</code> can be used with any function, no matter what type of thing the function returns.</p>
 <p>First let’s work out the names of the files we want to load.</p>
 <pre class="r"><code>days &lt;- c(0,4,7,10,15,20)
@@ -525,12 +525,13 @@ source(&quot;fastqc.R&quot;)</code></pre>
 <p>Similarly, if you are going to be doing several different things with a data set, you could write a .R file to load the data into a tidy form, and several other .R scripts to do various different things with it.</p>
 <div id="discussion" class="section level2 challenge">
 <h2>Discussion</h2>
-<p>What other R code from this lesson could we put in a .R file?</p>
-<p>How should we break up a large project into files?</p>
+<p>What other R code from this lesson could we put in a .R file? Or a .Rmd file?</p>
+<p>How should we break up a large project (paper/thesis/software package) into files, for our own workflow?</p>
+<p>What about managing data files?</p>
 <p>How do we ensure the code for a project can be run by others, ensuring it is reproducible?</p>
 <p>How should we share a project with others?</p>
 <ul>
-<li><a href="http://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R/">Software Carpentry’s list of base practices in R</a></li>
+<li><a href="http://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R/">Software Carpentry’s list of best practices in R</a></li>
 </ul>
 </div>
 </div>

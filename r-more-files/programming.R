@@ -314,16 +314,20 @@ source("fastqc.R")
 ## Discussion
 ## ----------
 # 
-# What other R code from this lesson could we put in a .R file?
+# What other R code from this lesson could we put in a .R file? Or a
+# .Rmd file?
 # 
-# How should we break up a large project into files?
+# How should we break up a large project (paper/thesis/software package)
+# into files, for our own workflow?
+# 
+# What about managing data files?
 # 
 # How do we ensure the code for a project can be run by others, ensuring
 # it is reproducible?
 # 
 # How should we share a project with others?
 # 
-# * [Software Carpentry's list of base practices in
+# * [Software Carpentry's list of best practices in
 # R](http://swcarpentry.github.io/r-novice-inflammation/06-best-
 # practices-R/)
 # 
