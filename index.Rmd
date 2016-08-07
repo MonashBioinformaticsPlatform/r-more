@@ -8,7 +8,7 @@ output:
 ---
 
 <br>
-These are the course notes for the Monash Bioinformatics Platform's "R More" course.
+These are the course notes for the [Monash Bioinformatics Platform](http://bioinformatics.erc.monash.edu/)'s "R More" course.
 This builds on our ["Introduction to R"](https://monashbioinformaticsplatform.github.io/r-intro/) course. In this course we cover best practices for reproducable sharable results, programming, "tidy" exploratory data analysis, manipulating DNA sequences and features with Bioconductor, and presenting data interactively with Shiny. We will be covering much more ground than the introductory course, to give a broad overview of the various ways R is currently used.
 
 ## Files

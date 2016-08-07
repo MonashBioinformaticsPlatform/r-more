@@ -343,7 +343,7 @@ devtools::create("mylibrary")
 # Load package. Use this during development.
 devtools::load_all("mylibrary")
 
-# Build package, including converting inline documentation to .Rds files using roxygen2.
+# Build package, including converting inline documentation to .Rd files using roxygen2.
 # Check for common problems and missing documentation.
 # A CRAN package must pass all checks.
 devtools::check("mylibrary")
