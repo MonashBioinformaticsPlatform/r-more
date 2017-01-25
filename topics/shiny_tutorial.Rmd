@@ -27,7 +27,7 @@ sidebarLayout(
                                           "Sample 5" = "sample5",
                                           "Sample 6" = "sample6"), 
                            selected = "sample1"),
-               selectInput("y_select", label = h3("Select x-axis"), 
+               selectInput("y_select", label = h3("Select y-axis"), 
                            choices = list("Sample 1" = "sample1", 
                                           "Sample 2" = "sample2", 
                                           "Sample 3" = "sample3",
@@ -53,9 +53,15 @@ output$my_plot <- renderPlot({
 
 This is the Shiny app we will be building today. It is quite simple, it takes a csv file containing data for 6 samples and the raw counts for 1000 genes. One sample will be plotted on the x-axis and another sample on the y-axis. 
 
+```{r head_data, echo=FALSE}
+  dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
+  head(dat, 10)
+```
+*Sample of the raw data used to build the shiny app*
+
 ## Setting up a shiny app
 
-In RStudio, create two blank R files. Save one with the name `ui.R` and the other `server.R`.
+In RStudio, create one blank R file. Save it with the name `app.R`.
 
 From the console, install and load Shiny.
 
@@ -67,40 +73,56 @@ install.packages("shiny")
 library(shiny)
 ```
 
-To start off, we're going to create a blank app, to show what is the bare minimum to create a Shiny app. In ui.R, type:
+To start off, we're going to create a blank app, to show what is the bare minimum to create a Shiny app. In app.R, type:
 
 ```{r, eval = FALSE}
-shinyUI(fluidPage(
 
-))
-```
+library(shiny)
 
-
-And in server.R, type:
-```{r, eval = FALSE}
-shinyServer(function(input, output) {
+ui <- fluidPage(
   
-})
+)
+
+server <- function(input, output) {
+  
+}
+
+shinyApp(ui = ui, server = server)
+
 ```
 
-This will always be the starting point of a Shiny app, generally everything that will go into the app will end up between the innermost brackets and curly braces.
 
-In RStudio, click the `Run App` button or type `runApp()` on the console. A blank window should open up, this is an empty shiny app. 
+This will always be the starting point of a Shiny app, generally everything that will go into the app will end up between the innermost brackets and curly braces of the ui and server objects.
+
+In RStudio, click the `Run App` button or type `runApp()` on the console. Or copy the code and paste it directly in the console - this will work too. A blank window should open up, congratulations - you've put together the most basic elements of a Shiny app!
+
+Update the ui object to display some text:
+
+```{r, eval = FALSE}
+
+ui <- fluidPage(
+  "Hello world"
+)
+
+```
+
+Run the app again and have a look at what you get - there should now be some text in the app window.
 
 ## Building the UI layout
 
-The ui script controls the appeance of the app. There are a number of layouts and widgets that an app can have. For this tutorial, we will use a title panel with a sidebar layout underneath. This is a common layout for Shiny apps. The sidebar layout will give the app two panels, a sidebar and a main panel. To look up more layouts, check the [Shiny gallery.](http://shiny.rstudio.com/gallery/)
+The ui object controls the appeance of the app. There are a number of layouts and widgets that an app can have. For this tutorial, we will use a title panel with a sidebar layout underneath. This is a common layout for Shiny apps. The sidebar layout will give the app two panels, a sidebar and a main panel. To look up more layouts, check the [Shiny gallery.](http://shiny.rstudio.com/gallery/)
 
-In ui.R, update it to:
+Update the ui object to:
 ```{r, eval = FALSE}
-shinyUI(fluidPage(
+
+ui <- fluidPage(
   titlePanel("My first app"),
   
   sidebarLayout(
     sidebarPanel("This is a sidebar panel"),
     mainPanel("And this is the main panel")
   )
-))
+)
 
 ```
 Then run app.
@@ -111,7 +133,7 @@ The sidebar can be moved to the right by adding the position argument to `sideba
 
 ```{r, eval=FALSE}
 sidebarLayout(position = "right",
-              sidebarPanel( "This is a sidebar panel"),
+              sidebarPanel( "This is a sidebar panel on the right"),
               mainPanel("And this is the main panel")
 )
 ```
@@ -119,11 +141,12 @@ sidebarLayout(position = "right",
 
 #### Using widgets
 
-We are going to add two widgets to the ui. These will control which samples gets plotted to the x and y axis of the plot and will be located in the sidebar panel. We will use `selectInput` to create these widgets but these could easily be swapped out for other widgets such radiobuttons. To see what widgets are available, look at the [Shiny widget gallery.](http://shiny.rstudio.com/gallery/widget-gallery.html)
+We are going to add two widgets to the ui. These will control which samples gets plotted to the x and y axis of the plot and will be located in the sidebar panel. We will use `selectInput` to create these widgets but these could easily be swapped out for other widgets such radiobuttons. To see what widgets are available, look at the [Shiny widget gallery.](http://shiny.rstudio.com/gallery/widget-gallery.html) or consult the [Shiny cheatsheet](http://shiny.rstudio.com/images/shiny-cheatsheet.pdf).
 
 To start off with, let's add just one widget to the sidebar. 
 ```{r, eval = FALSE}
-shinyUI(fluidPage(
+
+ui <- fluidPage(
   titlePanel("My first app"),
   
   sidebarLayout(
@@ -139,13 +162,26 @@ shinyUI(fluidPage(
     ),
     mainPanel("And this is the main panel")
   )
-))
+)
 
 ```
 
-This is where shiny starts to get a little tricky, a lot of ui code will be end up being nested in more code. So far, we have the `selectInput` widget nested inside `sidebarPanel` nested inside `siderbarLayout` which is nested inside `fluidPage` **which is nested in** `shinyUI`. Phew, that's a lot to keep track of! Many common problems that'll prevent a shiny app from running simply stem from just putting a comma or a bracket in the wrong place. 
+This is where Shiny starts to get a little tricky, a lot of ui code will be end up being nested in more code. So far, we have the `selectInput` widget nested inside `sidebarPanel` nested inside `siderbarLayout` **which is nested in** `fluidPage`. Phew, that's a lot to keep track of! Many common problems that'll prevent a shiny app from running simply come from just putting a comma or a bracket in the wrong place. 
 
-Let's break down the `selectInput` function. `inputId` is the name of widget, in this case `x_select` is the name that'll be used in the server.r file to access the current value of the widget. The `labels` argument takes a string that will be used to label above the widget. 
+
+>We cannot emphasis this point enough - **keeping track of opening and closing brackets and your commas is a good skill to cultivate when building Shiny apps!** One quick way to check on your brackets is to move the cursor next to a bracket - in RStudio - that will highlight the other bracket paired with if (if one exists, that is!).
+>
+>![](https://github.com/MonashBioinformaticsPlatform/r-more/blob/gh-pages/figures/full_brackets.png?raw=true)
+>
+>*Fig 1. The cursor is placed next the opening bracket for `mainPanel` and the closing bracket is highlighted.*
+>
+>![](https://github.com/MonashBioinformaticsPlatform/r-more/blob/gh-pages/figures/missing_bracket.png?raw=true)
+>
+>*Fig 2. Here, though the cursor is in the same place - the original closing bracket to `mainPanel` is missing. The next closing bracket is used by `mainPanel` instead, which now means `sidebarLayout` does not have a closing bracket. The app would not work in this situation.*
+
+
+
+Let's break down the `selectInput` function. `inputId` is the name of widget, in this case `x_select` is the name that'll be used in the server object to access the current value of the widget. The `labels` argument takes a string that will be used to label above the widget. 
 
 `choices` takes a list of values and can be a bit confusing to understand. For simplicity's sake, we have given an unnamed list, which will directly display the values themselves. `"sample1"` happens to be a column name in the data the app will be using, so this widget can be used to select which column gets plotted. However, if the names of the choices needs to be different from the values, a named list can be used. 
 
@@ -159,14 +195,15 @@ choices = list("Sample 1" = "sample1",
                "Sample 6" = "sample6"), 
 )
 ```
-In `"Sample 1" = "sample1"` the string `"Sample 1"` is the text that will appear in the widget, whereas `"sample1"` is the value that will be returned from the widget. Using this would make a much neater looking widget.
+In `"Sample 1" = "sample1"` the string `"Sample 1"` is the text that will appear in the widget, whereas `"sample1"` is the value that will be returned from the widget. Using this would make a much neater looking widget. Think of the name as purely cosmetic while the value is what's important and will be used for calculations. 
 
 Finally, `selected` chooses which value the widget will start on when the app is run.
 
-Now to add the second widget.
+Now to add the second widget. To show the difference between an unamed and a named list, the second widget will use a named list for `choices`.
 
 ```{r, eval = FALSE}
-shinyUI(fluidPage(
+
+ui <- fluidPage(
   titlePanel("My first app"),
   
   sidebarLayout(
@@ -179,27 +216,29 @@ shinyUI(fluidPage(
                                             "sample5",
                                             "sample6"), 
                              selected = "sample1"),
-                 selectInput(inputId = "y_select", label = "Select x-axis", 
-                             choices = list("sample1", 
-                                            "sample2", 
-                                            "sample3",
-                                            "sample4",
-                                            "sample5",
-                                            "sample6"), 
+                 selectInput(inputId = "y_select", label = "Select y-axis", 
+                             choices = list("Sample 1" = "sample1", 
+                                            "Sample 2" = "sample2", 
+                                            "Sample 3" = "sample3",
+                                            "Sample 4" = "sample4",
+                                            "Sample 5" = "sample5",
+                                            "Sample 6" = "sample6"),  
                              selected = "sample2")
     ),
     mainPanel("And this is the main panel")
   )
-))
+)
+
 ```
-This widget is nearly identical to the first, all that has changed is the name of the widget and which sample has been pre-selected. This widget has been called `y_select` and it will start on `sample2` so that the columns selected for the x and y axis will be different. 
+This widget is nearly identical to the first, all that has changed is the name of the widget, the use of a named list and which sample has been pre-selected. This widget has been called `y_select` and it will start on the value `sample2` so that the columns selected for the x and y axis will be different. 
 
 #### Adding an output
 
-There's one last thing to do before moving onto the server.R file. The app has inputs now, but it doesn't have any outputs! For this app, we will use one output, `plotOutput`, as we want to generate a plot and it will be located in the main panel. There are numerous types of outputs Shiny can generate
+There's one last thing to do before moving onto the server object. The app has inputs now, but it doesn't have any outputs! For this app, we will use one output, `plotOutput`, as we want to generate a plot and it will be located in the main panel. There are numerous types of outputs Shiny can generate - to find out what other outputs Shiny is capable of, consult the [Shiny cheatsheet](http://shiny.rstudio.com/images/shiny-cheatsheet.pdf) or the [Shiny website](https://shiny.rstudio.com/reference/shiny/latest/).
 
 ```{r, eval = F}
-shinyUI(fluidPage(
+
+ui <- fluidPage(
   titlePanel("My first app"),
   
   sidebarLayout(
@@ -212,27 +251,57 @@ shinyUI(fluidPage(
                                             "sample5",
                                             "sample6"), 
                              selected = "sample1"),
-                 selectInput(inputId = "y_select", label = "Select x-axis", 
-                             choices = list("sample1", 
-                                            "sample2", 
-                                            "sample3",
-                                            "sample4",
-                                            "sample5",
-                                            "sample6"), 
-                             selected = "sample1")
+                 selectInput(inputId = "y_select", label = "Select y-axis", 
+                             choices = list("Sample 1" = "sample1", 
+                                            "Sample 2" = "sample2", 
+                                            "Sample 3" = "sample3",
+                                            "Sample 4" = "sample4",
+                                            "Sample 5" = "sample5",
+                                            "Sample 6" = "sample6"),  
+                             selected = "sample2")
     ),
-    mainPanel("And this is the main panel",
+        mainPanel("And this is the main panel",
               plotOutput(outputId = "my_plot")
     )
   )
-))
+)
+
+
+
+# shinyUI(fluidPage(
+#   titlePanel("My first app"),
+#   
+#   sidebarLayout(
+#     sidebarPanel("This is a sidebar panel",
+#                  selectInput(inputId = "x_select", label = "Select x-axis", 
+#                              choices = list("sample1", 
+#                                             "sample2", 
+#                                             "sample3",
+#                                             "sample4",
+#                                             "sample5",
+#                                             "sample6"), 
+#                              selected = "sample1"),
+#                  selectInput(inputId = "y_select", label = "Select y-axis", 
+#                              choices = list("sample1", 
+#                                             "sample2", 
+#                                             "sample3",
+#                                             "sample4",
+#                                             "sample5",
+#                                             "sample6"), 
+#                              selected = "sample1")
+#     ),
+#     mainPanel("And this is the main panel",
+#               plotOutput(outputId = "my_plot")
+#     )
+#   )
+# ))
 ```
 
-`my_plot` is the name of the output and it tells the server.r file where to direct data. Now, onto the server side.
+`my_plot` is the name of the output and it tells the server object file where to direct data. At the moment, the app will display nothing because we haven't told it do any calculations and generate a plot. To do that, we need to move on to the server side.
 
 ## Data processing on the server side
 
-The app now has a full UI but nothing is happening on the backend. To make the app interactive, that's where the server.r comes into play. Think of it as the script that contains an R analysis. The structure of this script can vary immensely depending on the complexity of the app itself.
+The app now has a full UI but nothing is happening on the backend. To make the app interactive, that's where the server object comes into play. Think of it as the object that contains an R analysis. The structure of this object can vary immensely depending on the complexity of the app itself.
 
 This app will be rather simple. It will take one function, `renderPlot` and send it back to the `my_plot` output in the UI. To get going, let's create an empty `renderPlot`.
 
@@ -284,7 +353,7 @@ sidebarLayout(
                                           "sample5",
                                           "sample6"), 
                            selected = "sample1"),
-               selectInput("y_select1", label = h3("Select x-axis"), 
+               selectInput("y_select1", label = h3("Select y-axis"), 
                            choices = list("sample1", 
                                           "sample2", 
                                           "sample3",
@@ -344,7 +413,7 @@ sidebarLayout(
                                           "sample5",
                                           "sample6"), 
                            selected = "sample1"),
-               selectInput("y_select2", label = h3("Select x-axis"), 
+               selectInput("y_select2", label = h3("Select y-axis"), 
                            choices = list("sample1", 
                                           "sample2", 
                                           "sample3",
@@ -390,7 +459,7 @@ sidebarLayout(
                                           "sample5",
                                           "sample6"), 
                            selected = "sample1"),
-               selectInput("y_select3", label = h3("Select x-axis"), 
+               selectInput("y_select3", label = h3("Select y-axis"), 
                            choices = list("sample1", 
                                           "sample2", 
                                           "sample3",
