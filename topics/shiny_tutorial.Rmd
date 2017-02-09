@@ -57,7 +57,7 @@ This is the Shiny app we will be building today. It is quite simple, it takes a 
   dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
   head(dat, 10)
 ```
-*Sample of the raw data used to build the shiny app*
+*Top ten rows of the raw data used to build the shiny app*
 
 ## Setting up a shiny app
 
@@ -92,7 +92,7 @@ shinyApp(ui = ui, server = server)
 ```
 
 
-This will always be the starting point of a Shiny app, generally everything that will go into the app will end up between the innermost brackets and curly braces of the ui and server objects.
+This will always be the starting point of a Shiny app, generally everything that will go into the app will end up between the brackets and curly braces of the ui and server objects.
 
 In RStudio, click the `Run App` button or type `runApp()` on the console. Or copy the code and paste it directly in the console - this will work too. A blank window should open up, congratulations - you've put together the most basic elements of a Shiny app!
 
@@ -166,7 +166,7 @@ ui <- fluidPage(
 
 ```
 
-This is where Shiny starts to get a little tricky, a lot of ui code will be end up being nested in more code. So far, we have the `selectInput` widget nested inside `sidebarPanel` nested inside `siderbarLayout` **which is nested in** `fluidPage`. Phew, that's a lot to keep track of! Many common problems that'll prevent a shiny app from running simply come from just putting a comma or a bracket in the wrong place. 
+This is where Shiny starts to get a little tricky, a lot of ui code will be end up being nested in more code. So far, we have the `selectInput` widget nested inside `sidebarPanel` nested inside `siderbarLayout` **which is nested in** `fluidPage`. So we've stuck a function inside a function inside a function inside a function. Phew, that's a lot to keep track of! Many common problems that'll prevent a shiny app from running simply come from just putting a comma or a bracket in the wrong place. 
 
 
 >We cannot emphasis this point enough - **keeping track of opening and closing brackets and your commas is a good skill to cultivate when building Shiny apps!** One quick way to check on your brackets is to move the cursor next to a bracket - in RStudio - that will highlight the other bracket paired with if (if one exists, that is!).
@@ -175,13 +175,13 @@ This is where Shiny starts to get a little tricky, a lot of ui code will be end 
 >
 >*Fig 1. The cursor is placed next the opening bracket for `mainPanel` and the closing bracket is highlighted.*
 >
+>
 >![](https://github.com/MonashBioinformaticsPlatform/r-more/blob/gh-pages/figures/missing_bracket.png?raw=true)
 >
->*Fig 2. Here, though the cursor is in the same place - the original closing bracket to `mainPanel` is missing. The next closing bracket is used by `mainPanel` instead, which now means `sidebarLayout` does not have a closing bracket. The app would not work in this situation.*
+>*Fig 2. Here, though the cursor is in the same place but the original closing bracket to `mainPanel` is missing. The next closing bracket is used by `mainPanel` instead, which now means `sidebarLayout` does not have a closing bracket. The app would not work in this situation.*
 
 
-
-Let's break down the `selectInput` function. `inputId` is the name of widget, in this case `x_select` is the name that'll be used in the server object to access the current value of the widget. The `labels` argument takes a string that will be used to label above the widget. 
+Moving back to our ui, let's break down the `selectInput` function. `inputId` is the name of widget, in this case `x_select` is the name that'll be used in the server object to access the current value of the widget. The `labels` argument takes a string that will be used to label above the widget. 
 
 `choices` takes a list of values and can be a bit confusing to understand. For simplicity's sake, we have given an unnamed list, which will directly display the values themselves. `"sample1"` happens to be a column name in the data the app will be using, so this widget can be used to select which column gets plotted. However, if the names of the choices needs to be different from the values, a named list can be used. 
 
@@ -195,7 +195,8 @@ choices = list("Sample 1" = "sample1",
                "Sample 6" = "sample6"), 
 )
 ```
-In `"Sample 1" = "sample1"` the string `"Sample 1"` is the text that will appear in the widget, whereas `"sample1"` is the value that will be returned from the widget. Using this would make a much neater looking widget. Think of the name as purely cosmetic while the value is what's important and will be used for calculations. 
+
+In `"Sample 1" = "sample1"` the string `"Sample 1"` is the text that will appear in the widget, whereas `"sample1"` is the value that will be returned from the widget. Using this would make a much neater looking widget. Think of the name as purely cosmetic and what you'll see while the value is what's important and will be used behind the scenes for calculations. You could change the names to whatever you wanted without having an effect the app.
 
 Finally, `selected` chooses which value the widget will start on when the app is run.
 
@@ -230,11 +231,12 @@ ui <- fluidPage(
 )
 
 ```
+
 This widget is nearly identical to the first, all that has changed is the name of the widget, the use of a named list and which sample has been pre-selected. This widget has been called `y_select` and it will start on the value `sample2` so that the columns selected for the x and y axis will be different. 
 
-#### Adding an output
+#### Adding some outputs
 
-There's one last thing to do before moving onto the server object. The app has inputs now, but it doesn't have any outputs! For this app, we will use one output, `plotOutput`, as we want to generate a plot and it will be located in the main panel. There are numerous types of outputs Shiny can generate - to find out what other outputs Shiny is capable of, consult the [Shiny cheatsheet](http://shiny.rstudio.com/images/shiny-cheatsheet.pdf) or the [Shiny website](https://shiny.rstudio.com/reference/shiny/latest/).
+There's one last thing to do before moving onto the server object. The app has inputs now, but it doesn't have any outputs! For this app, we will use three outputs. Two are going to be purely diagnostic so we can check that our `selectInputs` are working. They will not be included in our final app. The one output that will remain in our final app is `plotOutput`, as we want to generate a plot and it will be located in the main panel. There are numerous types of outputs Shiny can generate - to find out what other outputs Shiny is capable of, consult the [Shiny cheatsheet](http://shiny.rstudio.com/images/shiny-cheatsheet.pdf) or the [Shiny website](https://shiny.rstudio.com/reference/shiny/latest/).
 
 ```{r, eval = F}
 
@@ -261,72 +263,114 @@ ui <- fluidPage(
                              selected = "sample2")
     ),
         mainPanel("And this is the main panel",
+              textOutput(outputId = "check_x_select"),
+              textOutput(outputId = "check_y_select"),
               plotOutput(outputId = "my_plot")
     )
   )
 )
 
-
-
-# shinyUI(fluidPage(
-#   titlePanel("My first app"),
-#   
-#   sidebarLayout(
-#     sidebarPanel("This is a sidebar panel",
-#                  selectInput(inputId = "x_select", label = "Select x-axis", 
-#                              choices = list("sample1", 
-#                                             "sample2", 
-#                                             "sample3",
-#                                             "sample4",
-#                                             "sample5",
-#                                             "sample6"), 
-#                              selected = "sample1"),
-#                  selectInput(inputId = "y_select", label = "Select y-axis", 
-#                              choices = list("sample1", 
-#                                             "sample2", 
-#                                             "sample3",
-#                                             "sample4",
-#                                             "sample5",
-#                                             "sample6"), 
-#                              selected = "sample1")
-#     ),
-#     mainPanel("And this is the main panel",
-#               plotOutput(outputId = "my_plot")
-#     )
-#   )
-# ))
 ```
 
-`my_plot` is the name of the output and it tells the server object file where to direct data. At the moment, the app will display nothing because we haven't told it do any calculations and generate a plot. To do that, we need to move on to the server side.
+`my_plot` is the ID of the `plotoutput` and it tells the server object file where to direct data. Same goes for the two textOutputs. Run the app and see what you'll get. Does it look any different?
+
+At the moment, the app will display nothing because we haven't told it do any calculations and generate a plot or display text. To do that, we need to move on to the server side.
 
 ## Data processing on the server side
 
 The app now has a full UI but nothing is happening on the backend. To make the app interactive, that's where the server object comes into play. Think of it as the object that contains an R analysis. The structure of this object can vary immensely depending on the complexity of the app itself.
 
-This app will be rather simple. It will take one function, `renderPlot` and send it back to the `my_plot` output in the UI. To get going, let's create an empty `renderPlot`.
+First, we need to check on our two `selectInput` widgets, see if they are working correctly, before we move on to plotting. When building a Shiny app, it's useful to have create outputs to check to see if parts of the app are doing what they should be, for both the ui and the server code. This step can be omitted, but we'll go through it to demonstrate what the `selectInputs` are doing.
+
 
 ```{r, eval = F}
 
-shinyServer(function(input, output) {
+server <- function(input, output) {
+  
+  output$check_x_select <- renderText({
+    print(input$x_select)
+  })
+  
+  output$check_y_select <- renderText({
+    print(input$y_select)
+  })
+}
+
+```
+
+Now run the app.
+
+There are a number of `render` functions in Shiny, `renderTable`, `renderText`, `renderPrint`, etc, depending on what type of data needs to be output. If you want to check what render options exist, got the [Shiny website reference page](http://shiny.rstudio.com/reference/shiny/latest/).
+
+Whenever a `render` function is called, it needs to be directed to an output that exists in the ui object. In the case of `output$check_x_select`, we have pointed the `renderText` function to `check_x_select`, which was the id of a `textOutput` in the UI. This means that the result of `renderText` is sent to the `check_x_select` output.
+
+Inside the `renderText` function, we `print` the value of the `x_select`. To access a value of a input widget, we use `input$input_Id`. Once the app is running, every time the value of the input changes, a render function that depends on it will be re-run. So if we changed the value of the `x_select`, only the first renderText statement is re-calculated but the second one, which doesn't depend on `x_select` will not be re-calculated.
+
+Notice that despite the difference between the two `selectInputs` (one uses a named list and the other doesn't), that the values returned are the same. Once again, using a named list changes the apperance of the ui but not the actual values of the widgets.
+
+Now that we've seen that our widgets are working correctly, we can remove the diagnostic lines of code from both the ui and server. You can either comment them out or delete them. Your app should currently look like this:
+
+```{r, eval = F}
+library(shiny)
+ui <- fluidPage(
+  titlePanel("My first app"),
+  
+  sidebarLayout(
+    sidebarPanel("This is a sidebar panel",
+                 selectInput(inputId = "x_select", label = "Select x-axis", 
+                             choices = list("sample1", 
+                                            "sample2", 
+                                            "sample3",
+                                            "sample4",
+                                            "sample5",
+                                            "sample6"), 
+                             selected = "sample1"),
+                 selectInput(inputId = "y_select", label = "Select y-axis", 
+                             choices = list("Sample 1" = "sample1", 
+                                            "Sample 2" = "sample2", 
+                                            "Sample 3" = "sample3",
+                                            "Sample 4" = "sample4",
+                                            "Sample 5" = "sample5",
+                                            "Sample 6" = "sample6"),  
+                             selected = "sample2")
+    ),
+    mainPanel("And this is the main panel",
+              plotOutput(outputId = "my_plot")
+    )
+  )
+)
+
+server <- function(input, output) {
+  
+}
+
+shinyApp(ui = ui, server = server)
+
+```
+
+
+The final app will be rather simple. It will take one function, `renderPlot` and send it back to the `my_plot` output in the UI. To get going, let's create an empty `renderPlot`.
+
+```{r, eval = F}
+
+server <- function(input, output) {
   
   output$my_plot <- renderPlot({
     
   })
-})
+}
 
 ```
-
-There are a number of `render` functions in Shiny, `renderTable`, `renderText`, `renderPrint`, etc, depending on what type of data needs to be output. Whenever a `render` function is called, it needs to be directed to an output that exists in the ui.r script. In this case, we have pointed the `renderPlot` to `my_plot`, which was the name of a `plotOutput` in the UI. 
 
 Now let's give `renderPlot` some data to display, the first two columns from the csv `shiny_sample_data.csv`.
 
 ```{r, eval = F}
-shinyServer(function(input, output) {
+server <- function(input, output) {
   
   output$my_plot <- renderPlot({
     
     #Read in the sample csv
-    dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
+    dat <- read.csv("~/r-more-files/shiny_sample_data.csv", row.names = 1)
     
     #Pull out the first and second columns in dat
     x_axis <- dat[, "sample1"]
@@ -335,7 +379,7 @@ shinyServer(function(input, output) {
     #Create a basic dot plot
     plot(x = x_axis, y_axis)
   })
-})
+}
 ```
 
 ```{r, echo=FALSE}
@@ -353,13 +397,13 @@ sidebarLayout(
                                           "sample5",
                                           "sample6"), 
                            selected = "sample1"),
-               selectInput("y_select1", label = h3("Select y-axis"), 
-                           choices = list("sample1", 
-                                          "sample2", 
-                                          "sample3",
-                                          "sample4",
-                                          "sample5",
-                                          "sample6"),
+               selectInput(inputId = "y_select1", label = "Select y-axis", 
+                           choices = list("Sample 1" = "sample1", 
+                                          "Sample 2" = "sample2", 
+                                          "Sample 3" = "sample3",
+                                          "Sample 4" = "sample4",
+                                          "Sample 5" = "sample5",
+                                          "Sample 6" = "sample6"),  
                            selected = "sample2")
   ),
   mainPanel("App output panel",
@@ -381,7 +425,7 @@ output$plot1 <- renderPlot({
 The app has a plot now...but it isn't interactive, if we change the widget values, it has no effect on what is plotted on the figure. That's because the first two columns were selected directly in the `renderPlot` function. However, we could change to call the widget values instead using `input`.
 
 ```{r, eval = F}
-shinyServer(function(input, output) {
+server <- function(input, output) {
   
   output$my_plot <- renderPlot({
     
@@ -395,7 +439,7 @@ shinyServer(function(input, output) {
     #Create a basic dot plot
     plot(x = x_axis, y_axis)
   })
-})
+}
 ```
 
 ```{r, echo=FALSE}
@@ -413,13 +457,13 @@ sidebarLayout(
                                           "sample5",
                                           "sample6"), 
                            selected = "sample1"),
-               selectInput("y_select2", label = h3("Select y-axis"), 
-                           choices = list("sample1", 
-                                          "sample2", 
-                                          "sample3",
-                                          "sample4",
-                                          "sample5",
-                                          "sample6"),
+               selectInput(inputId = "y_select2", label = "Select y-axis", 
+                           choices = list("Sample 1" = "sample1", 
+                                          "Sample 2" = "sample2", 
+                                          "Sample 3" = "sample3",
+                                          "Sample 4" = "sample4",
+                                          "Sample 5" = "sample5",
+                                          "Sample 6" = "sample6"),  
                            selected = "sample2")
   ),
   mainPanel("App output panel",
@@ -437,9 +481,16 @@ output$plot2 <- renderPlot({
 
 ```
 
-Congratulations! You've made your first app! To get it exactly like the example at the start of the lesson, can you figure out how to change the axis titles to the name of the selected sample. The `selectInput` widgets also need to be changed to a named list. Other than that, you're good to go.
+Congratulations! You've made your first app! To get it exactly like the example at the start of the lesson, can you figure out how to change the axis titles to the name of the selected sample. One of `selectInput` widgets also need to be changed to a named list. Other than that, you're good to go.
+
+> Hint:
+>
+> plot(x = blah, y = plah, xlab = "Label for the x-axis", ylab = "Label for the y-axis")
+
 
 Now imagine you had an experiment where you had many conditions and you needed to plot each one against each other. Instead of plotting each one individually, with a Shiny app, you could easily visualise the different conditions without having to write code for each one of them and then download them. 
+
+
 
 ## Challenge app
 
@@ -467,7 +518,7 @@ sidebarLayout(
                                           "sample5",
                                           "sample6"),
                            selected = "sample2"),
-               sliderInput("n_rows", label = "Select number of rows", min = 1, max = 15, value = 1)
+               sliderInput("n_rows", label = "Select number of rows to show", min = 1, max = 15, value = 1)
   ),
   mainPanel("App output panel",
             plotOutput("plot3", width = 600, height = 600),
@@ -489,3 +540,27 @@ output$table1 <- renderTable({
   head(dat[, c(input$x_select3, input$y_select3)], input$n_rows)
 })
 ```
+
+
+> Hint:
+>
+> 1. The first step is to sort out the ui. Two elements have been added to it, an input widget and the other an output.
+>
+>
+> The input widget is a slider. The code for a slider looks something like this:
+>
+>      sliderInput("slider1", label = "Slider", min = 0, max = 100, value = 50)
+>
+> To find out more about how a slider works check the [Shiny widget gallery](http://shiny.rstudio.com/gallery/widget-gallery.html)
+> 
+> The new output is a `tableOutput`. The code for it looks like:
+> 
+>     
+>      tableOutput(outputId = "table1")
+
+> 2. Once you have your new ui, move on the server object. You'll need to direct the result of a `renderTable` function to the new output
+> 
+> An important thing to note is that only one thing is returned from inside a render function (usually the last line inside that function). Therefore a variable, such as `dat` created inside the `renderPlot` will not exist outside that `renderPlot` function. You'll need to read the csv of data back in again in the `renderTable` function
+>
+> Inside the `renderTable` call, you'll need a function that shows you the top of a table. The `head` function is ideal for this. If you aren't familiar with how head works, check the help manual for `head` with `?head` to see the arguements it takes.
+

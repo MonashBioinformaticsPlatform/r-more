@@ -46,6 +46,8 @@ It adds reproducibilty to your graphs
 
 **YOU DON'T NEED TO GENERATE A BILLION PLOTS MANUALLY** 
 
+It can easily be added to a markdown document - like this one!
+
 ## Example apps
 
 Here are some apps made by Monash bioinformaticians:
@@ -60,17 +62,18 @@ Here are some apps made by Monash bioinformaticians:
 
 ## Structure of a Shiny App
 
-A basic Shiny app consists of two R scripts within their own directory:
+A basic Shiny app consists of two objects:
 
-* ui.R - contains the code for the UI (user interface) elements i.e the visible part of the app 
+* ui object - contains the code for the UI (user interface) elements i.e the visible part of the app 
 
-* server.R - contains the code for all the calculations the app will need. Generates an output which is returned to the ui.
+* server object - contains the code for all the calculations the app will need. Generates an output which is returned to the ui.
 
-<center>![](shiny_structure.png)</center>
+<center><img src="https://github.com/MonashBioinformaticsPlatform/r-more/blob/gh-pages/figures/shiny_explanation.png?raw=true" width="409" height="240" /></center>
 
-## ui.R
 
-This script controls the layout and appearance of the app. The ui makes use of widgets to interact with data.
+## ui
+
+The ui object controls the layout and appearance of the app. The ui makes use of widgets to interact with data.
 
 ```{r, echo = T}
 sliderInput("slider1", label = h4("This code will make a slider"),
@@ -106,9 +109,9 @@ shinyUI(navbarPage("Navbar",
 
 ```
 
-## server.R
+## server
 
-This script contains the code for building the app. 
+The server object contains the code for building the app. 
 
 Data processing, analysis, plotting, this all happens here.
 
