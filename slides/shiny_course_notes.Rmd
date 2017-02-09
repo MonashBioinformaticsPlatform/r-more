@@ -147,7 +147,7 @@ renderPlot({
        xlab = "Duration (minutes)", main = "Geyser eruption duration")
 })
 ```
-The server code plots a histogram for a dataset called faithful. It has an arguement for the number of breaks plotted which is dependent on the value from the selectInput.
+The server code plots a histogram for a dataset called faithful. It has an argument for the number of breaks plotted which is dependent on the value from the selectInput.
 
 
 ## Let's get into Shiny!
