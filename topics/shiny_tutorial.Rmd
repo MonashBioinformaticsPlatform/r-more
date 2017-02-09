@@ -42,7 +42,7 @@ sidebarLayout(
 )
 
 output$my_plot <- renderPlot({
-    dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
+    dat <- read.csv("~/r-more-files/shiny_sample_data.csv", row.names = 1)
     x_ax <- dat[,input$x_select]
     y_ax <- dat[,input$y_select]
     
@@ -54,7 +54,7 @@ output$my_plot <- renderPlot({
 This is the Shiny app we will be building today. It is quite simple, it takes a csv file containing data for 6 samples and the raw counts for 1000 genes. One sample will be plotted on the x-axis and another sample on the y-axis. 
 
 ```{r head_data, echo=FALSE}
-  dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
+  dat <- read.csv("~/r-more-files/shiny_sample_data.csv", row.names = 1)
   head(dat, 10)
 ```
 *Top ten rows of the raw data used to build the shiny app*
@@ -412,7 +412,7 @@ sidebarLayout(
 )
 
 output$plot1 <- renderPlot({
-    dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
+    dat <- read.csv("~/r-more-files/shiny_sample_data.csv", row.names = 1)
     x_axis <- dat[, "sample1"]
     y_axis <- dat[, "sample2"]
     
@@ -430,7 +430,7 @@ server <- function(input, output) {
   output$my_plot <- renderPlot({
     
     #Read in the sample csv
-    dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
+    dat <- read.csv("~/r-more-files/shiny_sample_data.csv", row.names = 1)
     
     #Pull out a column for the x and y axis each
     x_axis <- dat[, input$x_select]
@@ -472,7 +472,7 @@ sidebarLayout(
 )
 
 output$plot2 <- renderPlot({
-  dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
+  dat <- read.csv("~/r-more-files/shiny_sample_data.csv", row.names = 1)
   x_axis <- dat[, input$x_select2]
   y_axis <- dat[, input$y_select2]
   
@@ -527,7 +527,7 @@ sidebarLayout(
 )
 
 output$plot3 <- renderPlot({
-  dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
+  dat <- read.csv("~/r-more-files/shiny_sample_data.csv", row.names = 1)
   x_axis <- dat[, input$x_select3]
   y_axis <- dat[, input$y_select3]
   
@@ -536,7 +536,7 @@ output$plot3 <- renderPlot({
 
 
 output$table1 <- renderTable({
-  dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
+  dat <- read.csv("~/r-more-files/shiny_sample_data.csv", row.names = 1)
   head(dat[, c(input$x_select3, input$y_select3)], input$n_rows)
 })
 ```
