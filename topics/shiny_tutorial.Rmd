@@ -73,7 +73,7 @@ install.packages("shiny")
 library(shiny)
 ```
 
-To start off, we're going to create a blank app, to show what is the bare minimum to create a Shiny app. In app.R, type:
+To start off, we're going to create a blank app, to show what is the bare minimum to create a Shiny app. Create a `demo` folder in your ShinyApps folder and then name a new R script `app.R`. In app.R, type:
 
 ```{r, eval = FALSE}
 
@@ -94,7 +94,7 @@ shinyApp(ui = ui, server = server)
 
 This will always be the starting point of a Shiny app, generally everything that will go into the app will end up between the brackets and curly braces of the ui and server objects.
 
-In RStudio, click the `Run App` button or type `runApp()` on the console. Or copy the code and paste it directly in the console - this will work too. A blank window should open up, congratulations - you've put together the most basic elements of a Shiny app!
+As soon as you saved the file as app.R, a new button appeared in RStudio called `RunApp`. Click the `Run App` button or type `runApp()` on the console. Or copy the code and paste it directly in the console - this will work too. A blank window should open up, congratulations - you've put together the most basic elements of a Shiny app!
 
 Update the ui object to display some text:
 
