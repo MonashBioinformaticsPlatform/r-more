@@ -230,7 +230,7 @@ translate(seq_stop)
 # promoters          (------)  .
 #                         .    .
 # narrow                  .(--).
-#
+#                         .    .
 # shift (ignores strand!) .  (----)
 
 
