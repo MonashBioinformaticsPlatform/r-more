@@ -178,8 +178,9 @@ Confirm that your function works as expected.
 
 Let's say we want to examine the quality of some FASTQ files, which contain reads from a DNA sequencing machine. An experiment has been performed over several days, and we want to run a program called "fastqc" on each of the FASTQ files.
 
-FASTQ is a simple text format containg a series of DNA sequences and associated quality information. Examine "day0.fastq" in the "r-more-files" folder.
+FASTQ is a simple text format containg a series of DNA sequences and associated quality information. Examine "Day0.fastq" in the "r-more-files" folder.
 
+(This data is a very small portion of the reads from an experiment inducing pluripotency in a mouse cell line, [GSE70022](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE70022).)
 
 ## Running external software
 
@@ -239,7 +240,7 @@ for(day in days) {
 
 ## Loading the summary.txt files
 
-<b>Note:</b> If you weren't able to run FastQC earlier, the expected output files can be found in the folder "r-more-files/fastqc-output". You will need to adjust the filenames appropriately in the R code below.
+**Note:** If you weren't able to run FastQC earlier, the expected output files can be found in the folder "r-more-files/fastqc-output". You will need to adjust the filenames appropriately in the R code below.
 
 The summary.txt files are in "tab separated value" format. This is similar to comma separated value format we've seen in the introductory R day, but instead of using a comma it uses a special character called a tab to delimit columns. Tabs show up as variable amounts of space in a text editor. In R, they can be written `"\t"`.
 

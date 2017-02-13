@@ -3,34 +3,28 @@ title: "The tidyverse: dplyr, ggplot2, and friends"
 output: html_document
 ---
 
-This lesson covers packages primarily by Hadley Wickham for tidying data and then working with it in tidy form.
+This lesson covers packages primarily by Hadley Wickham for tidying data and then working with it in tidy form, collectively known as the "tidyverse".
 
 The packages we are using in this lesson are all from CRAN, so we can install them with `install.packages`.
 
 ```{r eval=FALSE}
 # Don't run this if you are using our biotraining server, the packages are already installed!
 install.packages(c(
-    # Hadley Wickham packages
-    "readr",    # read tabular data
-    "tidyr",    # data frame tidying functions
-    "dplyr",    # general data frame manipulation
-    "ggplot2",  # flexible plotting
-    
-    # Viridis color scale 
+    "tidyverse",
     "viridis",
-
-    # (Advanced!) Tidy linear modelling    
     "broom"
 ))
 ```
 
 ```{r warning=FALSE, message=FALSE}
-library(readr)
-library(tidyr)
-library(dplyr)
-library(ggplot2)
-library(viridis)
-library(broom)
+library(tidyverse) # Load all "tidyverse" libraries.
+# OR
+# library(readr)   # Read tabular data.
+# library(tidyr)   # Data frame tidying functions.
+# library(dplyr)   # General data frame manipulation.
+# library(ggplot2) # Flexible plotting.
+
+library(viridis)   # Viridis color scale.
 ```
 
 These packages usually have useful documentation in the form of "vignettes". These are readable on the CRAN website, or within R:
@@ -205,6 +199,13 @@ Joins are the key tool for *integrating* different types of data, based on some 
 <b>See also:</b> `match` and `merge` in base R.
 
 
+### Challenge {.challenge}
+
+1. Filter `scoretab` to get only "WARN" or "FAIL" grades. 
+
+2. Sort the result so that "FAIL"s are at the top.
+
+
 ## mutate
 
 `mutate` lets us add or overwrite columns by computing a new value for them.
@@ -269,6 +270,11 @@ rep(paste("hello", "world"), 5)
 The idea of adding geoms in `ggplot2` is rather like the `dplyr` pipe. `ggplot2` predates `dplyr`, and Hadley Wickham has had a progression of ideas. It will probably be possible to use `%>%` instead of `+` in `ggplot2` in the not too distant future.
 
 
+## Challenge {.challenge}
+
+In the previous challenge, we filtered and arranged `scoretab`. Rewrite this operation using the pipe.
+
+
 # tidyr
 
 `tidyr` is Hadley Wickham's package for getting data frames to tidy. Recall that in a tidy data frame:
@@ -300,13 +306,13 @@ In the introductory R day we saw `melt` from the `reshape2` package, which did a
 `spread` is the opposite operation, spreading a column into many columns, which generally makes data less tidy but is sometimes necessary. It's a little like calling `tapply` with a function that just returns the data unaltered (`identity`).
 
 ```{r}
-spread(bigtab, file, grade)
+spread(bigtab, key=file, value=grade)
 ```
 
 In our toy example, we have a further problem that the "group" column contains two pieces of data. This can be fixed with `separate`. By default `separate` splits on any non-alphanumeric characters, but different separator characters can be specified.
 
 ```{r}
-separate(gathered, group, into=c("gender","age"))
+separate(gathered, col=group, into=c("gender","age"))
 ```
 
 All of this would typically be written as a single pipline:
@@ -320,7 +326,7 @@ tidied <- untidy %>%
 <b>Advanced:</b> `tidyr` has a number of other useful data frame manipulations. For completeness, we mention `nest`. This creates a *list column* in a tibble, the list column containing one tibble per row. Yo, Hadley put tibbles in your tibble so you can dplyr while you dplyr. The inverse operation is `unnest`. `nest` and `unnest` go well with creating or modifying list columns in a `mutate` with `lapply` or `Map`.
 
 ```{r}
-# Advanced!
+# Advanced
 nested <- nest(gathered, -country)
 nested
 nested$data
@@ -406,7 +412,7 @@ ggplot(counts_norm, aes(x=sample, y=log_norm_count)) +
     coord_flip()
 ```
 
-<b>Note:<b> Here all of the genes are potentially differentially expressed. For a full RNA-Seq data set we would probably assume most genes aren't differentially expressed, so rather than nominating a normalizing gene we would normalize by total library size with, typically with a slight adjustment using the "TMM" method as calculated by `calcNormFactors` in `edgeR`:
+**Note:** Here all of the genes are potentially differentially expressed. For a full RNA-Seq data set we would probably assume most genes aren't differentially expressed, so rather than nominating a normalizing gene we would normalize by total library size with, typically with a slight adjustment using the "TMM" method as calculated by `calcNormFactors` in `edgeR`:
 
 ```{r eval=FALSE}
 # For a full sized RNA-Seq dataset:
@@ -419,6 +425,19 @@ normalizer_by_tmm <- tibble(sample=names(adjusted_lib_sizes), norm=adjusted_lib_
 ## Visualization
 
 The data is now suitably transformed and normalized for visualization. `ggplot2` gives us a lot of freedom to juxtapose information from different columns.
+
+### Challenge {.challenge}
+
+1. Get all the rows in `counts_norm` relating to the histone gene "HHT1".
+
+2. Plot this data with ggplot2. Use `time` as the x-axis, `log_norm_count` as the y-axis, and color the data by `strain`. Try using geoms: `geom_point()`, `geom_line()`.
+
+Extension: Compare plots of `log_norm_count`, `norm_count`, and `count`.
+
+Experiment with other geoms and other ways to assign columns to aesthetics.
+
+
+### Whole dataset visualization
 
 ```{r fig.width=8, fig.height=8}
 ggplot(counts_norm, aes(x=sample, y=gene, fill=log_norm_count)) + 
@@ -452,20 +471,16 @@ ggplot(counts_norm, aes(x=time, y=log_norm_count, color=strain, group=strain)) +
 ```
 
 
-## Challenge {.challenge}
+## Exercises {.challenge}
 
-1. Make a line plot as above but just showing the gene HHF1.
+1. Which are the three most variable genes?
 
-Hint: intToUtf8(utf8ToInt("vtf!gjmufs")-1)
+Hint: `intToUtf8(utf8ToInt("xvh#jurxsbe|/#vxppdul}h/#vg/#dqg#duudqjh")-3)`
 
-2. Which are the three most variable genes?
-
-Hint: intToUtf8(utf8ToInt("xvh#jurxsbe|/#vxppdul}h/#vg/#dqg#duudqjh")-3)
-
-3. (Advanced!) Different genes have different average expression levels, but what we are interested in is how they change over time. Further normalize the data by subtracting the average for each gene from `log_norm_count`.
+2. Different genes have different average expression levels, but what we are interested in is how they change over time. Further normalize the data by subtracting the average for each gene from `log_norm_count`.
 
 
-# Linear modelling
+# Appendix: Tidy linear modelling
 
 The idea of this section is to give a taste of what is possible, so that you know what topics to read up on or ask an expert for help with if this is the sort of analysis you need. It will also provide a little context for advanced forms of RNA-Seq differential expression analysis.
 
@@ -507,6 +522,8 @@ A linear trend is not supported, in comparison to the null hypothesis that expre
 *  .cooksd = Cook's Distance -- how much actual influence the observation had on the model. Combines information from .residual and .hat.
 
 ```{r}
+library(broom)
+
 augment(model, sut476_wt) %>% head
 
 # augment() can also be used to produce predictions for new inputs
