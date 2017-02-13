@@ -226,7 +226,8 @@ fahr_to_celsius(32.0)</code></pre>
 <li><p>Insert a call to <code>browser()</code> in one of your functions. This will pause execution and let you interact with the local environment in a function. Once in the browser, type “help” for a list of commands. Besides examining variables, you can step through the code from the point it paused with “s” or “n”. When you are done type “f”.</p></li>
 <li><p>You can debug an existing function using <code>debugonce</code>. This is like temporarily adding a call to <code>browser()</code> at the top of the function.</p></li>
 </ul>
-<pre class="r"><code>debugonce(fahr_to_celsius)
+<pre class="r"><code># debugging a function
+debugonce(fahr_to_celsius)
 fahr_to_celsius(212)</code></pre>
 </div>
 <div id="challenge" class="section level2 challenge">
@@ -279,12 +280,15 @@ cat(&quot;done\n&quot;)                       #                            12
 ## potato
 ## done</code></pre>
 <p>Typing out the fastqc command for each day will get repetitive. Let’s use a for-loop to automate this task. The <code>paste0</code> function lets us “paste” together character strings, so we can use that to construct the commands to run, like this:</p>
-<pre class="r"><code>day &lt;- 0
+<pre class="r"><code># construct a command to run
+day &lt;- 0
 command &lt;- paste0(&quot;fastqc --extract --outdir . r-more-files/Day&quot;, day, &quot;.fastq&quot;)
 command</code></pre>
 <pre><code>## [1] &quot;fastqc --extract --outdir . r-more-files/Day0.fastq&quot;</code></pre>
 <p>We want to do this for each day, and then use <code>system</code> to run the resulting command:</p>
-<pre class="r"><code>days &lt;- c(0,4,7,10,15,20)
+<pre class="r"><code># run fastqc on each of the files
+
+days &lt;- c(0,4,7,10,15,20)
 
 for(day in days) {
     command &lt;- paste0(&quot;fastqc --extract --outdir . r-more-files/Day&quot;, day, &quot;.fastq&quot;)
@@ -303,9 +307,7 @@ for(day in days) {
 <p><strong>Note:</strong> If you weren’t able to run FastQC earlier, the expected output files can be found in the folder “r-more-files/fastqc-output”. You will need to adjust the filenames appropriately in the R code below.</p>
 <p>The summary.txt files are in “tab separated value” format. This is similar to comma separated value format we’ve seen in the introductory R day, but instead of using a comma it uses a special character called a tab to delimit columns. Tabs show up as variable amounts of space in a text editor. In R, they can be written <code>&quot;\t&quot;</code>.</p>
 <p>In base R we could use the function <code>read.delim</code> to read this file. It’s quite similar to <code>read.csv</code>.</p>
-<p>However, let’s use one of Hadley Wickham’s packages, <code>readr</code>, to load the file. If this package isn’t installed, you can install it with:</p>
-<pre class="r"><code>install.packages(&quot;readr&quot;)</code></pre>
-<p>To use <code>readr</code> we first need to load it with <code>library</code>.</p>
+<p>However, let’s use one of Hadley Wickham’s packages, <code>readr</code>, to load the file. To use <code>readr</code> we first need to load it with <code>library</code>.</p>
 <pre class="r"><code>library(readr)</code></pre>
 <p>We can now read the file like this:</p>
 <pre class="r"><code>read_tsv(&quot;Day0_fastqc/summary.txt&quot;)</code></pre>
@@ -642,9 +644,9 @@ devtools::install_github(&quot;myusername/mylibrary&quot;)</code></pre>
 ## [1] dplyr_0.5.0 readr_1.0.0
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.12.8     digest_0.6.10   rprojroot_1.1   assertthat_0.1 
-##  [5] R6_2.2.0        DBI_0.5-1       backports_1.0.4 magrittr_1.5   
-##  [9] evaluate_0.10   stringi_1.1.2   rmarkdown_1.2   tools_3.3.0    
+##  [1] Rcpp_0.12.9     digest_0.6.12   rprojroot_1.2   assertthat_0.1 
+##  [5] R6_2.2.0        DBI_0.5-1       backports_1.0.5 magrittr_1.5   
+##  [9] evaluate_0.10   stringi_1.1.2   rmarkdown_1.3   tools_3.3.0    
 ## [13] stringr_1.1.0   yaml_2.1.14     htmltools_0.3.5 knitr_1.15.1   
 ## [17] methods_3.3.0   tibble_1.2</code></pre>
 </div>

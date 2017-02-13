@@ -20,6 +20,7 @@ fahr_to_kelvin <- function(temp) {
 
 # freezing point of water
 fahr_to_kelvin(32)
+
 # boiling point of water
 fahr_to_kelvin(212)
 
@@ -97,6 +98,7 @@ fahr_to_celsius <- function(temp) {
 fahr_to_celsius(32.0)
 
 
+# debugging a function
 debugonce(fahr_to_celsius)
 fahr_to_celsius(212)
 
@@ -149,10 +151,13 @@ cat("done\n")                       #                            12
                                     # i= - a a b b c c d d e  e  e ...
 
 
+# construct a command to run
 day <- 0
 command <- paste0("fastqc --extract --outdir . r-more-files/Day", day, ".fastq")
 command
 
+
+# run fastqc on each of the files
 
 days <- c(0,4,7,10,15,20)
 
@@ -166,9 +171,6 @@ for(day in days) {
 ## -----------------------------
 ## Loading the summary.txt files
 ## -----------------------------
-
-install.packages("readr")
-
 
 library(readr)
 

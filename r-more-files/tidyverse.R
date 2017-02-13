@@ -55,12 +55,14 @@ color_order <- c("FAIL", "WARN", "PASS")
 bigtab$grade <- factor(bigtab$grade, levels=color_order)
 
 plot <- ggplot(bigtab, aes(x=file, y=test, fill=grade)) +
-    geom_tile(color="black", size=0.5) +      # Black border on tiles
-    labs(x="", y="", fill="") +               # Remove axis labels
-    coord_fixed() +                           # Square tiles
-    theme_minimal() +                         # Minimal theme, no grey background
-    theme(panel.grid=element_blank(),         # No underlying grid lines
-          axis.text.x=element_text(           # Vertical text on x axis
+    geom_tile(color="black", size=0.5) +           # Black border on tiles
+    scale_fill_manual(                             # Colors, as color hex codes
+        values=c("#ee0000","#ffee00","#00aa00")) +
+    labs(x="", y="", fill="") +                    # Remove axis labels
+    coord_fixed() +                                # Square tiles
+    theme_minimal() +                              # Minimal theme, no grey background
+    theme(panel.grid=element_blank(),              # No underlying grid lines
+          axis.text.x=element_text(                # Vertical text on x axis
               angle=90,vjust=0.5,hjust=0))
 plot
 
@@ -307,8 +309,13 @@ normalizer_by_tmm <- tibble(sample=names(adjusted_lib_sizes), norm=adjusted_lib_
 # `log_norm_count` as the y-axis, and color the data by `strain`. Try
 # using geoms: `geom_point()`, `geom_line()`.
 # 
-# Extension: Compare plots of `log_norm_count`, `norm_count`, and
-# `count`.
+
+ggplot( ... , aes(x= ... , y= ... , color= ... )) + ...
+
+# 
+# Extensions:
+# 
+# Compare plots of `log_norm_count`, `norm_count`, and `count`.
 # 
 # Experiment with other geoms and other ways to assign columns to
 # aesthetics.

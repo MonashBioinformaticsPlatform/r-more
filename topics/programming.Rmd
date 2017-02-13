@@ -36,6 +36,7 @@ Let's try running our function. Calling our own function is no different from ca
 ```{r}
 # freezing point of water
 fahr_to_kelvin(32)
+
 # boiling point of water
 fahr_to_kelvin(212)
 ```
@@ -155,6 +156,7 @@ You might have noticed that all of these functions have an argument called `temp
 * You can debug an existing function using `debugonce`. This is like temporarily adding a call to `browser()` at the top of the function.
 
 ```{r, eval=FALSE}
+# debugging a function
 debugonce(fahr_to_celsius)
 fahr_to_celsius(212)
 ```
@@ -220,6 +222,7 @@ cat("done\n")                       #                            12
 Typing out the fastqc command for each day will get repetitive. Let's use a for-loop to automate this task. The `paste0` function lets us "paste" together character strings, so we can use that to construct the commands to run, like this:
 
 ```{r}
+# construct a command to run
 day <- 0
 command <- paste0("fastqc --extract --outdir . r-more-files/Day", day, ".fastq")
 command
@@ -228,6 +231,8 @@ command
 We want to do this for each day, and then use `system` to run the resulting command:
 
 ```{r cache=TRUE}
+# run fastqc on each of the files
+
 days <- c(0,4,7,10,15,20)
 
 for(day in days) {
@@ -246,13 +251,7 @@ The summary.txt files are in "tab separated value" format. This is similar to co
 
 In base R we could use the function `read.delim` to read this file. It's quite similar to `read.csv`. 
 
-However, let's use one of Hadley Wickham's packages, `readr`, to load the file. If this package isn't installed, you can install it with:
-
-```{r eval=FALSE}
-install.packages("readr")
-```
-
-To use `readr` we first need to load it with `library`.
+However, let's use one of Hadley Wickham's packages, `readr`, to load the file. To use `readr` we first need to load it with `library`.
 
 ```{r}
 library(readr)
