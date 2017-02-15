@@ -4,26 +4,20 @@
 
 # Don't run this if you are using our biotraining server, the packages are already installed!
 install.packages(c(
-    # Hadley Wickham packages
-    "readr",    # read tabular data
-    "tidyr",    # data frame tidying functions
-    "dplyr",    # general data frame manipulation
-    "ggplot2",  # flexible plotting
-
-    # Viridis color scale
+    "tidyverse",
     "viridis",
-
-    # (Advanced!) Tidy linear modelling
     "broom"
 ))
 
 
-library(readr)
-library(tidyr)
-library(dplyr)
-library(ggplot2)
-library(viridis)
-library(broom)
+library(tidyverse) # Load all "tidyverse" libraries.
+# OR
+# library(readr)   # Read tabular data.
+# library(tidyr)   # Data frame tidying functions.
+# library(dplyr)   # General data frame manipulation.
+# library(ggplot2) # Flexible plotting.
+
+library(viridis)   # Viridis color scale.
 
 
 vignette()
@@ -61,12 +55,14 @@ color_order <- c("FAIL", "WARN", "PASS")
 bigtab$grade <- factor(bigtab$grade, levels=color_order)
 
 plot <- ggplot(bigtab, aes(x=file, y=test, fill=grade)) +
-    geom_tile(color="black", size=0.5) +      # Black border on tiles
-    labs(x="", y="", fill="") +               # Remove axis labels
-    coord_fixed() +                           # Square tiles
-    theme_minimal() +                         # Minimal theme, no grey background
-    theme(panel.grid=element_blank(),         # No underlying grid lines
-          axis.text.x=element_text(           # Vertical text on x axis
+    geom_tile(color="black", size=0.5) +           # Black border on tiles
+    scale_fill_manual(                             # Colors, as color hex codes
+        values=c("#ee0000","#ffee00","#00aa00")) +
+    labs(x="", y="", fill="") +                    # Remove axis labels
+    coord_fixed() +                                # Square tiles
+    theme_minimal() +                              # Minimal theme, no grey background
+    theme(panel.grid=element_blank(),              # No underlying grid lines
+          axis.text.x=element_text(                # Vertical text on x axis
               angle=90,vjust=0.5,hjust=0))
 plot
 
@@ -141,6 +137,16 @@ scoretab <- left_join(bigtab, scoring, by="grade")
 scoretab
 
 
+### ---------
+### Challenge
+### ---------
+# 
+# 1. Filter `scoretab` to get only "WARN" or "FAIL" grades.
+# 
+# 2. Sort the result so that "FAIL"s are at the top.
+# 
+# 
+#
 ## ------
 ## mutate
 ## ------
@@ -179,6 +185,15 @@ rep(paste("hello", "world"), 5)
 "hello" %>% paste("world") %>% rep(5)
 
 
+## ---------
+## Challenge
+## ---------
+# 
+# In the previous challenge, we filtered and arranged `scoretab`.
+# Rewrite this operation using the pipe.
+# 
+# 
+#
 # =====
 # tidyr
 # =====
@@ -194,10 +209,10 @@ gathered <- gather(untidy, key=group, value=cases, -country)
 gathered
 
 
-spread(bigtab, file, grade)
+spread(bigtab, key=file, value=grade)
 
 
-separate(gathered, group, into=c("gender","age"))
+separate(gathered, col=group, into=c("gender","age"))
 
 
 tidied <- untidy %>%
@@ -205,7 +220,7 @@ tidied <- untidy %>%
     separate(group, into=c("gender","age"))
 
 
-# Advanced!
+# Advanced
 nested <- nest(gathered, -country)
 nested
 nested$data
@@ -283,6 +298,34 @@ normalizer_by_tmm <- tibble(sample=names(adjusted_lib_sizes), norm=adjusted_lib_
 ## Visualization
 ## -------------
 
+### ---------
+### Challenge
+### ---------
+# 
+# 1. Get all the rows in `counts_norm` relating to the histone gene
+# "HHT1".
+# 
+# 2. Plot this data with ggplot2. Use `time` as the x-axis,
+# `log_norm_count` as the y-axis, and color the data by `strain`. Try
+# using geoms: `geom_point()`, `geom_line()`.
+# 
+
+ggplot( ... , aes(x= ... , y= ... , color= ... )) + ...
+
+# 
+# Extensions:
+# 
+# Compare plots of `log_norm_count`, `norm_count`, and `count`.
+# 
+# Experiment with other geoms and other ways to assign columns to
+# aesthetics.
+# 
+# 
+#
+### ---------------------------
+### Whole dataset visualization
+### ---------------------------
+
 ggplot(counts_norm, aes(x=sample, y=gene, fill=log_norm_count)) +
     geom_tile() +
     scale_fill_viridis() +
@@ -311,28 +354,24 @@ ggplot(counts_norm, aes(x=time, y=log_norm_count, color=strain, group=strain)) +
 
 
 ## ---------
-## Challenge
+## Exercises
 ## ---------
 # 
-# 1. Make a line plot as above but just showing the gene HHF1.
-# 
-# Hint: intToUtf8(utf8ToInt("vtf!gjmufs")-1)
-# 
-# 2. Which are the three most variable genes?
+# 1. Which are the three most variable genes?
 # 
 # Hint:
-# intToUtf8(utf8ToInt("xvh#jurxsbe|/#vxppdul}h/#vg/#dqg#duudqjh")-3)
+# `intToUtf8(utf8ToInt("xvh#jurxsbe|/#vxppdul}h/#vg/#dqg#duudqjh")-3)`
 # 
-# 3. (Advanced!) Different genes have different average expression
-# levels, but what we are interested in is how they change over time.
-# Further normalize the data by subtracting the average for each gene
-# from `log_norm_count`.
+# 2. Different genes have different average expression levels, but what
+# we are interested in is how they change over time. Further normalize
+# the data by subtracting the average for each gene from
+# `log_norm_count`.
 # 
 # 
 #
-# ================
-# Linear modelling
-# ================
+# ===============================
+# Appendix: Tidy linear modelling
+# ===============================
 
 sut476 <- counts_norm %>% filter(gene=="SUT476")
 sut476_wt <- sut476 %>% filter(strain=="WT")
@@ -354,6 +393,8 @@ model.matrix(log_norm_count ~ time, data=sut476_wt)
 null_model <- lm(log_norm_count ~ 1, data=sut476_wt)
 anova(null_model, model)
 
+
+library(broom)
 
 augment(model, sut476_wt) %>% head
 
