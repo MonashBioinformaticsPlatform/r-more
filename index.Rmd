@@ -18,7 +18,7 @@ This builds on our ["Introduction to R"](https://monashbioinformaticsplatform.gi
 ## Slides
 
 * [Introduction](slides/introduction.html) ([.Rmd](slides/introduction.Rmd))
-* [Shiny](http://bioinformatics.erc.monash.edu/shiny/adele/rmore/intro/) ([.Rmd](slides/shiny_course_notes.Rmd))
+* [Shiny](http://biotraining.erc.monash.edu:3838/adele/rmore/intro/shiny_course_notes.Rmd) ([.Rmd](slides/shiny_course_notes.Rmd))
 
 ## Topics
 
@@ -26,7 +26,7 @@ This builds on our ["Introduction to R"](https://monashbioinformaticsplatform.gi
 * [Programming](topics/programming.html) ([.Rmd](topics/programming.Rmd))
 * [The tidyverse: dplyr, ggplot2, and friends](topics/tidyverse.html) ([.Rmd](topics/tidyverse.Rmd))
 * [Sequences and genomic features](topics/sequences_and_features.html) ([.Rmd](topics/sequences_and_features.Rmd))
-* [Shiny](http://bioinformatics.erc.monash.edu/shiny/adele/rmore/tutorial/) ([.Rmd](topics/shiny_tutorial.Rmd))
+* [Shiny](http://biotraining.erc.monash.edu:3838/adele/rmore/tutorial/index.Rmd) ([.Rmd](topics/shiny_tutorial.Rmd))
 
 ---
 
@@ -47,7 +47,7 @@ Other resources:
 This course is developed by the Monash Bioinformatics Platform:
 
 * Paul Harrison
-* Adele Baraguhare 
+* Adele Barugahare 
 * Kirill Tsyganov
 
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="figures/CC-BY.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
