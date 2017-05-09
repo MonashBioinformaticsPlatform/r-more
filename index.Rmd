@@ -1,6 +1,6 @@
 ---
 title: "R more"
-subtitle: "Best practices using R in 2016"
+subtitle: "Best practices using R in 2017"
 output: 
     html_document:
         theme: cerulean
