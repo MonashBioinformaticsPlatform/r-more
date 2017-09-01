@@ -36,4 +36,6 @@ r-more-files.zip : r-more-files/* r-more-files/fastqc-output/* $(RS)
 	zip -FSr r-more-files.zip r-more-files
 
 clean :
-	rm $(HTMLS) $(RS) $(UNEVALS) r-more-files.zip
+	rm -f $(HTMLS) $(RS) $(UNEVALS) r-more-files.zip
+	rm -rf topics/sequences_and_features_cache
+	rm -rf topics/programming_cache

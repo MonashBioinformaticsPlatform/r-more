@@ -33,17 +33,14 @@ biocLite(c(
     "GenomicRanges",
     "BSgenome", 
     "rtracklayer",
-    "motifRG"
+    "motifRG",
+    "AnnotationHub",
+    "ensembldb"
 ))
 
 # If you want to install further packages in future, you can use
 #   library(BiocInstaller)
 #   biocLite( ... )
-
-
-# The pipe %>% from dplyr is also used in this tutorial,
-# dplyr is in CRAN so we use install.packages()
-install.packages("dplyr")
 ```
 
 
@@ -69,8 +66,6 @@ library(Biostrings)     # Provides DNAString, DNAStringSet, etc
 library(BSgenome)       # Provides getSeq()
 library(GenomicRanges)  # Provides GRanges, etc
 library(rtracklayer)    # Provides import() and export()
-
-library(dplyr)          # Pipe %>%
 ```
 
 
@@ -81,10 +76,15 @@ Package `Biostrings` offers classes for storing DNA strings, `DNAString`, amino 
 ```{r}
 myseq <- DNAString("ACCATTGATTAT")
 myseq
+
 class(myseq)
+
 reverseComplement(myseq)
 translate(myseq)
+
 subseq(myseq, 3,5)
+myseq[3:5]
+
 as.character(myseq)
 ```
 
@@ -95,13 +95,19 @@ You can see a complete set of functions that work with DNAString with:
 methods(class="DNAString")
 ```
 
+You can see get help on the `DNAString` class with:
+
+```{r eval=FALSE}
+?"DNAString-class"
+```
+
 
 ## DNAStringSet
 
 Often we want to work with a list of sequences, such as chromosomes.
 
 ```{r}
-myset <- DNAStringSet(list(chrI=myseq, chrII=DNAString("ACGTACGT")))
+myset <- DNAStringSet( list(chrI=myseq, chrII=DNAString("ACGTACGT")) )
 myset
 
 # A DNAStringSet is list-like
@@ -150,6 +156,10 @@ range1$wobble
 # A handy way to create a GRanges
 as("chrI:3-5:+", "GRanges")
 ```
+
+## Question {.challenge}
+
+Based on what we saw for `DNAString`, how can we learn more about using `GRanges` and `IRanges` objects?
 
 
 ## Challenge {.challenge}
@@ -243,7 +253,7 @@ subset(features, gene_name == "lacA")
 #   features[features$gene_name == "lacA" & !is.na(features$gene_name),]
 ```
 
-Note: `subset` is a generic R function similar to dplyr's `filter`. The second argument is special, in it you can refer to columns of the GRanges directly.
+Note: `subset` is a generic R function. It is also similar to dplyr's `filter`. The second argument is special, in it you can refer to columns of the GRanges directly.
 
 We could also get all features of a particular type.
 
@@ -363,6 +373,15 @@ cds <- subset(features, type == "CDS")
 Hint: Use `flank()` and `resize()` to manipulate these ranges.
 
 
+# Further data types to explore
+
+**GRangesList, etc**: Many Bioconductor types have a List version, for example `GRangesList`, `DNAStringSetList`. For example the exons of a collection of genes could be naturally stored in a `GRangesList`. Most functions that work with `GRanges` will also worked with `GRangesList`, and operate on each list element separately. This allows for a split-apply-combine style of data processing.
+
+**TxDb**: `TxDb` objects represent the hierarchy of genes which contain transcripts which contain exons and CDS (Coding Sequence) ranges. `TxDb` objects are provided by the `GenomicFeatures` package.
+
+**Seqinfo**: `GRanges` (and various other types) may have associated sequence information accessed with `seqinfo()`. This contains the names and lengths of the sequences the ranges may refer to, and whether they are circular. It allows for some error checking if present.
+
+
 # Finding a known motif
 
 AGGAGGU is the Shine-Dalgarno sequence, which assists binding of the ribosome to a transcript.
@@ -427,13 +446,15 @@ seqLogo(probs)
 
 # Generate a background set of sequences by shuffling 
 shuffle <- function(dna) {
-    strsplit(as.character(dna),"")[[1]] %>% 
-        sample %>% 
-        paste(collapse="") %>%
-        DNAString
+    # Convert to a vector of single bases
+    charvec <- strsplit(as.character(dna),"")[[1]]
+    # Shuffle the vector 
+    shuffled_charvec <- sample(charvec)
+    # Convert back to a DNA string
+    DNAString( paste(shuffled_charvec, collapse="") )
 }
 
-background_seqs <- lapply(initiation_seqs, shuffle) %>% DNAStringSet
+background_seqs <- DNAStringSet( lapply(initiation_seqs, shuffle) )
 names(background_seqs) <- paste0(names(background_seqs), "-shuffled")
 ```
 
@@ -479,7 +500,7 @@ Besides software, Bioconductor includes packages with data for model organisms, 
 * The EBI's Ensembl genome browser
 * The UCSC genome browser
 
-These organizations will generally obtain genome assemblies from the same ultimate sources. For example, all of the above use the Genome Reference Consortium's GRCh38 DNA sequence for homo sapiens. UCSC likes to call this "hg38" but it's the same DNA sequence. These DNA sequences serve as a common frame of reference. However the three organizations above will differ on their exact set of gene and transcript annotations, and all use a different gene and transcript id system. These annotations are also revised more often than the underlying DNA sequences.
+These organizations will generally obtain genome assemblies from the same ultimate sources. For example, all of the above use the Genome Reference Consortium's GRCh38 DNA sequence for homo sapiens. UCSC likes to call this "hg38" but it is the same DNA sequence. These DNA sequences serve as a common frame of reference. However the three organizations above will differ on their exact set of gene and transcript annotations, and all use a different gene and transcript ID system. These annotations are also revised more often than the underlying DNA sequences.
 
 This mess is partly due to American/European rivalry, and partly due to differing goals. The UCSC genome browser has always been about practicality and showing many lines of evidence. The others are more concerned with careful curation and standardization.
 
@@ -509,7 +530,55 @@ Access to BioMart data, on the internet -- translation of gene ids, gene sets, g
 
 ### AnnotationHub
 
-Access to experimental data which maps to locations on a genome, on the internet. Programmatic access to the sorts of tracks you would load up in the UCSC browser.
+AnnotationHub is a way to retrieve data from a more comprehensive set of organisms and data providers than the above styles of package. The retrieved data is returned in an appropriate Bioconductor type.
+
+AnnotationHub also provides access to experimental data which maps to locations on a genome, similar to the sorts of tracks you would load in the UCSC browser.
+
+Files are cached, so they will only be downloaded once.
+
+In the example below, the yeast genome and annotations are retrieved:
+
+```{r eval=FALSE}
+library(AnnotationHub)
+ah <- AnnotationHub()
+
+# ah is large collection of records that can be retrieved
+ah
+length(ah)
+colnames( mcols(ah) )
+table( ah$rdataclass )
+
+# query() searches for terms in an unstructured way
+records <- query(ah, c("Ensembl", "88", "Saccharomyces cerevisiae"))
+records
+
+names(records)
+mcols(records)
+mcols(records)[,c("title","rdataclass")]
+
+# Having located records of interest, 
+# your R script can refer to the specific AH... record,
+# so it always uses the same version of the data.
+ah[["AH54568"]]
+sc_genome <- import( ah[["AH54568"]] )
+sc_granges <- ah[["AH53661"]]
+sc_ensdb <- ah[["AH53745"]]
+
+# An EnsDb is similar to a TxDb, ie a transcript database.
+genes(sc_ensdb)
+transcriptsBy(sc_ensdb, "gene")
+exonsBy(sc_ensdb, "tx")
+
+
+query(ah, c("OrgDb", "Saccharomyces cerevisiae"))
+sc_orgdb <- ah[["AH53773"]]
+
+# An OrgDb contains information about genes in an organism
+columns(sc_orgdb)
+head( keys(sc_orgdb, "ORF") )
+select(sc_orgdb, "YFL039C", c("GENENAME", "DESCRIPTION"), keytype="ORF")
+```
+
 
 
 ```{r}

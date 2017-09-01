@@ -25,17 +25,14 @@ biocLite(c(
     "GenomicRanges",
     "BSgenome",
     "rtracklayer",
-    "motifRG"
+    "motifRG",
+    "AnnotationHub",
+    "ensembldb"
 ))
 
 # If you want to install further packages in future, you can use
 #   library(BiocInstaller)
 #   biocLite( ... )
-
-
-# The pipe %>% from dplyr is also used in this tutorial,
-# dplyr is in CRAN so we use install.packages()
-install.packages("dplyr")
 
 
 vignette()
@@ -52,8 +49,6 @@ library(BSgenome)       # Provides getSeq()
 library(GenomicRanges)  # Provides GRanges, etc
 library(rtracklayer)    # Provides import() and export()
 
-library(dplyr)          # Pipe %>%
-
 
 ## ---------
 ## DNAString
@@ -61,21 +56,29 @@ library(dplyr)          # Pipe %>%
 
 myseq <- DNAString("ACCATTGATTAT")
 myseq
+
 class(myseq)
+
 reverseComplement(myseq)
 translate(myseq)
+
 subseq(myseq, 3,5)
+myseq[3:5]
+
 as.character(myseq)
 
 
 methods(class="DNAString")
 
 
+?"DNAString-class"
+
+
 ## ------------
 ## DNAStringSet
 ## ------------
 
-myset <- DNAStringSet(list(chrI=myseq, chrII=DNAString("ACGTACGT")))
+myset <- DNAStringSet( list(chrI=myseq, chrII=DNAString("ACGTACGT")) )
 myset
 
 # A DNAStringSet is list-like
@@ -116,6 +119,15 @@ range1$wobble
 as("chrI:3-5:+", "GRanges")
 
 
+## --------
+## Question
+## --------
+# 
+# Based on what we saw for `DNAString`, how can we learn more about
+# using `GRanges` and `IRanges` objects?
+# 
+# 
+#
 ## ---------
 ## Challenge
 ## ---------
@@ -286,6 +298,10 @@ cds <- subset(features, type == "CDS")
 # 
 # 
 #
+# =============================
+# Further data types to explore
+# =============================
+
 # =====================
 # Finding a known motif
 # =====================
@@ -335,13 +351,15 @@ seqLogo(probs)
 
 # Generate a background set of sequences by shuffling
 shuffle <- function(dna) {
-    strsplit(as.character(dna),"")[[1]] %>%
-        sample %>%
-        paste(collapse="") %>%
-        DNAString
+    # Convert to a vector of single bases
+    charvec <- strsplit(as.character(dna),"")[[1]]
+    # Shuffle the vector
+    shuffled_charvec <- sample(charvec)
+    # Convert back to a DNA string
+    DNAString( paste(shuffled_charvec, collapse="") )
 }
 
-background_seqs <- lapply(initiation_seqs, shuffle) %>% DNAStringSet
+background_seqs <- DNAStringSet( lapply(initiation_seqs, shuffle) )
 names(background_seqs) <- paste0(names(background_seqs), "-shuffled")
 
 
@@ -389,6 +407,46 @@ system("meme -dna -maxsize 1000000 fg.fa")
 ### -------------
 ### AnnotationHub
 ### -------------
+
+library(AnnotationHub)
+ah <- AnnotationHub()
+
+# ah is large collection of records that can be retrieved
+ah
+length(ah)
+colnames( mcols(ah) )
+table( ah$rdataclass )
+
+# query() searches for terms in an unstructured way
+records <- query(ah, c("Ensembl", "88", "Saccharomyces cerevisiae"))
+records
+
+names(records)
+mcols(records)
+mcols(records)[,c("title","rdataclass")]
+
+# Having located records of interest,
+# your R script can refer to the specific AH... record,
+# so it always uses the same version of the data.
+ah[["AH54568"]]
+sc_genome <- import( ah[["AH54568"]] )
+sc_granges <- ah[["AH53661"]]
+sc_ensdb <- ah[["AH53745"]]
+
+# An EnsDb is similar to a TxDb, ie a transcript database.
+genes(sc_ensdb)
+transcriptsBy(sc_ensdb, "gene")
+exonsBy(sc_ensdb, "tx")
+
+
+query(ah, c("OrgDb", "Saccharomyces cerevisiae"))
+sc_orgdb <- ah[["AH53773"]]
+
+# An OrgDb contains information about genes in an organism
+columns(sc_orgdb)
+head( keys(sc_orgdb, "ORF") )
+select(sc_orgdb, "YFL039C", c("GENENAME", "DESCRIPTION"), keytype="ORF")
+
 
 sessionInfo()
 
