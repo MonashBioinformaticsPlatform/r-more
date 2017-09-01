@@ -418,29 +418,25 @@ colnames( mcols(ah) )
 table( ah$rdataclass )
 
 # query() searches for terms in an unstructured way
-records <- query(ah, c("Ensembl", "88", "Saccharomyces cerevisiae"))
+records <- query(ah, c("Ensembl", "85", "Saccharomyces cerevisiae"))
 records
 
-names(records)
 mcols(records)
 mcols(records)[,c("title","rdataclass")]
 
 # Having located records of interest,
 # your R script can refer to the specific AH... record,
 # so it always uses the same version of the data.
-ah[["AH54568"]]
-sc_genome <- import( ah[["AH54568"]] )
-sc_granges <- ah[["AH53661"]]
-sc_ensdb <- ah[["AH53745"]]
+ah[["AH51399"]]
+sc_genome <- import( ah[["AH51399"]] )
+sc_granges <- ah[["AH51088"]]
 
-# An EnsDb is similar to a TxDb, ie a transcript database.
-genes(sc_ensdb)
-transcriptsBy(sc_ensdb, "gene")
-exonsBy(sc_ensdb, "tx")
+# More recent versions of Bioconductor also allow you to
+# retrieve TxDb (and similar EnsDb) objects.
 
 
 query(ah, c("OrgDb", "Saccharomyces cerevisiae"))
-sc_orgdb <- ah[["AH53773"]]
+sc_orgdb <- ah[["AH49589"]]
 
 # An OrgDb contains information about genes in an organism
 columns(sc_orgdb)

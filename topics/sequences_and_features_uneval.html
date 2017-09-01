@@ -499,7 +499,7 @@ writeXStringSet(background_seqs, &quot;bg.fa&quot;)</code></pre>
 </div>
 <div id="annotationhub" class="section level3">
 <h3>AnnotationHub</h3>
-<p>AnnotationHub is a way to retrieve data from a more comprehensive set of organisms and data providers than the above styles of package. The retrieved data is returned in an appropriate Bioconductor type.</p>
+<p>AnnotationHub is a way to retrieve data from a more comprehensive set of organisms and data providers than the above styles of package. The retrieved data is returned in an appropriate Bioconductor type. If data is being updated over time (eg improved annotation of a genome), each version receives a unique ID in AnnotationHub, making it much easier to write reproducable analyses.</p>
 <p>AnnotationHub also provides access to experimental data which maps to locations on a genome, similar to the sorts of tracks you would load in the UCSC browser.</p>
 <p>Files are cached, so they will only be downloaded once.</p>
 <p>In the example below, the yeast genome and annotations are retrieved:</p>
@@ -513,29 +513,25 @@ colnames( mcols(ah) )
 table( ah$rdataclass )
 
 # query() searches for terms in an unstructured way
-records &lt;- query(ah, c(&quot;Ensembl&quot;, &quot;88&quot;, &quot;Saccharomyces cerevisiae&quot;))
+records &lt;- query(ah, c(&quot;Ensembl&quot;, &quot;85&quot;, &quot;Saccharomyces cerevisiae&quot;))
 records
 
-names(records)
 mcols(records)
 mcols(records)[,c(&quot;title&quot;,&quot;rdataclass&quot;)]
 
-# Having located records of interest, 
+# Having located records of interest,
 # your R script can refer to the specific AH... record,
 # so it always uses the same version of the data.
-ah[[&quot;AH54568&quot;]]
-sc_genome &lt;- import( ah[[&quot;AH54568&quot;]] )
-sc_granges &lt;- ah[[&quot;AH53661&quot;]]
-sc_ensdb &lt;- ah[[&quot;AH53745&quot;]]
+ah[[&quot;AH51399&quot;]]
+sc_genome &lt;- import( ah[[&quot;AH51399&quot;]] )
+sc_granges &lt;- ah[[&quot;AH51088&quot;]]
 
-# An EnsDb is similar to a TxDb, ie a transcript database.
-genes(sc_ensdb)
-transcriptsBy(sc_ensdb, &quot;gene&quot;)
-exonsBy(sc_ensdb, &quot;tx&quot;)
+# More recent versions of Bioconductor also allow you to
+# retrieve TxDb (and similar EnsDb) objects.
 
 
 query(ah, c(&quot;OrgDb&quot;, &quot;Saccharomyces cerevisiae&quot;))
-sc_orgdb &lt;- ah[[&quot;AH53773&quot;]]
+sc_orgdb &lt;- ah[[&quot;AH49589&quot;]]
 
 # An OrgDb contains information about genes in an organism
 columns(sc_orgdb)
