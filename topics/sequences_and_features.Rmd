@@ -375,9 +375,9 @@ Hint: Use `flank()` and `resize()` to manipulate these ranges.
 
 # Further data types to explore
 
-**GRangesList, etc**: Many Bioconductor types have a List version, for example `GRangesList`, `DNAStringSetList`. For example the exons of a collection of genes could be naturally stored in a `GRangesList`. Most functions that work with `GRanges` will also worked with `GRangesList`, and operate on each list element separately. This allows for a split-apply-combine style of data processing.
+**GRangesList, etc**: Many Bioconductor types have a List version -- `GRangesList`, `DNAStringSetList`, etc. For example the exons of a collection of genes could be naturally stored in a `GRangesList`. Most functions that work with `GRanges` will also worked with `GRangesList`, and operate on each list element separately.
 
-**TxDb**: `TxDb` objects represent the hierarchy of genes which contain transcripts which contain exons and CDS (Coding Sequence) ranges. `TxDb` objects are provided by the `GenomicFeatures` package.
+**TxDb**: `TxDb` objects represent the hierarchy of genes which contain transcripts which contain exons and CDS (CoDing Sequence) ranges. `TxDb` objects are provided by the `GenomicFeatures` package.
 
 **Seqinfo**: `GRanges` (and various other types) may have associated sequence information accessed with `seqinfo()`. This contains the names and lengths of the sequences the ranges may refer to, and whether they are circular. It allows for some error checking if present.
 

@@ -383,8 +383,8 @@ findOverlaps(query, features, ignore.strand=FALSE)</code></pre>
 </div>
 <div id="further-data-types-to-explore" class="section level1">
 <h1>Further data types to explore</h1>
-<p><strong>GRangesList, etc</strong>: Many Bioconductor types have a List version, for example <code>GRangesList</code>, <code>DNAStringSetList</code>. For example the exons of a collection of genes could be naturally stored in a <code>GRangesList</code>. Most functions that work with <code>GRanges</code> will also worked with <code>GRangesList</code>, and operate on each list element separately. This allows for a split-apply-combine style of data processing.</p>
-<p><strong>TxDb</strong>: <code>TxDb</code> objects represent the hierarchy of genes which contain transcripts which contain exons and CDS (Coding Sequence) ranges. <code>TxDb</code> objects are provided by the <code>GenomicFeatures</code> package.</p>
+<p><strong>GRangesList, etc</strong>: Many Bioconductor types have a List version – <code>GRangesList</code>, <code>DNAStringSetList</code>, etc. For example the exons of a collection of genes could be naturally stored in a <code>GRangesList</code>. Most functions that work with <code>GRanges</code> will also worked with <code>GRangesList</code>, and operate on each list element separately.</p>
+<p><strong>TxDb</strong>: <code>TxDb</code> objects represent the hierarchy of genes which contain transcripts which contain exons and CDS (CoDing Sequence) ranges. <code>TxDb</code> objects are provided by the <code>GenomicFeatures</code> package.</p>
 <p><strong>Seqinfo</strong>: <code>GRanges</code> (and various other types) may have associated sequence information accessed with <code>seqinfo()</code>. This contains the names and lengths of the sequences the ranges may refer to, and whether they are circular. It allows for some error checking if present.</p>
 </div>
 <div id="finding-a-known-motif" class="section level1">
