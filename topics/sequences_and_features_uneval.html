@@ -349,7 +349,7 @@ subjectHits(hits)
 features[subjectHits(hits),]
 
 findOverlaps(query, features, ignore.strand=FALSE)</code></pre>
-<p>With <code>findOverlaps</code>, we can use genomic location as the key when <em>joining</em> disparate types of data, so this is an important tool for <em>integrative</em> analysis.</p>
+<p>With <code>findOverlaps</code>, we can use genomic location as the key when <em>joining</em> disparate types of data, so this is an important tool for <em>integrative</em> analysis. See also the related functions <code>nearest</code>, <code>precede</code>, <code>follow</code>, and <code>distance</code>.</p>
 <p><code>GenomicRanges</code> also provides:</p>
 <ul>
 <li><p><code>range</code> - get a feature that spans from the start to the end of all features in a <code>GRanges</code>.</p></li>
@@ -464,10 +464,12 @@ writeXStringSet(background_seqs, &quot;bg.fa&quot;)</code></pre>
 </div>
 <div id="next-steps" class="section level1">
 <h1>Next steps</h1>
-<p>We’ve seen just the smallest part of what Bioconductor has to offer in this space.</p>
+<p>We’ve seen just the smallest part of what <a href="http://bioconductor.org/">Bioconductor</a> has to offer in this space.</p>
 <ul>
 <li><a href="http://bioconductor.org/packages/stats/">Most downloaded Bioconctor packages</a></li>
 <li><a href="https://github.com/mikelove/bioc-refcard/blob/master/README.Rmd">Bioconductor cheat sheet</a></li>
+<li><a href="https://combine-australia.github.io/2017-05-19-bioconductor-melbourne/">COMBINE Bioconductor course from May 2017</a></li>
+<li><a href="https://support.bioconductor.org/">Bioconductor’s Stack Overflow-style support site</a></li>
 </ul>
 <p>Besides software, Bioconductor includes packages with data for model organisms, for example. The data is generally from these central repositories:</p>
 <ul>
@@ -506,7 +508,7 @@ writeXStringSet(background_seqs, &quot;bg.fa&quot;)</code></pre>
 <pre class="r"><code>library(AnnotationHub)
 ah &lt;- AnnotationHub()
 
-# ah is large collection of records that can be retrieved
+# ah contains a large collection of records that can be retrieved
 ah
 length(ah)
 colnames( mcols(ah) )

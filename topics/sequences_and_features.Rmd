@@ -328,7 +328,7 @@ features[subjectHits(hits),]
 findOverlaps(query, features, ignore.strand=FALSE)
 ```
 
-With `findOverlaps`, we can use genomic location as the key when *joining* disparate types of data, so this is an important tool for *integrative* analysis.
+With `findOverlaps`, we can use genomic location as the key when *joining* disparate types of data, so this is an important tool for *integrative* analysis. See also the related functions `nearest`, `precede`, `follow`, and `distance`.
 
 `GenomicRanges` also provides:
 
@@ -489,10 +489,12 @@ system("meme -dna -maxsize 1000000 fg.fa")
 
 # Next steps
 
-We've seen just the smallest part of what Bioconductor has to offer in this space.
+We've seen just the smallest part of what [Bioconductor](http://bioconductor.org/) has to offer in this space.
 
 * [Most downloaded Bioconctor packages](http://bioconductor.org/packages/stats/)
 * [Bioconductor cheat sheet](https://github.com/mikelove/bioc-refcard/blob/master/README.Rmd)
+* [COMBINE Bioconductor course from May 2017](https://combine-australia.github.io/2017-05-19-bioconductor-melbourne/)
+* [Bioconductor's Stack Overflow-style support site](https://support.bioconductor.org/)
 
 Besides software, Bioconductor includes packages with data for model organisms, for example. The data is generally from these central repositories:
 
@@ -542,7 +544,7 @@ In the example below, the yeast genome and annotations are retrieved:
 library(AnnotationHub)
 ah <- AnnotationHub()
 
-# ah is large collection of records that can be retrieved
+# ah contains a large collection of records that can be retrieved
 ah
 length(ah)
 colnames( mcols(ah) )

@@ -411,7 +411,7 @@ system("meme -dna -maxsize 1000000 fg.fa")
 library(AnnotationHub)
 ah <- AnnotationHub()
 
-# ah is large collection of records that can be retrieved
+# ah contains a large collection of records that can be retrieved
 ah
 length(ah)
 colnames( mcols(ah) )
