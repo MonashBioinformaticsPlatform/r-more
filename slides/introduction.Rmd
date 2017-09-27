@@ -4,6 +4,7 @@ output:
     ioslides_presentation:
         widescreen: true
         smaller: true
+        css: style.css
 ---
 
 ## R more
