@@ -8,6 +8,8 @@ output:
 
 ## R more
 
+<img src="../figures/Rlogo.png" style="float: right">
+
 This day is a very fast tour of some ways R as currently used. The point is to get a taste of what exists.
 
 R continues to evolve as better ways to work with data are found. In particular, packages by [Hadley Wickham](http://hadley.nz/) have recently revolutionized R: dplyr, tidyr, ggplot2
