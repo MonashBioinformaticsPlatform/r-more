@@ -8,9 +8,7 @@ output:
 
 ## R more
 
-This day is a very fast tour of R as currently used.
-
-The point is to get a taste of what exists in the R world.
+This day is a very fast tour of some ways R as currently used. The point is to get a taste of what exists.
 
 R continues to evolve as better ways to work with data are found. In particular, packages by [Hadley Wickham](http://hadley.nz/) have recently revolutionized R: devtools, dplyr, tidyr, ggplot2
 
@@ -27,7 +25,7 @@ Understanding what you have requires a cyclic process of exploratation.
 
 ### Integrative
 
-You may want to join together many different views of a biological process: DNA, RNA, epigenetics, proteins, metabolome, cell morphology, ...
+For example in biology you may want to join together many different views of a process: DNA, RNA, epigenetics, proteins, metabolome, cell morphology, ...
 
 Your data can potentially be viewed in the context of a vast array of other data sets.
 
@@ -83,13 +81,14 @@ Key packages: ggplot2
 ### Summarization, modelling, statistical testing
 
 * Shrinks large data sets for more manageable visualization.
+    * If nothing else, data can always be subsampled.
 * Confirm what can be seen in visualization, tells us what *isn't* real in a visualization.
 * What hypotheses does the data support and reject?
 * Failures should prompt a rethink of normalization and tranformation, and further visualization to understand the data.
 
-Key packages: dplyr
-
 Base R functions: mean, min, max, sd, apply, tapply, summary, lm, glm, anova, ...
+
+Key packages: dplyr
 
 Advanced/specialized packages: multcomp, broom, limma, edgeR, glmnet
 
@@ -123,9 +122,12 @@ Example from: [Wickham, H. (2015) Tidy data. The Journal of Statistical Software
 
 Programming (or scripting) lets us tell the computer to do a whole lot of things without further instruction.
 
-* If every step of your analysis can run as a script, you have a complete record of what you have done.
-* Changes are easily tested, a poor decision at an early stage is easily fixed.
-* Today's big project becomes tomorrow's building block.
+If every step of your analysis can run as a script:
+
+* you have a complete record of what you have done
+* it's easy to feed in some test data to check that it is working as expected
+* changes are easily tested, a poor decision at an early stage is easily fixed
+* today's big project becomes tomorrow's building block
 
 Elements of programming we will be looking at today:
 
@@ -140,16 +142,15 @@ Elements of programming we will be looking at today:
 
 <img src="../figures/remember-kids.jpg" style="position: absolute; right: 0px; top: 0px;" height="400">
 
-Show your code.
+Show your code. It may surprise you who picks it up and runs with it.
 
-Science is about sharing. Science is reproducable.
+It's not science until it's shared and reproducable.
 
-People may surprise you.
+* Document analysis in Rmarkdown
 
-* Document analysis in Rmarkdown.
-* Share useful functions in packages.
+* Ultimately, share useful functions in R packages
     * Version control (eg git, GitHub)
-    * Documentation
+    * Tutorial and reference documentation
     * Testing
     * `devtools::check`
 
@@ -172,6 +173,6 @@ Sharing data interactively
 
 ### Also in notes
 
-Working with sequence and genomic feature data
+Working with DNA sequences and genomic feature data
 
 
