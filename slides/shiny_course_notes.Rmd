@@ -152,4 +152,4 @@ The server code plots a histogram for a dataset called faithful. It has an argum
 
 ## Let's get into Shiny!
 
-[Shiny tutorial](http://bioinformatics.erc.monash.edu/shiny/adele/rmore/tutorial/)
+[Shiny tutorial](http://biotraining.erc.monash.edu:3838/shiny/r-more/topics/)
