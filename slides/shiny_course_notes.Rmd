@@ -117,7 +117,7 @@ Data processing, analysis, plotting, this all happens here.
 
 Takes inputs from the ui and re-runs code chunks when the inputs change.
 
-Let's have a look at a handy example from the [Shiny tutorial](http://shiny.rstudio.com/tutorial/lesson1/)
+Let's have a look at a handy example from the [Shiny tutorial](http://shiny.rstudio.com/tutorial/written-tutorial/lesson1/)
 
 ## Example Interactive Plot
 
