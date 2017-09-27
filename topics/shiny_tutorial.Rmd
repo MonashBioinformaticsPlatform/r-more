@@ -42,7 +42,7 @@ sidebarLayout(
 )
 
 output$my_plot <- renderPlot({
-    dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
+    dat <- read.csv("r-more-files/shiny_sample_data.csv", row.names = 1)
     x_ax <- dat[,input$x_select]
     y_ax <- dat[,input$y_select]
     
@@ -54,14 +54,12 @@ output$my_plot <- renderPlot({
 This is the Shiny app we will be building today. It is quite simple, it takes a csv file containing data for 6 samples and the raw counts for 1000 genes. One sample will be plotted on the x-axis and another sample on the y-axis. 
 
 ```{r head_data, echo=FALSE}
-  dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
+  dat <- read.csv("r-more-files/shiny_sample_data.csv", row.names = 1)
   head(dat, 10)
 ```
 *Top ten rows of the raw data used to build the shiny app*
 
 ## Setting up a shiny app
-
-In RStudio, create one blank R file. Save it with the name `app.R`.
 
 From the console, install and load Shiny.
 
@@ -73,7 +71,13 @@ install.packages("shiny")
 library(shiny)
 ```
 
-To start off, we're going to create a blank app, to show what is the bare minimum to create a Shiny app. Create a `demo` folder in your ShinyApps folder and then name a new R script `app.R`. In app.R, type:
+Firstly, in RStudio create a folder called `ShinyApps`. Make sure you spell the folder name correctly! This directory should created in your home directory. In the files pane, click `Home`, then click `New Folder` and enter in `ShinyApps` as the folder name.
+
+Create a sub-directory in `ShinyApps` called `demo`.
+
+Then, create one blank R script (Click `File` > `New File` > `R Script`). Save it inside the `demo` folder with the name `app.R`. 
+
+Now we're going to create a blank app, to show what is the bare minimum to create a Shiny app. In app.R, type:
 
 ```{r, eval = FALSE}
 
@@ -167,7 +171,6 @@ ui <- fluidPage(
 ```
 
 This is where Shiny starts to get a little tricky, a lot of ui code will be end up being nested in more code. So far, we have the `selectInput` widget nested inside `sidebarPanel` nested inside `siderbarLayout` **which is nested in** `fluidPage`. So we've stuck a function inside a function inside a function inside a function. Phew, that's a lot to keep track of! Many common problems that'll prevent a shiny app from running simply come from just putting a comma or a bracket in the wrong place. 
-
 
 >We cannot emphasis this point enough - **keeping track of opening and closing brackets and your commas is a good skill to cultivate when building Shiny apps!** One quick way to check on your brackets is to move the cursor next to a bracket - in RStudio - that will highlight the other bracket paired with if (if one exists, that is!).
 >
@@ -411,7 +414,7 @@ sidebarLayout(
 )
 
 output$plot1 <- renderPlot({
-    dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
+    dat <- read.csv("r-more-files/shiny_sample_data.csv", row.names = 1)
     x_axis <- dat[, "sample1"]
     y_axis <- dat[, "sample2"]
     
@@ -419,7 +422,6 @@ output$plot1 <- renderPlot({
   })
 
 ```
-
 
 The app has a plot now...but it isn't interactive, if we change the widget values, it has no effect on what is plotted on the figure. That's because the first two columns were selected directly in the `renderPlot` function. However, we could change to call the widget values instead using `input`.
 
@@ -429,7 +431,7 @@ server <- function(input, output) {
   output$my_plot <- renderPlot({
     
     #Read in the sample csv
-    dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
+    dat <- read.csv("~/r-more-files/shiny_sample_data.csv", row.names = 1)
     
     #Pull out a column for the x and y axis each
     x_axis <- dat[, input$x_select]
@@ -471,7 +473,7 @@ sidebarLayout(
 )
 
 output$plot2 <- renderPlot({
-  dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
+  dat <- read.csv("r-more-files/shiny_sample_data.csv", row.names = 1)
   x_axis <- dat[, input$x_select2]
   y_axis <- dat[, input$y_select2]
   
@@ -489,7 +491,9 @@ Congratulations! You've made your first app! To get it exactly like the example 
 
 Now imagine you had an experiment where you had many conditions and you needed to plot each one against each other. Instead of plotting each one individually, with a Shiny app, you could easily visualise the different conditions without having to write code for each one of them and then download them. 
 
+If you want to get a shareable link of your app, so that other people can access it over the web: `http://biotraining.erc.monash.edu:3838/your_username/demo/`. 
 
+Make sure to change the url to have your biotraining account name in place of `your_username`.
 
 ## Challenge app
 
@@ -526,7 +530,7 @@ sidebarLayout(
 )
 
 output$plot3 <- renderPlot({
-  dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
+  dat <- read.csv("r-more-files/shiny_sample_data.csv", row.names = 1)
   x_axis <- dat[, input$x_select3]
   y_axis <- dat[, input$y_select3]
   
@@ -535,7 +539,7 @@ output$plot3 <- renderPlot({
 
 
 output$table1 <- renderTable({
-  dat <- read.csv("../r-more-files/shiny_sample_data.csv", row.names = 1)
+  dat <- read.csv("r-more-files/shiny_sample_data.csv", row.names = 1)
   head(dat[, c(input$x_select3, input$y_select3)], input$n_rows)
 })
 ```
