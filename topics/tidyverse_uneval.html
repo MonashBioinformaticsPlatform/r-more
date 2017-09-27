@@ -150,7 +150,7 @@ library(viridis)   # Viridis color scale.</code></pre>
 <p>These packages usually have useful documentation in the form of “vignettes”. These are readable on the CRAN website, or within R:</p>
 <pre class="r"><code>vignette()
 vignette(package=&quot;dplyr&quot;)
-vignette(&quot;introduction&quot;, package=&quot;dplyr&quot;)</code></pre>
+vignette(&quot;dplyr&quot;, package=&quot;dplyr&quot;)</code></pre>
 <p>Let’s continue our examination of the FastQC output. If you’re starting fresh for this lesson, you can load the necessary data frame with:</p>
 <pre class="r"><code>bigtab &lt;- read_csv(&quot;r-more-files/fastqc.csv&quot;)</code></pre>
 <div id="ggplot2-revisited" class="section level1">
@@ -175,7 +175,7 @@ bigtab$file &lt;- factor(bigtab$file, levels=x_order)
 color_order &lt;- c(&quot;FAIL&quot;, &quot;WARN&quot;, &quot;PASS&quot;)
 bigtab$grade &lt;- factor(bigtab$grade, levels=color_order)
 
-plot &lt;- ggplot(bigtab, aes(x=file, y=test, fill=grade)) + 
+myplot &lt;- ggplot(bigtab, aes(x=file, y=test, fill=grade)) + 
     geom_tile(color=&quot;black&quot;, size=0.5) +           # Black border on tiles
     scale_fill_manual(                             # Colors, as color hex codes
         values=c(&quot;#ee0000&quot;,&quot;#ffee00&quot;,&quot;#00aa00&quot;)) +
@@ -185,10 +185,10 @@ plot &lt;- ggplot(bigtab, aes(x=file, y=test, fill=grade)) +
     theme(panel.grid=element_blank(),              # No underlying grid lines
           axis.text.x=element_text(                # Vertical text on x axis
               angle=90,vjust=0.5,hjust=0))              
-plot</code></pre>
+myplot</code></pre>
 <p>Plots can be saved with <code>ggsave</code>. Width and height are given in inches, and an image resolution in Dots Per Inch should also be given. The width and height will determine the relative size of text and graphics, so increasing the resolution is best done by adjusting the DPI. Compare the files produced by:</p>
-<pre class="r"><code>ggsave(&quot;plot1.png&quot;, plot, width=5,  height=5,  dpi=600)
-ggsave(&quot;plot2.png&quot;, plot, width=10, height=10, dpi=300)</code></pre>
+<pre class="r"><code>ggsave(&quot;plot1.png&quot;, myplot, width=5,  height=5,  dpi=600)
+ggsave(&quot;plot2.png&quot;, myplot, width=10, height=10, dpi=300)</code></pre>
 <p>It may be necessary to edit a plot further in a program such as Inkscape or Adobe Illustrator. To allow this, the image needs to be saved in a “vector” format such as SVG, EPS, or PDF. In this case, the DPI argument isn’t needed.</p>
 </div>
 </div>

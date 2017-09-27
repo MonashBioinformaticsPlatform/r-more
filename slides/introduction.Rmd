@@ -91,7 +91,7 @@ Key packages: dplyr
 
 Base R functions: mean, min, max, sd, apply, tapply, summary, lm, glm, anova, ...
 
-Advanced/specialized packages: multcomp, broom, limma, edgeR
+Advanced/specialized packages: multcomp, broom, limma, edgeR, glmnet
 
 
 ## Tidy data is key
@@ -166,8 +166,12 @@ Programming
 
 Tidying data and visualizing it
 
-Working with sequence and genomic feature data
-
 Sharing data interactively
+
+
+
+### Also in notes
+
+Working with sequence and genomic feature data
 
 

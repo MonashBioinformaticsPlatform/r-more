@@ -22,7 +22,7 @@ library(viridis)   # Viridis color scale.
 
 vignette()
 vignette(package="dplyr")
-vignette("introduction", package="dplyr")
+vignette("dplyr", package="dplyr")
 
 
 bigtab <- read_csv("r-more-files/fastqc.csv")
@@ -54,7 +54,7 @@ bigtab$file <- factor(bigtab$file, levels=x_order)
 color_order <- c("FAIL", "WARN", "PASS")
 bigtab$grade <- factor(bigtab$grade, levels=color_order)
 
-plot <- ggplot(bigtab, aes(x=file, y=test, fill=grade)) +
+myplot <- ggplot(bigtab, aes(x=file, y=test, fill=grade)) +
     geom_tile(color="black", size=0.5) +           # Black border on tiles
     scale_fill_manual(                             # Colors, as color hex codes
         values=c("#ee0000","#ffee00","#00aa00")) +
@@ -64,11 +64,11 @@ plot <- ggplot(bigtab, aes(x=file, y=test, fill=grade)) +
     theme(panel.grid=element_blank(),              # No underlying grid lines
           axis.text.x=element_text(                # Vertical text on x axis
               angle=90,vjust=0.5,hjust=0))
-plot
+myplot
 
 
-ggsave("plot1.png", plot, width=5,  height=5,  dpi=600)
-ggsave("plot2.png", plot, width=10, height=10, dpi=300)
+ggsave("plot1.png", myplot, width=5,  height=5,  dpi=600)
+ggsave("plot2.png", myplot, width=10, height=10, dpi=300)
 
 
 # =====
