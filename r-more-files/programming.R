@@ -3,15 +3,27 @@
 
 
 # Don't run this if you are using our biotraining server, the packages are already installed!
-install.packages(c(
-    "readr",    # read tabular data
-    "dplyr"     # general data frame manipulation
-))
+#
+# Install the entire Tidyverse collection of packages with:
+#
+#   install.packages("tidyverse")
+#
+# or just install packages needed for this section with:
+#
+#   install.packages(c(
+#       "readr",    # read tabular data
+#       "dplyr"     # general data frame manipulation
+#   ))
 
 
 # =========
 # Functions
 # =========
+
+FUNCTION_NAME <- function(ARGUMENT_NAME1, ARGUMENT_NAME2, ...) {
+    FUNCTION_BODY
+}
+
 
 fahr_to_kelvin <- function(temp) {
     (temp-32) * (5/9) + 273.15
@@ -122,6 +134,86 @@ fahr_to_celsius(212)
 # Confirm that your function works as expected.
 # 
 # 
+# 
+# 
+#
+# =========
+# For-loops
+# =========
+
+for(VARIABLE_NAME in VECTOR) {
+  FOR_LOOP_BODY
+}
+
+
+i <- 10
+cat("i is",i,"\n")
+cat("i squared is",i*i,"\n")
+i <- 20
+cat("i is",i,"\n")
+cat("i squared is",i*i,"\n")
+i <- 30
+cat("i is",i,"\n")
+cat("i squared is",i*i,"\n")
+i <- 40
+cat("i is",i,"\n")
+cat("i squared is",i*i,"\n")
+i <- 50
+cat("i is",i,"\n")
+cat("i squared is",i*i,"\n")
+
+
+for(i in c(10,20,30,40,50)) {       #    1
+    cat("i is",i,"\n")              #      2   4   6   8   10
+    cat("i squared is",i*i,"\n")    #        3   5   7   9    11
+}                                   #
+                                    #
+cat("done\n")                       #                            12
+                                    #   --order-of-execution-->
+                                    #
+                                    # i= - a a b b c c d d e  e  e ...
+
+
+## ---------
+## Challenge
+## ---------
+# 
+# 1. What do you think this R code will do? Read the code and make a
+# guess, then try it in R. Try adding `cat`s or `print`s to the loop
+# body to check what is going on.
+# 
+
+myvec <- c(10,20,30,40)
+
+total <- 0
+for(item in myvec) {
+    total <- total + item
+}
+
+total
+
+# 
+# 2. What do you think this R code will do? How could it be changed to
+# work with any length of `myvec`?
+# 
+
+myvec <- c(10,20,30,40)
+
+for(index in 1:4) {
+    myvec[index] <- myvec[index] * 2
+}
+
+# 
+# 3. Write a for-loop to calculate 10 factorial, ie `1*2*3*4* ... *10`.
+# 
+
+numbers <- 1:10
+
+... your code here ...
+
+# 
+# 
+# 
 #
 # ================================
 # A practical programming exercise
@@ -131,25 +223,18 @@ fahr_to_celsius(212)
 ## Running external software
 ## -------------------------
 
+uptime
+
+
 system("uptime")
 
 
 system("fastqc --extract --outdir . r-more-files/Day0.fastq")
 
 
-## -------------------
-## For-loops revisited
-## -------------------
-
-for(i in c("a","b","c","d","e")) {  #    1
-    cat("i is",i,"\n")              #      2   4   6   8   10
-    cat("potato\n")                 #        3   5   7   9    11
-}                                   #
-cat("done\n")                       #                            12
-                                    #   --order-of-execution-->
-                                    #
-                                    # i= - a a b b c c d d e  e  e ...
-
+## ----------------
+## Using a for-loop
+## ----------------
 
 # construct a command to run
 day <- 0
@@ -210,10 +295,16 @@ filenames
 sumtabs <- lapply(filenames, load_fastqc)
 
 
-# Base R way
-bigtab <- do.call(rbind, sumtabs)
+sumtabs
+class(sumtabs)
+length(sumtabs)
+str(sumtabs)
 
-# The dplyr way
+
+sumtabs[[1]]
+sumtabs[[2]]
+
+
 library(dplyr)
 bigtab <- bind_rows(sumtabs)
 
@@ -222,8 +313,15 @@ table(bigtab$test, bigtab$grade)
 
 
 # =============
-# If statements
+# If-statements
 # =============
+
+if (LOGICAL_VALUE) {
+    THING_TO_DO_IF_TRUE
+} else {
+    THING_TO_DO_IF_FALSE
+}
+
 
 num <- 37                   # 1
 if (num > 100) {            #   2
@@ -337,22 +435,23 @@ source("fastqc.R")
 # ========
 
 # Create an empty package template
-devtools::create("mylibrary")
+library(devtools)
+create("mypack")
 
 # ... Edit mylibrary/DESCRIPTION file
 # ... Write .R files in mylibrary/R folder
 
 # Load package. Use this during development.
-devtools::load_all("mylibrary")
+load_all("mypack")
 
 # Build package, including converting inline documentation to .Rd files using roxygen2.
 # Check for common problems and missing documentation.
 # A CRAN package must pass all checks.
-devtools::check("mylibrary")
+check("mypack")
 
 
 # To install from GitHub:
-devtools::install_github("myusername/mylibrary")
+devtools::install_github("myusername/mypack")
 
 
 sessionInfo()

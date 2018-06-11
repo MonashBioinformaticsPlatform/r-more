@@ -3,22 +3,37 @@ title: "Programming"
 output: html_document
 ---
 
-In the introductory R day, we mostly used R interactively, but one of the final topics introduced our first programming concept, [for-loops](https://monashbioinformaticsplatform.github.io/r-intro/for_loops.html). Today we will expand our knowledge of programming by writing functions and if-statements, and apply this knowledge to automate a typical task from bioinformatics.
+Starting out in R, we tend to use it interactively, running one command at a time. In this section we will look at writing R code that performs repetitive task using "for-loops", packages up commonly needed sequences of operations in "functions", and makes decisions using "if statements".
 
-We are using a couple of packages from CRAN in this tutorial, which we can install with `install.packages`:
+We are using a couple of packages from CRAN in this tutorial, which we can install with `install.packages`.
 
 ```{r eval=FALSE}
 # Don't run this if you are using our biotraining server, the packages are already installed!
-install.packages(c(
-    "readr",    # read tabular data
-    "dplyr"     # general data frame manipulation
-))
+#
+# Install the entire Tidyverse collection of packages with:
+#
+#   install.packages("tidyverse") 
+#
+# or just install packages needed for this section with:
+#
+#   install.packages(c(
+#       "readr",    # read tabular data
+#       "dplyr"     # general data frame manipulation
+#   ))
 ```
 
 
 # Functions
 
-In the introductory R day, we used a lot of functions that other people had written. We're now going to see how to create our own functions.
+Starting out in R mostly involves using functions that other people had written. We're now going to see how to create our own functions. The general pattern of a function is:
+
+```
+FUNCTION_NAME <- function(ARGUMENT_NAME1, ARGUMENT_NAME2, ...) {
+    FUNCTION_BODY
+}
+```
+
+Here is an example:
 
 ```{r}
 fahr_to_kelvin <- function(temp) {
@@ -151,7 +166,7 @@ You might have noticed that all of these functions have an argument called `temp
 
 * Scatter `cat`s through your functions showing the values of arguments and variables at various points. 
 
-* Insert a call to `browser()` in one of your functions. This will pause execution and let you interact with the local environment in a function. Once in the browser, type "help" for a list of commands. Besides examining variables, you can step through the code from the point it paused with "s" or "n". When you are done type "f".
+* Insert a call to `browser()` in one of your functions. This will pause execution and let you interact with the local environment in a function. Once in the browser, type "help" for a list of commands. Besides examining variables, you can step through the function from the point it paused with "n" or, at a finer grain, step into functions it calls with "s". When you are done type "f".
 
 * You can debug an existing function using `debugonce`. This is like temporarily adding a call to `browser()` at the top of the function.
 
@@ -176,11 +191,105 @@ Testing your code is important. Invent a test case for your code consisting of:
 Confirm that your function works as expected.
 
 
+
+
+# For-loops
+
+There are three common approaches to repetitive tasks in R:
+
+1. Copy and paste the code a few times. (Don't do this.)
+2. Write a for-loop.
+3. Write a function, and give this as an argument to an existing function that will call it repeatedly.
+
+Method 1 is error prone, and also hard to fix if you find a mistake in your code.
+
+We will now look at method 2, using for-loops. The general pattern of a loop is:
+
+```
+for(VARIABLE_NAME in VECTOR) {
+  FOR_LOOP_BODY
+}
+```
+
+We can name the loop variable anything we like. `in` is part of the `for` syntax. The body of the loop is enclosed in curly braces `{ }`. For a single-line loop body the braces aren't needed, but it is good practice to always include them.
+
+Let's look at an example. Suppose we have a calculation we need to perform on a series of numbers. 
+
+```{r results="hold"}
+i <- 10
+cat("i is",i,"\n")
+cat("i squared is",i*i,"\n")
+i <- 20
+cat("i is",i,"\n")
+cat("i squared is",i*i,"\n")
+i <- 30
+cat("i is",i,"\n")
+cat("i squared is",i*i,"\n")
+i <- 40
+cat("i is",i,"\n")
+cat("i squared is",i*i,"\n")
+i <- 50
+cat("i is",i,"\n")
+cat("i squared is",i*i,"\n")
+```
+
+Apart from the `i <- ...` lines, the code is the same each time. This can be re-written as a for-loop:
+
+```{r results="hold"}
+for(i in c(10,20,30,40,50)) {       #    1
+    cat("i is",i,"\n")              #      2   4   6   8   10
+    cat("i squared is",i*i,"\n")    #        3   5   7   9    11
+}                                   #
+                                    #
+cat("done\n")                       #                            12
+                                    #   --order-of-execution-->
+                                    #
+                                    # i= - a a b b c c d d e  e  e ...
+```
+
+The loop variable `i` is assigned each element in the vector in turn, and then the loop body runs. There's no possibility here or making a mistake when copying and pasting thhe code, and if we later discover we need to change this code, the for-loop version will be much easier to change. It will also be possible to run this code a different number of times by changing the vector the loop loops over.
+
+
+## Challenge {.challenge}
+
+1. What do you think this R code will do? Read the code and make a guess, then try it in R. Try adding `cat`s or `print`s to the loop body to check what is going on.
+
+```{r eval=FALSE}
+myvec <- c(10,20,30,40)
+
+total <- 0
+for(item in myvec) {
+    total <- total + item
+}
+
+total
+```
+
+2. What do you think this R code will do? How could it be changed to work with any length of `myvec`?
+
+```{r eval=FALSE}
+myvec <- c(10,20,30,40)
+
+for(index in 1:4) {
+    myvec[index] <- myvec[index] * 2
+}
+```
+
+3. Write a for-loop to calculate 10 factorial, ie `1*2*3*4* ... *10`.
+
+```{r eval=FALSE}
+numbers <- 1:10
+
+... your code here ...
+```
+
+
+
 # A practical programming exercise
 
 Let's say we want to examine the quality of some FASTQ files, which contain reads from a DNA sequencing machine. An experiment has been performed over several days, and we want to run a program called "fastqc" on each of the FASTQ files.
 
-FASTQ is a simple text format containg a series of DNA sequences and associated quality information. Examine "Day0.fastq" in the "r-more-files" folder.
+FASTQ is a text format containg a series of DNA sequences and associated quality information. Examine "Day0.fastq" in the "r-more-files" folder.
 
 (This data is a very small portion of the reads from an experiment inducing pluripotency in a mouse cell line, [GSE70022](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE70022).)
 
@@ -188,13 +297,19 @@ FASTQ is a simple text format containg a series of DNA sequences and associated 
 
 Software outside of R is normally run from a "terminal" window, which is rather like the console in RStudio. You type in a command and the operating system runs it for you. The commands you type in are interpreted by something called a "shell", because it acts like a shell around the operating system. For more information, see the [Software Carpentry](http://software-carpentry.org/lessons/) course on the Unix shell.
 
-R can give a command to the shell using the `system` function. For example the "uptime" command tells you how long the computer has been running for.
+In RStudio, you can open a terminal using "Tools/Terminal/New Terminal". Try this and type in:
+
+```
+uptime
+```
+
+The "uptime" command tells you how long the computer has been running for. R can give a command to the shell using the `system` function. 
 
 ```{r}
 system("uptime")
 ```
 
-Here is how we want to run FastQC for day 0. To R the command is just a character string. It will be interpreted by the shell, which is external to R. The shell will then run FastQC for us.
+Here is how we want to run FastQC for day 0. To R the command has no meaning beyond being a character string. It will be interpreted by the shell, which is external to R. The shell will then run FastQC for us.
 
 ```{r cache=TRUE}
 system("fastqc --extract --outdir . r-more-files/Day0.fastq")
@@ -204,20 +319,8 @@ In the "Files" tab of the bottom right pane in RStudio, you should see that some
 
 <b>If you don't have FastQC, or it failed to run for some reason:</b> The expected output files can be found in the folder "r-more-files/fastqc-output".
 
-## For-loops revisited
 
-Recall in the introductory R day we used for-loops to perform repetitive tasks.
-
-```{r results="hold"}
-for(i in c("a","b","c","d","e")) {  #    1
-    cat("i is",i,"\n")              #      2   4   6   8   10
-    cat("potato\n")                 #        3   5   7   9    11
-}                                   #
-cat("done\n")                       #                            12
-                                    #   --order-of-execution-->
-                                    #
-                                    # i= - a a b b c c d d e  e  e ...
-```
+## Using a for-loop
 
 Typing out the fastqc command for each day will get repetitive. Let's use a for-loop to automate this task. The `paste0` function lets us "paste" together character strings, so we can use that to construct the commands to run, like this:
 
@@ -249,9 +352,7 @@ for(day in days) {
 
 The summary.txt files are in "tab separated value" format. This is similar to comma separated value format we've seen in the introductory R day, but instead of using a comma it uses a special character called a tab to delimit columns. Tabs show up as variable amounts of space in a text editor. In R, they can be written `"\t"`.
 
-In base R we could use the function `read.delim` to read this file. It's quite similar to `read.csv`. 
-
-However, let's use one of Hadley Wickham's packages, `readr`, to load the file. To use `readr` we first need to load it with `library`.
+In base R we could use the function `read.delim` to read this file. It's quite similar to `read.csv`. However, let's use the Tidyverse package `readr` to load the file. To use `readr` we first need to load it with `library`.
 
 ```{r}
 library(readr)
@@ -297,9 +398,9 @@ load_fastqc("Day0_fastqc/summary.txt")
 
 ## Applying the function
 
-We now want to load each of the `summary.txt` files we created earlier. One perfectly valid way would be to use a for-loop. An example of this was given in the introductory R day. However here we're going to use an apply-style function.
+We now want to load each of the `summary.txt` files we created earlier. One perfectly valid way would be to use a for-loop. However here we're going to use an "apply"-style function. "apply"-style functions are functions that call some other function repeatedly on subsets of a data set. R has a variety of functions with names such as `apply` and `tapply`, and several other functions where the idea is similar such as `aggregate`. `apply` itself is for use with matrices and produces a vector as output. Other functions in this family have different input and output types. 
 
-In the introductory R day we saw a couple of flavours of `apply`. `apply` itself was for use with matrices. `tapply` was used with data frames and could produce a vector or a matrix or even a higher dimensional array. Another flavour is apply is `lapply` which produces lists. As lists can hold anything `lapply` can be used with any function, no matter what type of thing the function returns.
+The flavour of apply we need here is `lapply`, which takes a vector and calls a function on each element in turn of that vector (i.e. the "subsets" here are simply individual elements). The result is a list containing the returned values, hence the name `lapply`.
 
 First let's work out the names of the files we want to load.
 
@@ -311,19 +412,29 @@ filenames
 
 Now we can use `lapply` to apply our function to each of the filenames.
 
-```{r}
+```{r message=F}
 sumtabs <- lapply(filenames, load_fastqc)
 ```
 
-<b>Tip:</b> If you wanted to process multiple vectors in parallel you could use the `Map` function or Hadley Wickham's `purrr` package.
+We now have a list of data frames. Lists are a little different from the vectors we usually work with. See section 20.5 in the ["R for data science" book](http://r4ds.had.co.nz/vectors.html) for a comprehensive explanation. Here are some ways to examine this object:
 
-We now have a list of data frames. We want to bind the data frames together into one big data frame. One way would be to use `rbind` and do it step by step in a for loop. Here are two other ways:
+```{r eval=FALSE}
+sumtabs
+class(sumtabs)
+length(sumtabs)
+str(sumtabs)
+```
+
+When we print `sumtabs` on the console, it gives us a hint how to access individual elements: using the `[[ ]]` syntax:
+
+```{r eval=FALSE}
+sumtabs[[1]]
+sumtabs[[2]]
+```
+
+This is an ungainly data structure, we would like to turn it into a single a single big data frame. The `dplyr` package provides a function to do this:
 
 ```{r message=F, warning=F}
-# Base R way
-bigtab <- do.call(rbind, sumtabs)
-
-# The dplyr way
 library(dplyr)
 bigtab <- bind_rows(sumtabs)
 
@@ -331,17 +442,24 @@ bigtab
 table(bigtab$test, bigtab$grade)
 ```
 
-(If `dplyr` isn't installed, you would need to install it with `install.packages`.)
 
-<b>Take home message:</b> All of the apply-style functions are enormously more powerful now that we can supply them with functions we write ourselves.
+# If-statements
 
-
-
-# If statements
-
-One final programming concept you need to know about is the "if"-statement. An if-statement lets us do something only if some logical value is `TRUE`, or do one thing if it is `TRUE` and another if it is `FALSE`.
+One final programming concept you need to know about is the "if-statement". An if-statement lets us do something only if some logical value is `TRUE`, or do one thing if it is `TRUE` and another if it is `FALSE`.
 
 In the introductory R day, we used logical vectors to query a data frame. Everything we learned about making and manipulating logical vectors is applicable here, but with the restriction that we need a single logical value, i.e. a logical vector of length 1.
+
+The general pattern of an if statement is:
+
+```
+if (LOGICAL_VALUE) {
+    THING_TO_DO_IF_TRUE
+} else {
+    THING_TO_DO_IF_FALSE
+}
+```
+
+Here is an example:
 
 ```{r, results="hold"}
 num <- 37                   # 1
@@ -476,27 +594,29 @@ Hadley Wickham has a great package called `devtools` that takes a lot of the pai
 
 ```{r, eval=FALSE}
 # Create an empty package template
-devtools::create("mylibrary")
+library(devtools)
+create("mypack")
 
 # ... Edit mylibrary/DESCRIPTION file
 # ... Write .R files in mylibrary/R folder
 
 # Load package. Use this during development.
-devtools::load_all("mylibrary")
+load_all("mypack")
 
 # Build package, including converting inline documentation to .Rd files using roxygen2.
 # Check for common problems and missing documentation.
 # A CRAN package must pass all checks.
-devtools::check("mylibrary")
+check("mypack")
 ```
 
-* [R packages book](http://r-pkgs.had.co.nz/)
+* [Hadley Wickham's "R packages" book](http://r-pkgs.had.co.nz/)
+* [Official package writing manual](https://cran.r-project.org/doc/manuals/r-release/R-exts.html)
 
-Packages are most easily distributed by placing them on GitHub. They can then be installed by others using the `devtools` function `install_github`. Once a package is mature and well documented, it can be submitted to CRAN or Bioconductor.
+Packages are most easily distributed by placing them on GitHub or GitLab. They can then be installed by others using the `devtools` functions `install_github` or `install_gitlab`. Once a package is mature and well documented, it can be submitted to CRAN or Bioconductor.
 
 ```{r eval=FALSE}
 # To install from GitHub:
-devtools::install_github("myusername/mylibrary")
+devtools::install_github("myusername/mypack")
 ```
 
 

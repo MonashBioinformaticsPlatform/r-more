@@ -1,6 +1,6 @@
 ---
 title: "R more"
-subtitle: "Best practices using R in 2017"
+subtitle: "Best practices using R in 2018"
 output: 
     html_document:
         theme: cerulean
@@ -9,7 +9,9 @@ output:
 
 <br>
 These are the course notes for the [Monash Bioinformatics Platform](http://bioinformatics.erc.monash.edu/)'s "R More" course.
-This builds on our ["Introduction to R"](https://monashbioinformaticsplatform.github.io/r-intro/) course. In this course we cover best practices for reproducable sharable results, programming, "tidy" exploratory data analysis, manipulating DNA sequences and features with Bioconductor, and presenting data interactively with Shiny. We will be covering much more ground than the introductory course, to give a broad overview of the various ways R is currently used.
+This builds on our ["Introduction to R"](https://monashbioinformaticsplatform.github.io/r-intro/) course. These modules cover best practices for reproducable sharable results, programming, "tidy" exploratory data analysis, and presenting data interactively with Shiny. We will be covering much more ground than the introductory course, to give a broad overview of the various ways R is currently used.
+
+There is a further module on manipulating DNA sequences and features with Bioconductor. This turned out to be a bit much for one day, and is also more specialized than other topics, so will generally be taught separately.
 
 ## Files
 
@@ -25,8 +27,11 @@ This builds on our ["Introduction to R"](https://monashbioinformaticsplatform.gi
 * [Rmarkdown](topics/Rmarkdown.html) ([.Rmd](topics/Rmarkdown.Rmd))
 * [Programming](topics/programming.html) ([.Rmd](topics/programming.Rmd))
 * [The tidyverse: dplyr, ggplot2, and friends](topics/tidyverse.html) ([.Rmd](topics/tidyverse.Rmd))
-* [Sequences and genomic features](topics/sequences_and_features.html) ([.Rmd](topics/sequences_and_features.Rmd))
 * [Shiny](http://biotraining.erc.monash.edu:3838/shiny/r-more/topics/) ([.Rmd](topics/shiny_tutorial.Rmd))
+
+## Further topics
+
+* [Sequences and genomic features](topics/sequences_and_features.html) ([.Rmd](topics/sequences_and_features.Rmd))
 
 ---
 

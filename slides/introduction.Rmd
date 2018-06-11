@@ -13,7 +13,7 @@ output:
 
 This day is a very fast tour of some ways R as currently used. The point is to get a taste of what exists.
 
-R continues to evolve as better ways to work with data are found. In particular, packages by [Hadley Wickham](http://hadley.nz/) have recently revolutionized R: dplyr, tidyr, ggplot2
+R continues to evolve as better ways to work with data are found. In particular, "Tidyverse" packages have recently revolutionized R, including `dplyr`, `tidyr`, and `ggplot2`. These are mostly written by [Hadley Wickham](http://hadley.nz/).
 
 Not always the most consistent environment in which to work with data, but by far the most comprehensive.
 
@@ -44,7 +44,7 @@ In biology, a reference genome and gene annotations are essential as the key to 
 
 ## Analysis cycle
 
-See also: [Hadley Wickham talking on this topic at useR! 2016](https://channel9.msdn.com/Events/useR-international-R-User-conference/useR2016/Towards-a-grammar-of-interactive-graphics)
+See also: [The "R for Data Science" book](http://r4ds.had.co.nz/introduction.html)
 
 <img src="../figures/data-cycle.svg" height="500">
 
@@ -100,6 +100,9 @@ Base R functions: mean, min, max, sd, apply, tapply, summary, lm, glm, anova, ..
 Key packages: dplyr
 
 Advanced/specialized packages: multcomp, broom, limma, edgeR, glmnet
+
+<br>
+(Note: Model fitting and hypothesis testing won't be covered today.)
 
 
 ## Tidy data is key
@@ -158,7 +161,7 @@ It's not science until it's shared and reproducable.
 * Document analysis in Rmarkdown
 
 * Ultimately, share useful functions in R packages
-    * Version control (eg git, GitHub)
+    * Version control (eg git, GitHub or GitLab)
     * Tutorial and reference documentation
     * Testing
     * `devtools::check`
