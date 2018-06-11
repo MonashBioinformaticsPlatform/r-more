@@ -2,8 +2,6 @@
 
 
 
-# Don't run this if you are using our biotraining server, the packages are already installed!
-#
 # Install the entire Tidyverse collection of packages with:
 #
 #   install.packages("tidyverse")

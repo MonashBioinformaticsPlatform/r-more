@@ -3,13 +3,12 @@ title: "Programming"
 output: html_document
 ---
 
-Starting out in R, we tend to use it interactively, running one command at a time. In this section we will look at writing R code that performs repetitive task using "for-loops", packages up commonly needed sequences of operations in "functions", and makes decisions using "if statements".
+Starting out in R, we tend to use it interactively, running one command at a time. In this section we will look at writing R code that performs repetitive task using "for-loops", packages up commonly needed sequences of operations in "functions", and makes decisions using "if-statements".
 
-We are using a couple of packages from CRAN in this tutorial, which we can install with `install.packages`.
+We are using a couple of packages from CRAN in this tutorial, which we can install with `install.packages`. Don't run this if you are using our biotraining server, the packages are already installed!
+
 
 ```{r eval=FALSE}
-# Don't run this if you are using our biotraining server, the packages are already installed!
-#
 # Install the entire Tidyverse collection of packages with:
 #
 #   install.packages("tidyverse") 
@@ -211,8 +210,6 @@ for(VARIABLE_NAME in VECTOR) {
 }
 ```
 
-We can name the loop variable anything we like. `in` is part of the `for` syntax. The body of the loop is enclosed in curly braces `{ }`. For a single-line loop body the braces aren't needed, but it is good practice to always include them.
-
 Let's look at an example. Suppose we have a calculation we need to perform on a series of numbers. 
 
 ```{r results="hold"}
@@ -247,7 +244,9 @@ cat("done\n")                       #                            12
                                     # i= - a a b b c c d d e  e  e ...
 ```
 
-The loop variable `i` is assigned each element in the vector in turn, and then the loop body runs. There's no possibility here or making a mistake when copying and pasting thhe code, and if we later discover we need to change this code, the for-loop version will be much easier to change. It will also be possible to run this code a different number of times by changing the vector the loop loops over.
+We can name the loop variable anything we like. `in` is part of the `for` syntax. The body of the loop is enclosed in curly braces `{ }`. For a single-line loop body the braces aren't needed, but it is good practice to always include them.
+
+The loop variable `i` is assigned each element in the vector in turn, and then the loop body runs. There's no possibility here or making a mistake when copying and pasting thhe code, and if we later discover we need to change this code, the for-loop version will be much easier to change. It will also be possible to run this code a different number of times by changing the vector used.
 
 
 ## Challenge {.challenge}
