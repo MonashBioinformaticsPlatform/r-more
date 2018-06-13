@@ -44,7 +44,7 @@ In biology, a reference genome and gene annotations are essential as the key to 
 
 ## Analysis cycle
 
-See also: [The "R for Data Science" book](http://r4ds.had.co.nz/introduction.html)
+See also: [The "R for Data Science" book](http://r4ds.had.co.nz/)
 
 <img src="../figures/data-cycle.svg" height="500">
 
