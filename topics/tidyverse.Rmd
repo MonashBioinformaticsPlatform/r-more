@@ -5,15 +5,14 @@ output: html_document
 
 This lesson covers packages primarily by Hadley Wickham for tidying data and then working with it in tidy form, collectively known as the "tidyverse".
 
-The packages we are using in this lesson are all from CRAN, so we can install them with `install.packages`.
+The packages we are using in this lesson are all from CRAN, so we can install them with `install.packages`. Don't run this if you are using our biotraining server, the packages are already installed!
 
 ```{r eval=FALSE}
-# Don't run this if you are using our biotraining server, the packages are already installed!
-install.packages(c(
-    "tidyverse",
-    "viridis",
-    "broom"
-))
+# install.packages(c(
+#     "tidyverse",
+#     "viridis",
+#     "broom"
+# ))
 ```
 
 ```{r warning=FALSE, message=FALSE}
@@ -101,7 +100,7 @@ It may be necessary to edit a plot further in a program such as Inkscape or Adob
 
 # dplyr
 
-`dplyr` gives us a collection of convenient "verbs" for manipulating data frames. The name is a contraction of "Data frame apPLYeR", as some of these verbs have a similar flavour to apply/lappy/tapply/etc.
+`dplyr` gives us a collection of convenient "verbs" for manipulating data frames. The name is a contraction of "Data frame apPLYeR", as some of these verbs have a similar flavour to `apply`/`lapply`/`tapply`/etc.
 
 Each verb takes a data frame as input and returns a modified version of it. The idea is that complex operations can be performed by stringing together a series of simpler operations in a pipeline.
 
@@ -118,7 +117,7 @@ Each verb takes a data frame as input and returns a modified version of it. The 
 bigtab
 ```
 
-As we used `readr` to read the data, `bigtab` is a "tibble", which is Hadley Wickham's slightly improved data frame. The `dplyr` verbs also all return their results as tibbles. You can also create tibbles explicitly with the `tibble` function. One convenient feature is that it only shows a few rows of the data frame when you print it. If you do want to see the whole table, you can use `as.data.frame`, or use the `View` function to view it in a tab.
+As we used `readr` to read the data, `bigtab` is a "tibble", which is the Tidyverse's improved data frame. The `dplyr` verbs also all return their results as tibbles. You can also create tibbles explicitly with the `tibble` function (or `data_frame`). One convenient feature is that it only shows a few rows of the data frame when you print it. If you do want to see the whole table, you can use `as.data.frame`, or use the `View` function to view it in a tab.
 
 ```{r eval=FALSE}
 as.data.frame(bigtab)
@@ -135,6 +134,7 @@ filter(bigtab, grade == "FAIL")
 ```
 
 Something is magic here: we do not have `grade` in our environment, only within the data frame. Arguments to `filter` can use any column of the data frame as a variable. `dplyr` uses this idea heavily, arguments to `dplyr` verbs often behave in a special way.
+
 
 ## arrange
 
@@ -216,6 +216,8 @@ Joins are the key tool for *integrating* different types of data, based on some 
 mutate(scoretab, doublescore = score*2)
 ```
 
+Even though this is called "mutate", it is not literally modifying the input. Rather it is producing a copy of the data frame that has the modifiction.
+
 This is equivalent to:
 
 ```{r eval=FALSE}
@@ -246,7 +248,7 @@ The special function `n()` can be used within `summarize` to get the number of r
 summarize(group_by(scoretab, grade), count=n())
 ```
 
-So `summarize` lets us do the things we did with `table` and `tapply`, but staying tidy by using data frames.
+So `summarize` lets us do the things we do with base R using `table` and `tapply`, but staying tidy by using data frames.
 
 <b>Tip:</b> `group_by` also affects other verbs, such as mutate. This is more advanced than we will be going into today. Grouping can be removed with `ungroup`.
 
@@ -269,22 +271,18 @@ rep(paste("hello", "world"), 5)
 "hello" %>% paste("world") %>% rep(5)
 ```
 
-The idea of adding geoms in `ggplot2` is rather like the `dplyr` pipe. `ggplot2` predates `dplyr`, and Hadley Wickham has had a progression of ideas. It will probably be possible to use `%>%` instead of `+` in `ggplot2` in the not too distant future.
+The idea of adding geoms in `ggplot2` is rather like the `dplyr` pipe. `ggplot2` predates `dplyr`, and Hadley Wickham has had a progression of ideas. It will probably be possible to use `%>%` instead of `+` in some successor to `ggplot2` in the not too distant future.
 
-
-## Challenge {.challenge}
-
-In the previous challenge, we filtered and arranged `scoretab`. Rewrite this operation using the pipe.
 
 
 # tidyr
 
-`tidyr` is Hadley Wickham's package for getting data frames to tidy. Recall that in a tidy data frame:
+`tidyr` is the Tidyverse package for getting data frames to tidy. Recall that in a tidy data frame:
 
 * each row is a unit of observation
 * each column is a single piece of information
 
-I'm not sure `tidyr` is a great package, but the *ideas* behind it are very important. `dplyr` uses magic arguments to produces very beautiful R code, but in `tidyr` it gets a bit confusing. Anyway, let's work through a toy example:
+I'm not convinced `tidyr` is a great package, but the *ideas* behind it are very important. `dplyr` uses magic arguments to produces very beautiful R code, but in `tidyr` it gets a bit confusing. Anyway, let's work through a toy example:
 
 ```{r}
 untidy <- read_csv(
@@ -305,7 +303,7 @@ We give a data frame, a name for the key and value columns to be created. Remain
 
 In the introductory R day we saw `melt` from the `reshape2` package, which did a similar thing to matrices.
 
-`spread` is the opposite operation, spreading a column into many columns, which generally makes data less tidy but is sometimes necessary. It's a little like calling `tapply` with a function that just returns the data unaltered (`identity`).
+`spread` is the opposite operation, spreading a column into many columns, which generally makes data less tidy but is sometimes necessary. A common application is producing a scatter plot, where the x and y axes need to be two different columns even though they measure the same type of thing. Data may also be easier to look at in a table in spread form.
 
 ```{r}
 spread(bigtab, key=file, value=grade)
@@ -325,9 +323,9 @@ tidied <- untidy %>%
     separate(group, into=c("gender","age"))
 ```
 
-<b>Advanced:</b> `tidyr` has a number of other useful data frame manipulations. For completeness, we mention `nest`. This creates a *list column* in a tibble, the list column containing one tibble per row. Yo, Hadley put tibbles in your tibble so you can dplyr while you dplyr. The inverse operation is `unnest`. `nest` and `unnest` go well with creating or modifying list columns in a `mutate` with `lapply` or `Map`.
+<b>Advanced:</b> `tidyr` has a number of other useful data frame manipulations. For completeness, we mention `nest`. This creates a *list column* in a tibble, the list column containing one tibble per row. Yo, Hadley put tibbles in your tibble so you can dplyr while you dplyr. The inverse operation is `unnest`. `unnest` is rather like the `bind_rows` function we saw earlier. `nest` and `unnest` go well with creating or modifying list columns in a `mutate` with `lapply` (or the `purrr` package).
 
-```{r}
+```{r eval=FALSE}
 # Advanced
 nested <- nest(gathered, -country)
 nested
@@ -336,9 +334,27 @@ unnest(nested)
 ```
 
 
-# A small RNA-Seq example
+### Challenge {.challenge}
 
-We will now put this all together by looking at a small gene expression data set. To simplify somewhat: The data was generated from a multiplex PCR targetting 44 genes. The PCR product is quantified by counting reads from high throughput sequencing. The experiment is of yeast released synchronously into cell cycling, so that we can see which genes are active at different points in the cycle. Several strains of yeast have been used, a wildtype and several gene knock-downs. Each has nine time points, covering two cell cycles (two hours). 
+You receive data on a set of points. The points are in two dimensions (`dim`), and each point has x and y coordinates. Unfortunately it looks like this:
+
+```{r}
+df <- read_csv(
+    "dim, A_1, A_2, B_1, B_2, B_3, B_4, B_5
+     x,   2,   4,   1,   2,   3,   4,   5
+     y,   4,   4,   2,   1,   1,   1,   2")
+```
+
+1. Tidy the data by *gathering* all of the columns except `dim`. What what does each row now represent?
+
+2. We want to plot the points as a scatter-plot, using either `plot` or `ggplot`. *Spread* the gathered data so that this is possible. Now what do the rows represent?
+
+3. What other tidying operation could be applied to this data?
+
+
+# An RNA-Seq example
+
+We will now put this all together by looking at a small-scale gene expression data set. To simplify somewhat: The data was generated from a multiplex PCR targetting 44 genes. The PCR product is quantified by counting reads from high throughput sequencing. The experiment is of yeast released synchronously into cell cycling, so that we can see which genes are active at different points in the cycle. Several strains of yeast have been used, a wildtype and several gene knock-downs. Each has nine time points, covering two cell cycles (two hours). 
 
 This is much smaller than a typical RNA-Seq dataset. We are only looking at 44 genes, rather than all of the thousands of genes in the yeast genome.
 
@@ -537,14 +553,14 @@ augment(model, sut476_wt) %>% head
 # augment() can also be used to produce predictions for new inputs
 augment(model, newdata=sut476_wt[1:5,])
 
-# Let's look at the model fit, and how influential each observation was
+# Let's look at the model fit
 augment(model, sut476_wt) %>%
 ggplot(aes(x=time)) + 
-    geom_point(aes(y=log_norm_count, size=.cooksd)) +
+    geom_point(aes(y=log_norm_count)) +
     geom_line(aes(y=.fitted))
 ```
 
-We see the initial timepoint in the wildtype strain is wildly off the linear trend. The large Cook's Distance indicates this is strongly affecting the model. Possibly early time points need to be removed, or (more likely!) a linear trend is not a good model of this data.
+We see the initial timepoint in the wildtype strain is wildly off the linear trend. Possibly early time points need to be removed, or (more likely!) a linear trend is not a good model of this data.
 
 Linear models can be much more complicated than this. They can include multiple explanatory variables, including categorical variables, and interactions between them, and even polynomials.
 
@@ -554,7 +570,7 @@ model2
 
 augment(model2, sut476) %>%
 ggplot(aes(x=time, color=strain, group=strain)) + 
-    geom_point(aes(y=log_norm_count, size=.cooksd), alpha=0.5) +
+    geom_point(aes(y=log_norm_count), alpha=0.5) +
     geom_line(aes(y=.fitted))
 ```
 

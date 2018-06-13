@@ -2,12 +2,11 @@
 
 
 
-# Don't run this if you are using our biotraining server, the packages are already installed!
-install.packages(c(
-    "tidyverse",
-    "viridis",
-    "broom"
-))
+# install.packages(c(
+#     "tidyverse",
+#     "viridis",
+#     "broom"
+# ))
 
 
 library(tidyverse) # Load all "tidyverse" libraries.
@@ -185,15 +184,6 @@ rep(paste("hello", "world"), 5)
 "hello" %>% paste("world") %>% rep(5)
 
 
-## ---------
-## Challenge
-## ---------
-# 
-# In the previous challenge, we filtered and arranged `scoretab`.
-# Rewrite this operation using the pipe.
-# 
-# 
-#
 # =====
 # tidyr
 # =====
@@ -227,9 +217,35 @@ nested$data
 unnest(nested)
 
 
-# =======================
-# A small RNA-Seq example
-# =======================
+### ---------
+### Challenge
+### ---------
+# 
+# You receive data on a set of points. The points are in two dimensions
+# (`dim`), and each point has x and y coordinates. Unfortunately it
+# looks like this:
+# 
+
+df <- read_csv(
+    "dim, A_1, A_2, B_1, B_2, B_3, B_4, B_5
+     x,   2,   4,   1,   2,   3,   4,   5
+     y,   4,   4,   2,   1,   1,   1,   2")
+
+# 
+# 1. Tidy the data by *gathering* all of the columns except `dim`. What
+# what does each row now represent?
+# 
+# 2. We want to plot the points as a scatter-plot, using either `plot`
+# or `ggplot`. *Spread* the gathered data so that this is possible. Now
+# what do the rows represent?
+# 
+# 3. What other tidying operation could be applied to this data?
+# 
+# 
+#
+# ==================
+# An RNA-Seq example
+# ==================
 
 ## -------
 ## Tidying
@@ -401,10 +417,10 @@ augment(model, sut476_wt) %>% head
 # augment() can also be used to produce predictions for new inputs
 augment(model, newdata=sut476_wt[1:5,])
 
-# Let's look at the model fit, and how influential each observation was
+# Let's look at the model fit
 augment(model, sut476_wt) %>%
 ggplot(aes(x=time)) +
-    geom_point(aes(y=log_norm_count, size=.cooksd)) +
+    geom_point(aes(y=log_norm_count)) +
     geom_line(aes(y=.fitted))
 
 
@@ -413,7 +429,7 @@ model2
 
 augment(model2, sut476) %>%
 ggplot(aes(x=time, color=strain, group=strain)) +
-    geom_point(aes(y=log_norm_count, size=.cooksd), alpha=0.5) +
+    geom_point(aes(y=log_norm_count), alpha=0.5) +
     geom_line(aes(y=.fitted))
 
 
