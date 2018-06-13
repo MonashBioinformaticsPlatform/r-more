@@ -79,7 +79,7 @@ Specialized packages: Biostrings, rtracklayer
 * Shows unexpected things in the data.
 * Informs what relationships are important in the data for any modelling and statistical testing.
 
-Key packages: ggplot2
+Key packages: ggplot2, shiny
 
 
 
@@ -99,10 +99,10 @@ Base R functions: mean, min, max, sd, apply, tapply, summary, lm, glm, anova, ..
 
 Key packages: dplyr
 
-Advanced/specialized packages: multcomp, broom, limma, edgeR, glmnet
+Advanced/specialized packages: multcomp, broom, limma, edgeR, glmnet, ...
 
 <br>
-(Note: Model fitting and hypothesis testing won't be covered today.)
+Note: Model fitting and hypothesis testing won't be covered today.
 
 
 ## Tidy data is key
@@ -110,7 +110,7 @@ Advanced/specialized packages: multcomp, broom, limma, edgeR, glmnet
 Tidy data doesn't mean a neat presentation for a person to read, it means data in the easiest form for the computer to work with.
 
 * use data frames
-* each row is a unit of observation
+* each row is a single unit of observation
 * each column is a single piece of information
 * each column is a distinct kind of information
 
@@ -141,6 +141,7 @@ If every step of your analysis can run as a script:
 * changes are easily tested, a poor decision at an early stage is easily fixed
 * today's big project becomes tomorrow's building block
 
+<!--
 Elements of programming we will be looking at today:
 
 * re-usable step-by-step procedures with `function`
@@ -148,15 +149,15 @@ Elements of programming we will be looking at today:
 * making decisions with `if`
 * running external software with `system`
 * running all the code in a .R file as a "script", or to load a "library" of functions
-
+-->
 
 ## Best practices
 
 <img src="../figures/remember-kids.jpg" style="position: absolute; right: 0px; top: 0px;" height="400">
 
-Show your code. It may surprise you who picks it up and runs with it.
+Open, reproducable data science.
 
-It's not science until it's shared and reproducable.
+Show your code. It may surprise you who picks it up and runs with it.
 
 * Document analysis in Rmarkdown
 
@@ -168,7 +169,8 @@ It's not science until it's shared and reproducable.
 
 <br>
 
-* For reproducibility, record which versions of packages you used with `sessionInfo()`.
+* For reproducibility, record which versions of packages you used 
+    *`sessionInfo()`
 
 
 ## Today

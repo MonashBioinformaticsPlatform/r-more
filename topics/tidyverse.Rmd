@@ -372,15 +372,13 @@ Recall the three activities involved in data analysis. This dataset requires all
 counts_untidy <- read_csv("r-more-files/read-counts.csv")
 
 counts <- counts_untidy %>%
-    gather(sample, count, -Feature, factor_key=TRUE) %>%
+    gather(key=sample, value=count, -Feature, factor_key=TRUE) %>%
     separate(sample, sep=":", into=c("strain","time"), convert=TRUE, remove=FALSE) %>%
     mutate(
-        strain = factor(strain, levels=c("WT","SET1","RRP6","SET1-RRP6")),
-        set1 = (strain == "SET1" | strain == "SET1-RRP6"),
-        rrp6 = (strain == "RRP6" | strain == "SET1-RRP6")
+        strain = factor(strain, levels=c("WT","SET1","RRP6","SET1-RRP6"))
     ) %>%
     filter(time >= 2) %>%
-    select(sample, strain, set1, rrp6, time, gene=Feature, count)
+    select(sample, strain, time, gene=Feature, count)
 
 summary(counts)
 ```

@@ -590,15 +590,13 @@ unnest(nested)</code></pre>
 counts_untidy &lt;- read_csv(&quot;r-more-files/read-counts.csv&quot;)
 
 counts &lt;- counts_untidy %&gt;%
-    gather(sample, count, -Feature, factor_key=TRUE) %&gt;%
+    gather(key=sample, value=count, -Feature, factor_key=TRUE) %&gt;%
     separate(sample, sep=&quot;:&quot;, into=c(&quot;strain&quot;,&quot;time&quot;), convert=TRUE, remove=FALSE) %&gt;%
     mutate(
-        strain = factor(strain, levels=c(&quot;WT&quot;,&quot;SET1&quot;,&quot;RRP6&quot;,&quot;SET1-RRP6&quot;)),
-        set1 = (strain == &quot;SET1&quot; | strain == &quot;SET1-RRP6&quot;),
-        rrp6 = (strain == &quot;RRP6&quot; | strain == &quot;SET1-RRP6&quot;)
+        strain = factor(strain, levels=c(&quot;WT&quot;,&quot;SET1&quot;,&quot;RRP6&quot;,&quot;SET1-RRP6&quot;))
     ) %&gt;%
     filter(time &gt;= 2) %&gt;%
-    select(sample, strain, set1, rrp6, time, gene=Feature, count)
+    select(sample, strain, time, gene=Feature, count)
 
 summary(counts)</code></pre>
 <p>Time point 1 was omitted because it isn’t actually part of the time series, it’s from cells in an unsynchronized state. If we wanted to be even tidier, the remaining time points could be recoded with the actual time within the experiment – they are at 15 minute intervals.</p>
