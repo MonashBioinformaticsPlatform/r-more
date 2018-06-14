@@ -103,9 +103,9 @@ There are numerous document types that you can turn your markdown into. This all
 
 We are not going to cover all of them, we are mainly going to be working with either `html_notebook` (new way) or `html_document` both produce very similar result, and essentially the personal preference. I'll try to touch on `ioslides_presentaion` towards the end.
 
-# Vanila Markdown
+# Vanilla Markdown
 
-There actually not that much to core (vanila) of markdown essentially all of it can be summarised below
+There actually not that much to core (vanilla) of markdown essentially all of it can be summarised below
 
 ```r
 `r ''` # Header1
@@ -144,7 +144,7 @@ There actually not that much to core (vanila) of markdown essentially all of it 
 `r ''` > Markdown uses email-style > characters for blockquoting.
 ```
 
-## Practice vanila markdown
+## Practice vanilla markdown
 
 Now it's just a matter of learning some of the markdown syntax. Let's delete all current text from the opened document except the YAML header and type this new text in `Hello world, I'm learning R markdown !` and pressing the `Knit HTML` button.
 
