@@ -8,8 +8,8 @@ output:
 ---
 
 <br>
-These are the course notes for the [Monash Bioinformatics Platform](http://bioinformatics.erc.monash.edu/)'s "R More" course.
-This builds on our ["Introduction to R"](https://monashbioinformaticsplatform.github.io/r-intro/) course. These modules cover best practices for reproducable sharable results, programming, "tidy" exploratory data analysis, and presenting data interactively with Shiny. We will be covering much more ground than the introductory course, to give a broad overview of the various ways R is currently used.
+These are the course notes for the [Monash Bioinformatics Platform](https://www.monash.edu/researchinfrastructure/bioinformatics)'s "R More" course.
+This builds on our ["Introduction to R"](https://monashdatafluency.github.io/r-intro-2/) course. These modules cover best practices for reproducable sharable results, programming, "tidy" exploratory data analysis, and presenting data interactively with Shiny. We will be covering much more ground than the introductory course, to give a broad overview of the various ways R is currently used.
 
 There is a further module on manipulating DNA sequences and features with Bioconductor. This turned out to be a bit much for one day, and is also more specialized than other topics, so will generally be taught separately.
 
@@ -20,14 +20,14 @@ There is a further module on manipulating DNA sequences and features with Biocon
 ## Slides
 
 * [Introduction](slides/introduction.html) ([.Rmd](slides/introduction.Rmd))
-* [Shiny](http://biotraining.erc.monash.edu:3838/shiny/r-more/slides/#1) ([.Rmd](slides/shiny_course_notes.Rmd))
+* [Shiny](https://biotraining.erc.monash.edu/shiny/shiny/r-more/slides/#1) ([.Rmd](slides/shiny_course_notes.Rmd))
 
 ## Topics
 
 * [Rmarkdown](topics/Rmarkdown.html) ([.Rmd](topics/Rmarkdown.Rmd))
 * [Programming](topics/programming.html) ([.Rmd](topics/programming.Rmd))
 * [The tidyverse: dplyr, ggplot2, and friends](topics/tidyverse.html) ([.Rmd](topics/tidyverse.Rmd))
-* [Shiny](http://biotraining.erc.monash.edu:3838/shiny/r-more/topics/) ([.Rmd](topics/shiny_tutorial.Rmd))
+* [Shiny](https://biotraining.erc.monash.edu/shiny/shiny/r-more/topics/) ([.Rmd](topics/shiny_tutorial.Rmd))
 
 ## Further topics
 
@@ -39,12 +39,12 @@ There is a further module on manipulating DNA sequences and features with Biocon
 
 In this series:
 
-* [Introduction to R](https://monashbioinformaticsplatform.github.io/r-intro/)
+* [Introduction to R (version 2)](https://monashdatafluency.github.io/r-intro-2/)
 * [RNAseq DE analysis using R](http://monashbioinformaticsplatform.github.io/RNAseq-DE-analysis-with-R/)
 
 Other resources:
 
-* [Next steps](https://monashbioinformaticsplatform.github.io/r-intro/next.html)
+* [Next steps](https://monashdatafluency.github.io/r-intro-2/next-steps.html)
 
 
 ## Authors

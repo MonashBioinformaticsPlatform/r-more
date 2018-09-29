@@ -11,11 +11,13 @@ output:
 
 <img src="../figures/Rlogo.png" style="float: right">
 
-This day is a very fast tour of some ways R as currently used. The point is to get a taste of what exists.
+Today will be a fast tour of modern R.
 
-R continues to evolve as better ways to work with data are found. In particular, "Tidyverse" packages have recently revolutionized R, including `dplyr`, `tidyr`, and `ggplot2`. These are mostly written by [Hadley Wickham](http://hadley.nz/).
+* R is a moving target
 
-Not always the most consistent environment in which to work with data, but by far the most comprehensive.
+* Focus on "Tidyverse" 
+  * `dplyr`, `ggplot2`, `tidyr`, etc
+  *  Mostly written by [Hadley Wickham](http://hadley.nz/)
 
 <br>
 
@@ -28,18 +30,18 @@ R - 1993
 
 ### Exploratory
 
-You can now produce very large, multi-dimensional data sets.
+Complex experimental designs, large $n$ and/or large $p$.
 
-Understanding what you have requires a cyclic process of exploratation.
+Understanding is a cyclic process of exploratation.
 
 ### Integrative
 
-For example in biology you may want to join together many different views of a process: DNA, RNA, epigenetics, proteins, metabolome, cell morphology, ...
+In biology you may want to join together many different views of a process: DNA, RNA, epigenetics, proteins, metabolome, cell morphology, ...
 
-Your data can potentially be viewed in the context of a vast array of other data sets.
+Your data can be viewed in the context of many other data sets.
 
 <br>
-In biology, a reference genome and gene annotations are essential as the key to joining different types of data.
+In biology, reference genome and gene annotations are the key to joining different types of data.
 
 
 ## Analysis cycle
@@ -56,30 +58,28 @@ See also: [The "R for Data Science" book](http://r4ds.had.co.nz/)
 ### Load, tidy, normalize and transform data
 
 * Tidy data makes visualization and modelling fast and easy.
-* Correctly normalized and transformed data brings out the signal in visualizations, and is necessary for correct modelling.
+* Correctly normalized and transformed data brings out the signal in visualizations, and necessary for correct modelling.
 
-Key packages: readr tidyr dplyr
-
-Specialized packages: Biostrings, rtracklayer
+**Key packages:** readr, tidyr, dplyr
 
 
 ## Analysis cycle
 
 <img src="../figures/data-cycle.svg" style="position: absolute; right: 0px; top: 0px;" height="200">
 
+### Visualization, exploration
+
 *The greatest value of a picture is when it forces us 
 <br>to notice what we never expected to see.*
 
 -- John Tukey
-
-### Visualization, exploration
 
 * Suggests the need for normalization or transformation.
 * Shows if any of the data is poor quality.
 * Shows unexpected things in the data.
 * Informs what relationships are important in the data for any modelling and statistical testing.
 
-Key packages: ggplot2, shiny
+**Key packages:** ggplot2, shiny
 
 
 
@@ -90,32 +90,30 @@ Key packages: ggplot2, shiny
 ### Summarization, modelling, statistical testing
 
 * Shrinks large data sets for more manageable visualization.
-    * If nothing else, data can always be subsampled.
-* Confirm what can be seen in visualization, tells us what *isn't* real in a visualization.
+* Confirm what can be seen in visualization, tells us what *isn't* real.
 * What hypotheses does the data support and reject?
 * Failures should prompt a rethink of normalization and tranformation, and further visualization to understand the data.
 
-Base R functions: mean, min, max, sd, apply, tapply, summary, lm, glm, anova, ...
+**Key packages:** dplyr
 
-Key packages: dplyr
+**Base R functions:** mean, min, max, sd, lm, glm, anova, ...
 
-Advanced/specialized packages: multcomp, broom, limma, edgeR, glmnet, ...
+**Specialized packages:** too many to name
 
 <br>
-Note: Model fitting and hypothesis testing won't be covered today.
+**Note:** Model fitting and hypothesis testing won't be covered today.
 
 
 ## Tidy data is key
 
-Tidy data doesn't mean a neat presentation for a person to read, it means data in the easiest form for the computer to work with.
+Tidy data doesn't mean tidy for a person to read, it means the easiest form for the computer to work with.
 
-* use data frames
+* only use data frames
 * each row is a single unit of observation
 * each column is a single piece of information
 * each column is a distinct kind of information
 
-Avoid complex structures, preferring one or more simple tables. 
-<br>(Similar to database normalization.)
+Similar to database design.
 
 The experimental design is in the body of the table alongside the data, *not* in row names or column names.
 
@@ -130,15 +128,13 @@ Example from: [Wickham, H. (2015) Tidy data. The Journal of Statistical Software
 <img src="../figures/tidy.png" height="450">
 
 
-## Programming
+## Programming (scripting)
 
-Programming (or scripting) lets us tell the computer to do a whole lot of things without further instruction.
-
-If every step of your analysis can run as a script:
+If every step of your analysis is recorded in an R script, with no manual steps:
 
 * you have a complete record of what you have done
-* it's easy to feed in some test data to check that it is working as expected
-* changes are easily tested, a poor decision at an early stage is easily fixed
+* easy to run entire script with test data
+* changes easily tested, poor early decisions easily fixed
 * today's big project becomes tomorrow's building block
 
 <!--
@@ -170,7 +166,7 @@ Show your code. It may surprise you who picks it up and runs with it.
 <br>
 
 * For reproducibility, record which versions of packages you used 
-    *`sessionInfo()`
+    * `sessionInfo()`
 
 
 ## Today
