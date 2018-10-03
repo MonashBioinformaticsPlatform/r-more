@@ -1,0 +1,24 @@
+
+Notes on timing of sections.
+
+This is intended as a single day workshop with 5.5 hours teaching.
+
+Example start 10am, 15 minute morning tea, 1 hour lunch, 15 min afternoon tea, finish at 5pm.
+
+Hours
+0.5  introduction and setup
+0.5  Rmarkdown
+1.75 programming
+1.75 tidyverse
+1    shiny
+
+However, this turns out to be pretty unreasonable with current material. Both teachers and students are exhausted by the end of the day.
+
+More reasonable might be
+0.5  introduction and setup
+2.5  programming
+2.5  tidyverse
+and cover Rmarkdown and shiny in a separate "r-communicate" workshop.
+
+There is scope to expand Rmarkdown to cover bookdown, which supports figure numbering and cross referencing, and to refine the shiny section. The tidyverse section is a little tedious when covering dplyr (and this now recapitulates some material taught in the introductory workshop), and the end example is complex and could have fewer ggplots (and so far has also always been rushed). More challenges in all sections would be a plus.
+
