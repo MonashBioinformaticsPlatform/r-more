@@ -90,6 +90,9 @@ as.data.frame(bigtab)
 View(bigtab)
 
 
+print(bigtab, n=100, width=1000)
+
+
 ## ------
 ## filter
 ## ------
@@ -139,6 +142,8 @@ scoretab
 ### ---------
 ### Challenge
 ### ---------
+# 
+# Using the newly created `score` column:
 # 
 # 1. Filter `scoretab` to get only "WARN" or "FAIL" grades.
 # 

@@ -43,7 +43,7 @@ bigtab <- read_csv("r-more-files/fastqc.csv")
 
 # ggplot2 revisited
 
-We [saw ggplot2 in the introductory R day](https://monashbioinformaticsplatform.github.io/r-intro/ggplot.html). Recall that we could assign columns of a data frame to aesthetics--x and y position, color, etc--and then add "geom"s to draw the data.
+We [saw ggplot2 in the introductory R day](https://monashdatafluency.github.io/r-intro-2/plotting-with-ggplot2.html). Recall that we could assign columns of a data frame to aesthetics--x and y position, color, etc--and then add "geom"s to draw the data.
 
 With `ggplot2` we can easily view the whole data set.
 
@@ -124,6 +124,12 @@ as.data.frame(bigtab)
 View(bigtab)
 ```
 
+The `n` and `width` arguments to `print` can also be used to print more rows or columns respectively.
+
+```{r eval=FALSE}
+print(bigtab, n=100, width=1000)
+```
+
 
 ## filter
 
@@ -202,6 +208,8 @@ Joins are the key tool for *integrating* different types of data, based on some 
 
 
 ### Challenge {.challenge}
+
+Using the newly created `score` column:
 
 1. Filter `scoretab` to get only "WARN" or "FAIL" grades. 
 

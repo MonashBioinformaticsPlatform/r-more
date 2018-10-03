@@ -398,7 +398,7 @@ vignette(&quot;dplyr&quot;, package=&quot;dplyr&quot;)</code></pre>
 <pre class="r"><code>bigtab &lt;- read_csv(&quot;r-more-files/fastqc.csv&quot;)</code></pre>
 <div id="ggplot2-revisited" class="section level1">
 <h1>ggplot2 revisited</h1>
-<p>We <a href="https://monashbioinformaticsplatform.github.io/r-intro/ggplot.html">saw ggplot2 in the introductory R day</a>. Recall that we could assign columns of a data frame to aesthetics–x and y position, color, etc–and then add “geom”s to draw the data.</p>
+<p>We <a href="https://monashdatafluency.github.io/r-intro-2/plotting-with-ggplot2.html">saw ggplot2 in the introductory R day</a>. Recall that we could assign columns of a data frame to aesthetics–x and y position, color, etc–and then add “geom”s to draw the data.</p>
 <p>With <code>ggplot2</code> we can easily view the whole data set.</p>
 <pre class="r"><code>ggplot(bigtab, aes(x=file,y=test,color=grade)) + 
     geom_point()</code></pre>
@@ -448,6 +448,8 @@ ggsave(&quot;plot2.png&quot;, myplot, width=10, height=10, dpi=300)</code></pre>
 <p>As we used <code>readr</code> to read the data, <code>bigtab</code> is a “tibble”, which is the Tidyverse’s improved data frame. The <code>dplyr</code> verbs also all return their results as tibbles. You can also create tibbles explicitly with the <code>tibble</code> function (or <code>data_frame</code>). One convenient feature is that it only shows a few rows of the data frame when you print it. If you do want to see the whole table, you can use <code>as.data.frame</code>, or use the <code>View</code> function to view it in a tab.</p>
 <pre class="r"><code>as.data.frame(bigtab)
 View(bigtab)</code></pre>
+<p>The <code>n</code> and <code>width</code> arguments to <code>print</code> can also be used to print more rows or columns respectively.</p>
+<pre class="r"><code>print(bigtab, n=100, width=1000)</code></pre>
 </div>
 <div id="filter" class="section level2">
 <h2>filter</h2>
@@ -494,6 +496,7 @@ scoretab</code></pre>
 <p><b>See also:</b> <code>match</code> and <code>merge</code> in base R.</p>
 <div id="challenge" class="section level3 challenge">
 <h3>Challenge</h3>
+<p>Using the newly created <code>score</code> column:</p>
 <ol style="list-style-type: decimal">
 <li><p>Filter <code>scoretab</code> to get only “WARN” or “FAIL” grades.</p></li>
 <li><p>Sort the result so that “FAIL”s are at the top.</p></li>
