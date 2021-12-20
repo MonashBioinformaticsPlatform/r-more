@@ -20,7 +20,7 @@ There is a further module on manipulating DNA sequences and features with Biocon
 ## Slides
 
 * [Introduction](slides/introduction.html) ([.Rmd](slides/introduction.Rmd))
-* [Shiny](https://bioinformatics3.erc.monash.edu/rsconnect/content/80/#1) ([.Rmd](slides/shiny_course_notes.Rmd))
+* [Shiny](https://bioinformatics3.erc.monash.edu/rsconnect/content/263/#1) ([.Rmd](slides/shiny_course_notes.Rmd))
 
 ## Topics
 
